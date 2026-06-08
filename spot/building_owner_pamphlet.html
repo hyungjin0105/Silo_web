@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face{font-family:'Pretendard';font-weight:300;src:url('/sessions/awesome-cool-newton/mnt/outputs/node_modules/pretendard/dist/public/static/Pretendard-Light.otf');}
+  @font-face{font-family:'Pretendard';font-weight:400;src:url('/sessions/awesome-cool-newton/mnt/outputs/node_modules/pretendard/dist/public/static/Pretendard-Regular.otf');}
+  @font-face{font-family:'Pretendard';font-weight:500;src:url('/sessions/awesome-cool-newton/mnt/outputs/node_modules/pretendard/dist/public/static/Pretendard-Medium.otf');}
+  @font-face{font-family:'Pretendard';font-weight:600;src:url('/sessions/awesome-cool-newton/mnt/outputs/node_modules/pretendard/dist/public/static/Pretendard-SemiBold.otf');}
+  @font-face{font-family:'Pretendard';font-weight:700;src:url('/sessions/awesome-cool-newton/mnt/outputs/node_modules/pretendard/dist/public/static/Pretendard-Bold.otf');}
+  @font-face{font-family:'Pretendard';font-weight:800;src:url('/sessions/awesome-cool-newton/mnt/outputs/node_modules/pretendard/dist/public/static/Pretendard-ExtraBold.otf');}
+  @font-face{font-family:'Pretendard';font-weight:900;src:url('/sessions/awesome-cool-newton/mnt/outputs/node_modules/pretendard/dist/public/static/Pretendard-Black.otf');}
+
+  :root{
+    --ink:#1A2238;       /* deep navy ink */
+    --blue:#143C8C;      /* public trust blue */
+    --warm:#E2552B;      /* revitalization terracotta */
+    --warm-soft:#F4E3D7;
+    --paper:#FBF7F1;     /* warm paper */
+    --panel:#F2ECE2;     /* light panel */
+    --line:#D9D0C2;
+    --muted:#6A6557;
+  }
+  @page{ size:A4 landscape; margin:0; }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ font-family:'Pretendard'; color:var(--ink); -webkit-font-smoothing:antialiased; word-break:keep-all; overflow-wrap:break-word; }
+
+  .sheet{ width:297mm; height:210mm; display:flex; page-break-after:always; background:var(--paper); }
+  .sheet:last-child{ page-break-after:auto; }
+  .panel{ width:148.5mm; height:210mm; padding:15mm 14mm; position:relative; display:flex; flex-direction:column; overflow:hidden; }
+  .panel.fold{ border-right:0.3mm dashed #CFC6B6; }
+
+  /* six-way crossing motif */
+  .mark{ display:inline-block; }
+  .eyebrow{ font-size:9.5pt; font-weight:600; letter-spacing:.18em; color:var(--warm); text-transform:none; }
+  .small{ font-size:8.5pt; color:var(--muted); font-weight:500; line-height:1.5; }
+
+  /* ---------- COVER ---------- */
+  .cover{ background:var(--ink); color:#fff; justify-content:space-between; }
+  .cover .topmark{ display:flex; align-items:center; gap:3mm; }
+  .cover .topmark span{ font-size:9.5pt; font-weight:600; letter-spacing:.14em; color:#E9C9B8; }
+  .cover h1{ font-size:33pt; font-weight:800; line-height:1.22; letter-spacing:-.01em; }
+  .cover h1 .hl{ color:var(--warm); }
+  .cover .lead{ margin-top:7mm; font-size:12.5pt; font-weight:500; line-height:1.6; color:#E8E4DC; }
+  .cover .lead b{ color:#fff; font-weight:700; }
+  .cover .foot{ border-top:0.4mm solid rgba(255,255,255,.22); padding-top:5mm; }
+  .cover .proj{ font-size:11pt; font-weight:700; color:#fff; letter-spacing:.01em; }
+  .cover .hosts{ margin-top:2.5mm; font-size:8.5pt; font-weight:500; color:#B9B4AA; line-height:1.5; }
+  .ghost{ position:absolute; right:-26mm; top:38mm; opacity:.10; }
+
+  /* ---------- INSIDE LEFT (2) ---------- */
+  .h-eye{ font-size:10pt; font-weight:600; letter-spacing:.02em; color:var(--warm); margin-bottom:3mm; }
+  h2{ font-size:23pt; font-weight:800; line-height:1.25; letter-spacing:-.01em; }
+  .rule{ width:14mm; height:1.1mm; background:var(--warm); border-radius:1mm; margin:6mm 0; }
+
+  .cols{ display:flex; gap:5mm; margin-top:2mm; }
+  .col{ border-radius:3mm; padding:7mm 6mm; }
+  .col.owner{ width:40%; background:var(--warm-soft); border:0.3mm solid #E6C6B2; }
+  .col.us{ width:60%; background:#fff; border:0.3mm solid var(--line); }
+  .col .ctag{ font-size:8.5pt; font-weight:700; letter-spacing:.02em; margin-bottom:4mm; }
+  .col.owner .ctag{ color:var(--warm); }
+  .col.us .ctag{ color:var(--blue); }
+  .col.owner .big{ font-size:15pt; font-weight:800; line-height:1.35; color:var(--ink); }
+  .col.owner .note{ margin-top:3mm; font-size:9pt; font-weight:500; color:var(--muted); }
+  .ul li{ list-style:none; font-size:10.5pt; font-weight:600; line-height:1.45; padding-left:6mm; position:relative; margin-bottom:3.2mm; }
+  .ul li:last-child{ margin-bottom:0; }
+  .ul li::before{ content:""; position:absolute; left:0; top:2.4mm; width:2.4mm; height:2.4mm; border-radius:.6mm; background:var(--blue); }
+  .ul li.strong{ color:var(--warm); }
+  .ul li.strong::before{ background:var(--warm); }
+
+  .worries{ margin-top:auto; }
+  .worries .wtitle{ font-size:11pt; font-weight:700; margin-bottom:4mm; }
+  .qa{ display:flex; align-items:baseline; gap:3mm; margin-bottom:3mm; font-size:9.7pt; line-height:1.45; }
+  .qa .q{ font-weight:700; color:var(--ink); white-space:nowrap; }
+  .qa .a{ font-weight:500; color:#3C4660; }
+  .zero{ margin-top:5mm; background:var(--ink); color:#fff; border-radius:2.5mm; padding:5mm 6mm; font-size:13pt; font-weight:800; text-align:center; }
+  .zero b{ color:#FFB38C; }
+
+  /* ---------- INSIDE RIGHT (3) ---------- */
+  .flow{ display:flex; align-items:center; gap:3mm; margin:6mm 0 2mm; }
+  .flow .box{ flex:1; background:#fff; border:0.3mm solid var(--line); border-radius:2.5mm; padding:4.5mm 3mm; text-align:center; }
+  .flow .box .t{ font-size:9.5pt; font-weight:800; color:var(--blue); }
+  .flow .box .s{ font-size:7.6pt; font-weight:500; color:var(--muted); margin-top:1.5mm; line-height:1.35; }
+  .flow .arr{ color:var(--warm); font-weight:800; font-size:12pt; }
+  .body{ font-size:10.6pt; font-weight:500; line-height:1.62; color:#2B3146; }
+  .body b{ font-weight:700; color:var(--ink); }
+  .body .hl{ color:var(--warm); font-weight:700; }
+  .body p{ margin-bottom:4mm; }
+  .analogy{ background:var(--panel); border-left:1.2mm solid var(--warm); border-radius:0 2mm 2mm 0; padding:5mm 6mm; font-size:10.4pt; font-weight:600; line-height:1.55; color:var(--ink); margin:1mm 0 4mm; }
+
+  .proof{ margin-top:auto; background:#fff; border:0.3mm solid var(--line); border-radius:3mm; padding:7mm 6mm; }
+  .proof .ptag{ font-size:9pt; font-weight:700; color:var(--warm); letter-spacing:.02em; }
+  .proof .pt{ font-size:14pt; font-weight:800; margin:2mm 0 4mm; }
+  .stats{ display:flex; gap:4mm; margin-bottom:4mm; }
+  .stat{ flex:1; background:var(--panel); border-radius:2mm; padding:4mm 3mm; text-align:center; }
+  .stat .n{ font-size:17pt; font-weight:800; color:var(--blue); line-height:1; }
+  .stat .l{ font-size:8pt; font-weight:600; color:var(--muted); margin-top:2mm; }
+  .quote{ font-size:9.5pt; font-weight:600; font-style:italic; color:#3C4660; line-height:1.5; }
+
+  /* ---------- BACK (4) ---------- */
+  .back{ background:var(--panel); }
+  .back .bnum{ font-size:25pt; font-weight:800; line-height:1.2; letter-spacing:-.01em; }
+  .back .bnum .hl{ color:var(--warm); }
+  .back .blead{ margin-top:5mm; font-size:10.4pt; font-weight:500; line-height:1.6; color:#2B3146; }
+  .back .blead b{ font-weight:700; color:var(--ink); }
+  .steps{ margin-top:7mm; }
+  .steps .stitle{ font-size:10pt; font-weight:700; color:var(--blue); margin-bottom:4mm; letter-spacing:.02em; }
+  .step{ display:flex; gap:4mm; align-items:flex-start; margin-bottom:4mm; }
+  .step .sn{ width:7mm; height:7mm; flex:0 0 7mm; border-radius:50%; background:var(--blue); color:#fff; font-size:9pt; font-weight:800; display:flex; align-items:center; justify-content:center; }
+  .step .sx .st{ font-size:10.5pt; font-weight:700; }
+  .step .sx .ss{ font-size:9pt; font-weight:500; color:var(--muted); margin-top:.5mm; }
+  .reassure{ margin-top:3mm; font-size:9.2pt; font-weight:500; line-height:1.5; color:#3C4660; }
+  .reassure b{ font-weight:700; color:var(--ink); }
+  .cta{ margin-top:auto; display:flex; gap:5mm; align-items:center; background:var(--ink); border-radius:3mm; padding:6mm; color:#fff; }
+  .cta .qr{ width:24mm; height:24mm; flex:0 0 24mm; background:#fff; border-radius:1.5mm; display:flex; align-items:center; justify-content:center; }
+  .cta .qr .qrtxt{ font-size:7pt; font-weight:600; color:#9c9c9c; text-align:center; line-height:1.3; }
+  .cta .cx .go{ font-size:14pt; font-weight:800; }
+  .cta .cx .go .hl{ color:#FFB38C; }
+  .cta .cx .info{ font-size:9pt; font-weight:500; color:#CFCABF; margin-top:2mm; }
+  .back .hostfoot{ margin-top:5mm; font-size:8pt; font-weight:600; color:var(--muted); letter-spacing:.04em; }
+</style>
+</head>
+<body>
+
+<!-- ============ SHEET 1 : OUTSIDE  [ BACK(4) | COVER(1) ] ============ -->
+<div class="sheet">
+
+  <!-- 4면 : 뒷면 -->
+  <div class="panel back fold">
+    <div class="back-top">
+      <div class="back bnum"><span class="hl">30곳</span>, 먼저 오시는<br>분 순입니다.</div>
+      <div class="blead">이번 시즌 함께할 공간은 <b>30곳 한정.</b> 일찍 등록하실수록 좋은 자리·시기·혜택을 먼저 챙겨드립니다.</div>
+    </div>
+
+    <div class="steps">
+      <div class="stitle">이렇게 진행됩니다</div>
+      <div class="step"><div class="sn">1</div><div class="sx"><div class="st">등록</div><div class="ss">문자·카톡으로 간단히</div></div></div>
+      <div class="step"><div class="sn">2</div><div class="sx"><div class="st">상담</div><div class="ss">저희가 찾아가 공간을 확인하고 설명드립니다</div></div></div>
+      <div class="step"><div class="sn">3</div><div class="sx"><div class="st">준비</div><div class="ss">계약·청소·세팅까지 저희가</div></div></div>
+      <div class="step"><div class="sn">4</div><div class="sx"><div class="st">운영 시작</div><div class="ss">공간이 채워지고, 수익이 발생합니다</div></div></div>
+      <div class="reassure">등록만 해두시면 진행 상황을 문자·카톡으로 보내드립니다.<br><b>먼저 연락드리니, 번거롭게 챙기실 필요 없습니다.</b></div>
+    </div>
+
+    <div class="cta">
+      <div class="qr"><div class="qrtxt">QR<br>등록</div></div>
+      <div class="cx">
+        <div class="go">▶ 지금 <span class="hl">등록하기</span></div>
+        <div class="info">문의 · [담당자 / 연락처]</div>
+      </div>
+    </div>
+    <div class="hostfoot">주최 · 한동대학교 · 중앙상가상인회 · 한국헤리티지문화재단 · 포항시</div>
+  </div>
+
+  <!-- 1면 : 표지 -->
+  <div class="panel cover">
+    <svg class="ghost" width="150" height="150" viewBox="0 0 100 100">
+      <g stroke="#E2552B" stroke-width="3" stroke-linecap="round">
+        <line x1="50" y1="50" x2="50" y2="6"/><line x1="50" y1="50" x2="88" y2="28"/>
+        <line x1="50" y1="50" x2="88" y2="72"/><line x1="50" y1="50" x2="50" y2="94"/>
+        <line x1="50" y1="50" x2="12" y2="72"/><line x1="50" y1="50" x2="12" y2="28"/>
+      </g>
+    </svg>
+    <div class="topmark">
+      <svg width="22" height="22" viewBox="0 0 100 100"><g stroke="#E2552B" stroke-width="8" stroke-linecap="round">
+        <line x1="50" y1="50" x2="50" y2="10"/><line x1="50" y1="50" x2="85" y2="30"/><line x1="50" y1="50" x2="85" y2="70"/>
+        <line x1="50" y1="50" x2="50" y2="90"/><line x1="50" y1="50" x2="15" y2="70"/><line x1="50" y1="50" x2="15" y2="30"/></g></svg>
+      <span>다시, 육거리 &nbsp;RE:CROSSING</span>
+    </div>
+
+    <div>
+      <h1>공실,<br>그대로<br><span class="hl">두실 건가요?</span></h1>
+      <div class="lead">방치된 공실을 —<br><b>관리되고, 수익이 나는 공간으로.</b></div>
+    </div>
+
+    <div class="foot">
+      <div class="proj">공실 활성화 프로젝트</div>
+      <div class="hosts">한동대학교 · 중앙상가상인회 · 한국헤리티지문화재단 · 포항시</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ SHEET 2 : INSIDE  [ (2) | (3) ] ============ -->
+<div class="sheet">
+
+  <!-- 2면 : 왼쪽 안쪽 -->
+  <div class="panel fold">
+    <div class="h-eye">건물주님은 아무것도 안 하셔도 됩니다</div>
+    <h2>열쇠만 주시면,<br>끝입니다.</h2>
+    <div class="rule"></div>
+
+    <div class="cols">
+      <div class="col owner">
+        <div class="ctag">건물주님이 하실 일</div>
+        <div class="big">열쇠를<br>맡긴다</div>
+        <div class="note">— 이게 전부입니다</div>
+      </div>
+      <div class="col us">
+        <div class="ctag">저희가 다 하는 일</div>
+        <ul class="ul">
+          <li>청소 · 공간 정비</li>
+          <li>임차인 모집 · 매칭</li>
+          <li>계약 · 정산</li>
+          <li>운영 · 홍보</li>
+          <li class="strong">원상복구까지</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="worries">
+      <div class="wtitle">걱정하시는 것부터 막아드립니다.</div>
+      <div class="qa"><span class="q">더러워질까요?</span><span class="a">들어올 때보다 깨끗하게 비워드립니다.</span></div>
+      <div class="qa"><span class="q">망가지면요?</span><span class="a">원상복구 보증, 계약서로 약속합니다.</span></div>
+      <div class="qa"><span class="q">안 나가면요?</span><span class="a">종료일을 계약으로 정해, 책임지고 비웁니다.</span></div>
+      <div class="zero">건물주님이 지는 리스크는 <b>0</b>입니다.</div>
+    </div>
+  </div>
+
+  <!-- 3면 : 오른쪽 안쪽 -->
+  <div class="panel">
+    <div class="h-eye">한 번 채우고 끝이 아닙니다</div>
+    <h2>짧게,<br>그러나 끊김 없이.</h2>
+    <div class="rule"></div>
+
+    <div class="body">
+      <p>긴 세입자 한 명을 몇 달씩 기다리며 비워두는 대신, <b>2주·한 달 단위 팝업을 연이어 채웁니다.</b> 하나가 나가면 다음이 들어오게 — 그래서 <span class="hl">비는 기간 없이 수익이 이어집니다.</span></p>
+    </div>
+    <div class="analogy">빈 방을 1년에 한 번 채우는 게 아니라,<br>호텔처럼 <b>계속 돌리는</b> 방식이라고 보시면 됩니다.</div>
+    <div class="body">
+      <p>행사·할인 지원으로 손님을 계속 모아 이 회전이 멈추지 않게 합니다. 초기 부담 없이, <b>매출이 나는 만큼 나눠 받는</b> 방식도 가능합니다.</p>
+    </div>
+
+    <div class="proof">
+      <div class="ptag">이미 해냈습니다</div>
+      <div class="pt">다시, 육거리 2025</div>
+      <div class="stats">
+        <div class="stat"><div class="n">22<span style="font-size:10pt">곳</span></div><div class="l">빈 점포를 채움</div></div>
+        <div class="stat"><div class="n">[ ]</div><div class="l">방문객</div></div>
+        <div class="stat"><div class="n">[ ]</div><div class="l">언론 보도</div></div>
+      </div>
+      <div class="quote">“[작년 참여 건물주 한마디 — 실제 인터뷰로 채울 자리]”</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

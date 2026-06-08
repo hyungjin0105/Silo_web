@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Popin — 메인 페이지 (모바일 + 데스크탑 시안)</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="tokens.css" />
+
+<style>
+  html, body { margin: 0; padding: 0; background: #f0eee9; }
+  body { font-family: "Pretendard Variable", Pretendard, system-ui, sans-serif; }
+
+  .notes {
+    background: #fef4a8;
+    color: #5a4a2a;
+    padding: 20px 22px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.55;
+    width: 360px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    transform: rotate(-0.6deg);
+  }
+  .notes h4 { font-size: 12px; margin: 0 0 10px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; font-weight: 600; }
+  .notes ul { margin: 0; padding-left: 18px; }
+  .notes li { margin-bottom: 6px; }
+  .notes li::marker { color: #b89a40; }
+  .notes .ref { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px; opacity: 0.65; }
+
+  .review {
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 12px;
+    padding: 24px 26px;
+    width: 420px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #2a251f;
+  }
+  .review h4 { font-size: 11px; margin: 0 0 14px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.6; font-weight: 700; }
+  .review h5 { font-size: 13px; margin: 14px 0 4px; color: #0A0A0A; font-weight: 700; }
+  .review p  { margin: 0 0 4px; color: #3F3A33; }
+  .review .ok  { color: #1F8A4C; font-weight: 700; }
+  .review .warn{ color: #C7901A; font-weight: 700; }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="main-page.jsx"></script>
+
+<script type="text/babel">
+const H_MOBILE  = 2700;   // tall scroll for mobile
+const H_DESKTOP = 2700;   // matches mobile so the row reads as paired
+
+function Canvas() {
+  return (
+    <DesignCanvas>
+      <DCSection
+        id="main-page"
+        title="메인 페이지 · 모바일 + 데스크탑"
+        subtitle="iPhone 14 (390) ↔ 데스크탑 (1280, 콘텐츠 1200) · 같은 톤·토큰, 폭만 분기"
+      >
+        {/* Notes — design decisions */}
+        <DCArtboard id="notes" label="설계 메모" width={400} height={H_MOBILE}>
+          <div style={{ padding: '28px 22px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div className="notes">
+              <h4>헤로 — WHY THIS SPLIT</h4>
+              <ul>
+                <li><b>모바일</b> — paper 단색 위 거대 한글 좌정렬 + 우상단 96×96 오렌지 색면(인덱스 “01/”). 한 코너에만 액센트를 두는 MIMCO·FORMAEU 결.</li>
+                <li><b>데스크탑</b> — 좌 60% paper / 우 40% accent 가로 분할. 좌하단 정렬로 카피, 우측에 거대 mono “01/” 220px. SE7EN·FORMAEU 포스터 결.</li>
+                <li>둘 다 헤로의 주인공은 <b>한글 거대 타이포</b>(P1). 사진 0장, 일러스트 0개. 오렌지 면적은 화면의 ≤8%(모바일은 코너 96² 박스, 데스크탑은 우측 40% 풀폭이지만 콘텐츠 영역 기준).</li>
+              </ul>
+            </div>
+
+            <div className="notes" style={{ background: '#fff', color: '#3F3A33', transform: 'rotate(0.4deg)', border: '1px solid rgba(0,0,0,0.06)' }}>
+              <h4 style={{ color: '#0A0A0A', opacity: 1 }}>팝업타운 카드 — 면색 분배</h4>
+              <ul>
+                <li><b>01 성수</b> · accent 오렌지 + 흰 — 가장 큰 인벤토리, 시그너처.</li>
+                <li><b>02 연남</b> · paper 크림 + 검정 — 페이지 베이스 톤 그대로, 가장 ‘조용한’ 카드.</li>
+                <li><b>03 부암</b> · ink 검정 + 흰 — 한적·골목 톤, 무게중심.</li>
+                <li><b>04 망원</b> · paper-pure 흰 + 검정 보더(데스크탑 4번째) — 가성비·로컬 톤, 비어 있는 신호.</li>
+              </ul>
+              <p style={{ marginTop: 10 }}>네 카드 모두 같은 구성(상단 mono caption + NO. → 좌하단 거대 한글 → 매물 정보) — 색만 다른 포스터 시리즈처럼.</p>
+            </div>
+
+            <div className="notes" style={{ background: '#fff', color: '#3F3A33', transform: 'rotate(-0.3deg)', border: '1px solid rgba(0,0,0,0.06)' }}>
+              <h4 style={{ color: '#0A0A0A', opacity: 1 }}>토큰 인벤토리 (이 페이지)</h4>
+              <p><b>색</b> · paper(F4EFE6) / paper-pure(FFF) / ink(0A0A0A) / accent(FF5A1F) (+soft/deep) / gray-100·500 — <b>5족</b></p>
+              <p><b>weight</b> · 400 / 700 / 900(헤로 한정) — <b>3종</b></p>
+              <p><b>radius</b> · lg 16 (카드 통일) / md 8 (CTA·맵) / pill (칩·회원가입). 헤로 색면은 <b>none</b>.</p>
+              <p><b>shadow</b> · 0 (전 화면)</p>
+            </div>
+          </div>
+        </DCArtboard>
+
+        {/* Mobile */}
+        <DCArtboard id="mobile" label="Mobile 390 — iPhone 14" width={390} height={H_MOBILE}>
+          <MainMobile />
+        </DCArtboard>
+
+        {/* Desktop */}
+        <DCArtboard id="desktop" label="Desktop 1280 — container 1200" width={1280} height={H_DESKTOP}>
+          <MainDesktop />
+        </DCArtboard>
+
+        {/* Self-review */}
+        <DCArtboard id="review" label="자체 검토 (8항)" width={460} height={H_MOBILE}>
+          <div style={{ padding: '28px 20px' }}>
+            <div className="review">
+              <h4>SELF-REVIEW · 8 CHECKS</h4>
+
+              <h5>1. 헤로에 사진 0장?</h5>
+              <p><span className="ok">○</span> 모바일·데스크탑 둘 다 사진 한 장도 없음. paper/accent 색면 + 거대 한글 + mono 인덱스만.</p>
+
+              <h5>2. 색 5종 이하?</h5>
+              <p><span className="ok">○</span> 5족 — paper / paper-pure / ink / accent(+soft, +deep는 같은 hue) / gray 패밀리. 헤로 “.” 마침표만 accent로 강조해 절제.</p>
+
+              <h5>3. 한·영 모노 캡션, 헤로·섹션 헤더에만?</h5>
+              <p><span className="ok">○</span> 헤로 “POPUP SPACE · SHORT TERM”, 우측 슬랩 “EDITION · NO. 01 / 2026 / 11”, 섹션 헤더 “EXPLORE TOWNS”, “RECENTLY ADDED”. 본문은 한글만. 타운 스트라이프는 “NOW OPEN”만 mono.</p>
+
+              <h5>4. 매거진·포스터 톤 — generic SaaS 회피?</h5>
+              <p><span className="ok">○</span> 색면 분할(데스크탑 60/40), 거대 mono 인덱스(220px “01/”), 카드별 다른 면색 4종, 그라데이션·블러·글로우 0. SaaS 시그널(피처 3개 그리드 + 아이콘 + 카피)은 사용하지 않음.</p>
+
+              <h5>5. 거대 한글 타이포가 페이지를 잡는가?</h5>
+              <p><span className="ok">○</span> 모바일 56px(weight 900, 3줄), 데스크탑 96px(2줄). 둘 다 화면 1/3 이상 점유.</p>
+
+              <h5>6. 팝업타운 카드 동일 톤(사진 없이 색면)?</h5>
+              <p><span className="ok">○</span> 4장 모두 색면 + 거대 한글 + mono caption + NO. 인덱스 구성. 사진 0장.</p>
+
+              <h5>7. 모바일 hit target &lt; 44px?</h5>
+              <p><span className="ok">○</span> 헤더 햄버거·회원가입(작아 보이지만 padding 합산 44+), CTA 56px, 카드 자체가 큼. 푸터 링크는 줄간격 + line-height로 ≥36px(보더라인) — 가능하면 다음 라운드에 패딩 4px 추가.</p>
+
+              <h5>8. AI틱 신호 3가지 점검</h5>
+              <p>① <b>헤로 카피 양 옆 데코 도형 남발</b> — 우상단 인덱스 1개만, 그 외 도형 0. <span className="ok">통과</span></p>
+              <p>② <b>섹션마다 “Trusted by …” 로고 라인</b> — 없음. 대신 하단 타운 스트라이프(실 동네명)로 신뢰 신호 대체. <span className="ok">통과</span></p>
+              <p>③ <b>오렌지를 모든 요소에 분산</b> — 헤로 “.”·코너 슬랩·CTA·성수 카드·“협의 가능” 칩까지 5곳, 각자 의미 다름(브랜드/인덱스/액션/타운/가격 조건). 의도된 반복.</p>
+              <p>잠재 약점: 데스크탑 우측 슬랩의 220px “01/”이 너무 강할 수 있어, 220→180 옵션도 검토 여지.</p>
+            </div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<Canvas />);
+</script>
+</body>
+</html>

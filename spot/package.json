@@ -1,0 +1,11 @@
+{
+  "name": "spot-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Spot — popup space matching · static HTML prototype",
+  "scripts": {
+    "dev": "npx --yes http-server@14 spot/project -p 3000 -c-1 --cors -o /hero.html",
+    "start": "npx --yes http-server@14 spot/project -p 3000 -c-1",
+    "catalog": "npx --yes http-server@14 spot/project -p 3000 -c-1 -o /pages.html"
+  }
+}

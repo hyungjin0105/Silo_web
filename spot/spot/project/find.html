@@ -1,0 +1,582 @@
+<!-- Spot — 공간 찾기 (Find) v0.1 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>Spot — 공간 찾기</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ─── design tokens (v0.1 — design_tokens.md 토큰만) ─── */
+:root {
+  --color-ink: #0A0A0A;
+  --color-paper: #F4EFE6;
+  --color-paper-pure: #FFFFFF;
+  --color-accent: #FF5A1F;
+  --color-accent-deep: #D8410F;
+  --color-accent-soft: #FFE7DC;
+  --color-gray-50: #F7F5F1;
+  --color-gray-100: #E8E4DD;
+  --color-gray-300: #BDB7AD;
+  --color-gray-500: #7A736A;
+  --color-gray-700: #3F3A33;
+  --color-warning: #C7901A;
+
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+  --r-sm: 4px; --r-md: 8px; --r-lg: 16px; --r-pill: 9999px;
+
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --container: 1200px;
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html, body { margin: 0; padding: 0; min-width: 1280px; }
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+@media (max-width: 1023px) { html { zoom: 0.78; } }
+
+.mono-sm { font-family: var(--font-mono); font-size: 12px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.mono-xs { font-family: var(--font-mono); font-size: 11px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.body-lg { font-size: 18px; line-height: 1.55; font-weight: 400; }
+.body    { font-size: 17px; line-height: 1.55; font-weight: 400; }
+.body-sm { font-size: 15px; line-height: 1.5;  font-weight: 400; }
+
+/* ─── shared header pill (hero.html과 동일 패턴, 단 paper 배경 위에) ─── */
+.site-header-wrap { background: var(--color-paper); padding: var(--s-6) 0 0; }
+.site-header {
+  position: relative;
+  width: calc(var(--container) - 0px);
+  max-width: calc(100% - 48px);
+  margin: 0 auto;
+  height: 60px;
+  padding: 6px 8px 6px 28px;
+  display: flex; align-items: center; gap: var(--s-6);
+  background: var(--color-paper-pure);
+  border-radius: var(--r-pill);
+}
+.site-header .wordmark { font-weight: 800; font-size: 20px; letter-spacing: -0.035em; color: var(--color-ink); padding-right: var(--s-3); border-right: 1px solid var(--color-gray-100); margin-right: var(--s-3); }
+.site-header .wordmark .dot { color: var(--color-accent); }
+.site-header nav { display: flex; gap: var(--s-6); }
+.site-header nav a {
+  font-size: 14px; font-weight: 500; color: var(--color-ink);
+  padding: 6px 2px; position: relative; transition: color 120ms;
+}
+.site-header nav a.active { color: var(--color-accent-deep); }
+.site-header nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 2px; height: 1px; background: var(--color-ink); transition: right 200ms var(--ease-out-soft); }
+.site-header nav a:hover::after, .site-header nav a.active::after { right: 0; background: currentColor; }
+.site-header .right { margin-left: auto; display: flex; align-items: center; gap: var(--s-5); }
+.lang-toggle { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: var(--color-gray-300); display: inline-flex; align-items: center; gap: 6px; user-select: none; cursor: pointer; }
+.lang-toggle .lang { padding: 2px 2px; transition: color 120ms; }
+.lang-toggle .lang.on { color: var(--color-ink); font-weight: 700; }
+.lang-toggle .sep { color: var(--color-gray-300); }
+.site-header .login { font-size: 14px; font-weight: 500; padding: 6px 2px; transition: opacity 120ms; }
+.site-header .login:hover { opacity: 0.6; }
+.site-header .signup { background: var(--color-ink); color: var(--color-paper-pure); border: none; padding: 10px 20px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; transition: background 120ms, transform 120ms; }
+.site-header .signup:hover { background: #1f1c1a; }
+.site-header .signup:active { transform: scale(0.97); }
+
+/* ─── page header ─── */
+.container { max-width: var(--container); margin: 0 auto; padding: 0 var(--s-12); }
+.page-head { background: var(--color-paper); padding: var(--s-12) 0 var(--s-10); }
+.page-head .eyebrow { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-3); display: inline-flex; align-items: center; gap: var(--s-2); }
+.page-head .eyebrow::before { content: ""; width: 24px; height: 1px; background: currentColor; }
+.page-head h1 { margin: 0; font-size: 56px; font-weight: 900; line-height: 1.0; letter-spacing: -0.025em; }
+.page-head h1 .quiet { color: var(--color-gray-500); font-weight: 700; }
+.page-head .sub { margin: var(--s-5) 0 0; max-width: 620px; font-size: 17px; line-height: 1.55; color: var(--color-gray-500); }
+
+/* ─── search bar ─── */
+.search-bar {
+  margin-top: var(--s-10);
+  background: var(--color-paper-pure);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--color-gray-100);
+  display: grid;
+  grid-template-columns: 2fr 1.4fr 1.4fr 1fr auto;
+  align-items: stretch;
+  overflow: hidden;
+}
+.search-field { padding: var(--s-5) var(--s-6); border-right: 1px solid var(--color-gray-100); display: flex; flex-direction: column; gap: 4px; cursor: text; transition: background 120ms; }
+.search-field:hover { background: var(--color-gray-50); }
+.search-field:last-of-type { border-right: none; }
+.search-field .label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-500); text-transform: uppercase; }
+.search-field input { border: none; background: transparent; font-family: inherit; font-size: 17px; font-weight: 500; color: var(--color-ink); padding: 0; outline: none; width: 100%; }
+.search-field input::placeholder { color: var(--color-gray-300); }
+.search-submit {
+  background: var(--color-accent); color: #fff; border: none;
+  padding: 0 var(--s-10); font-size: 16px; font-weight: 700; letter-spacing: -0.005em;
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  transition: background 160ms;
+}
+.search-submit:hover { background: var(--color-accent-deep); }
+.search-submit .arrow { transition: transform 200ms var(--ease-out-soft); }
+.search-submit:hover .arrow { transform: translateX(4px); }
+
+/* ─── filter row ─── */
+.filter-row {
+  background: var(--color-paper);
+  padding: var(--s-6) 0;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+.filter-row .inner { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; }
+.fchip {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  padding: 8px var(--s-4);
+  background: var(--color-paper-pure);
+  border: 1px solid var(--color-gray-100);
+  border-radius: var(--r-pill);
+  font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: all 120ms;
+}
+.fchip:hover { border-color: var(--color-ink); }
+.fchip.on { background: var(--color-ink); color: #fff; border-color: var(--color-ink); }
+.fchip .caret { font-size: 10px; opacity: 0.6; }
+.filter-row .spacer { flex: 1; }
+.sort {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  font-size: 14px; font-weight: 500; cursor: pointer;
+  padding: 8px var(--s-3); border-radius: var(--r-md);
+}
+.sort:hover { background: var(--color-gray-50); }
+.sort .label { color: var(--color-gray-500); }
+
+/* ─── results header ─── */
+.results-head {
+  padding: var(--s-10) 0 var(--s-6);
+  display: flex; align-items: baseline; justify-content: space-between;
+}
+.results-head .count { font-size: 22px; font-weight: 700; letter-spacing: -0.015em; }
+.results-head .count .num { color: var(--color-accent-deep); }
+.results-head .meta { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--color-gray-500); text-transform: uppercase; }
+.view-toggle { display: inline-flex; background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-pill); padding: 4px; gap: 2px; }
+.view-toggle button { background: transparent; border: none; padding: 6px var(--s-4); border-radius: var(--r-pill); font-size: 13px; font-weight: 500; cursor: pointer; color: var(--color-gray-500); }
+.view-toggle button.on { background: var(--color-ink); color: #fff; }
+
+/* ─── space cards grid (asymmetric — Nexora 톤) ─── */
+.section.results { background: var(--color-paper); padding-bottom: var(--s-16); }
+.spaces { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); }
+.space-card {
+  background: var(--color-paper-pure);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--color-gray-100);
+  overflow: hidden;
+  transition: transform 200ms var(--ease-out-soft), box-shadow 200ms var(--ease-out-soft);
+  display: flex; flex-direction: column;
+}
+.space-card:hover { transform: translateY(-2px); box-shadow: 0 1px 2px rgba(10,10,10,0.06); }
+.space-photo {
+  aspect-ratio: 4 / 3;
+  background: var(--color-gray-100);
+  position: relative;
+  display: flex; align-items: flex-end;
+  padding: var(--s-4);
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(189,183,173,0.25) 8px, rgba(189,183,173,0.25) 9px);
+}
+.space-photo .label {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--color-gray-500);
+  background: rgba(255,255,255,0.85);
+  padding: 4px 8px; border-radius: 4px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.heart { position: absolute; top: var(--s-4); right: var(--s-4); width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.92); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 120ms; color: var(--color-gray-500); }
+.heart:hover { transform: scale(1.08); }
+.heart.on { color: var(--color-accent); }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: var(--r-pill); font-size: 12px; font-weight: 500; line-height: 1; white-space: nowrap; }
+.chip-verified { background: var(--color-accent-soft); color: var(--color-accent-deep); }
+.chip-verified-strong { background: var(--color-accent); color: #fff; }
+.chip-unverified { background: rgba(255,255,255,0.92); color: var(--color-gray-500); border: 1px solid var(--color-gray-100); }
+.chip-negotiable { background: var(--color-accent-soft); color: var(--color-accent-deep); }
+.chip-pending { background: var(--color-paper); color: var(--color-warning); border: 1px solid var(--color-gray-100); }
+.chip-on-photo { position: absolute; top: var(--s-4); left: var(--s-4); }
+.space-body { padding: var(--s-4) var(--s-5) var(--s-5); display: flex; flex-direction: column; gap: var(--s-2); }
+.space-meta-row { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-500); text-transform: uppercase; display: flex; align-items: center; gap: var(--s-2); }
+.space-meta-row .dot { opacity: 0.5; }
+.space-title { font-size: 17px; font-weight: 700; line-height: 1.4; margin-top: 2px; }
+.space-tag-row { display: flex; gap: 4px; flex-wrap: wrap; }
+.space-tag-row .tag { font-size: 12px; color: var(--color-gray-500); }
+.space-tag-row .tag::before { content: "#"; margin-right: 1px; opacity: 0.5; }
+.space-price-row { margin-top: auto; padding-top: var(--s-3); display: flex; align-items: baseline; gap: var(--s-2); flex-wrap: wrap; }
+.space-price { font-size: 19px; font-weight: 700; letter-spacing: -0.015em; }
+.space-price .unit { font-size: 13px; color: var(--color-gray-500); font-weight: 500; margin-right: 4px; letter-spacing: 0; }
+
+/* 비대칭: 4번째 카드는 두 칸 폭 */
+.space-card.wide { grid-column: span 2; flex-direction: row; }
+.space-card.wide .space-photo { aspect-ratio: auto; width: 50%; flex-shrink: 0; }
+.space-card.wide .space-body { flex: 1; padding: var(--s-6) var(--s-6) var(--s-6) var(--s-6); }
+.space-card.wide .space-title { font-size: 22px; line-height: 1.3; }
+.space-card.wide .description { font-size: 15px; line-height: 1.55; color: var(--color-gray-700); margin-top: var(--s-2); }
+
+/* ─── pagination ─── */
+.pagination { display: flex; justify-content: center; gap: var(--s-2); margin-top: var(--s-16); }
+.pagination a { min-width: 40px; height: 40px; border-radius: var(--r-md); display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; color: var(--color-gray-500); transition: all 120ms; }
+.pagination a:hover { background: var(--color-paper-pure); color: var(--color-ink); }
+.pagination a.on { background: var(--color-ink); color: #fff; }
+.pagination .prev, .pagination .next { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; padding: 0 var(--s-4); }
+
+/* ─── footer ─── */
+footer.foot { background: var(--color-paper); padding: var(--s-12) 0; border-top: 1px solid var(--color-gray-100); }
+.foot-top { display: flex; align-items: baseline; gap: var(--s-4); margin-bottom: var(--s-6); }
+.foot-wordmark { font-weight: 800; font-size: 24px; letter-spacing: -0.035em; }
+.foot-wordmark .dot { color: var(--color-accent); }
+.foot-links { display: flex; flex-wrap: wrap; gap: var(--s-8); }
+.foot-links a { font-size: 15px; color: var(--color-gray-500); transition: color 120ms; }
+.foot-links a:hover { color: var(--color-ink); }
+.foot-legal { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-300); margin-top: var(--s-6); text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<!-- ────── HEADER ────── -->
+<div class="site-header-wrap">
+  <header class="site-header" role="navigation">
+    <a href="hero.html" class="wordmark">Spot<span class="dot">.</span></a>
+    <nav>
+      <a href="find.html" class="active">공간 찾기</a>
+      <a href="towns.html">팝업타운</a>
+      <a href="list-space.html">내 공간 등록</a>
+      <a href="story.html">이야기</a>
+      <a href="guide.html">이용 안내</a>
+    </nav>
+    <div class="right">
+      <div class="lang-toggle" id="langToggle" role="group" aria-label="언어 선택">
+        <span class="lang on" data-lang="KO">KO</span>
+        <span class="sep">/</span>
+        <a href="find-en.html"><span class="lang" data-lang="EN">EN</span></a>
+      </div>
+      <a href="#login" class="login">로그인</a>
+      <button class="signup" type="button">회원가입</button>
+    </div>
+  </header>
+</div>
+
+<!-- ────── PAGE HEAD ────── -->
+<section class="page-head">
+  <div class="container">
+    <div class="eyebrow">FIND SPACE · POPUP · SHORT TERM</div>
+    <h1>공간 찾기<span class="quiet">.</span></h1>
+    <p class="sub">지역과 날짜로 비어 있는 1층 자리를 찾아보세요. 검색 결과에서 곧장 임대인에게 문의하면, 수락 후 카카오톡으로 이어집니다.</p>
+
+    <!-- 검색바 -->
+    <div class="search-bar">
+      <label class="search-field">
+        <span class="label">지역</span>
+        <input type="text" placeholder="성수 · 망원 · 연남" value="성수동" />
+      </label>
+      <label class="search-field">
+        <span class="label">시작일</span>
+        <input type="text" placeholder="2026-11-01" />
+      </label>
+      <label class="search-field">
+        <span class="label">기간</span>
+        <input type="text" placeholder="1일" value="1일" />
+      </label>
+      <label class="search-field">
+        <span class="label">예산 / 주</span>
+        <input type="text" placeholder="100~500만" />
+      </label>
+      <button class="search-submit" type="button">
+        검색 <span class="arrow" aria-hidden="true">→</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ────── FILTER ROW ────── -->
+<div class="filter-row">
+  <div class="container inner">
+    <button class="fchip on">검증된 공간만 <span class="caret">▾</span></button>
+    <button class="fchip">면적 <span class="caret">▾</span></button>
+    <button class="fchip">업종 <span class="caret">▾</span></button>
+    <button class="fchip">화장실 · 수도 <span class="caret">▾</span></button>
+    <button class="fchip">즉시 가능 <span class="caret">▾</span></button>
+    <div class="spacer"></div>
+    <div class="sort">
+      <span class="label">정렬 ·</span>
+      <span>최근 등록순</span>
+      <span class="caret">▾</span>
+    </div>
+    <div class="view-toggle" role="tablist">
+      <button class="on">리스트</button>
+      <button>지도</button>
+    </div>
+  </div>
+</div>
+
+<!-- ────── RESULTS ────── -->
+<section class="section results">
+  <div class="container">
+
+    <div class="results-head">
+      <div>
+        <div class="count"><span class="num">27</span>개 공간</div>
+      </div>
+      <div class="meta">SHOWING 1—9 OF 27 · SEONGSU</div>
+    </div>
+
+    <div class="spaces">
+
+      <!-- Card 1 — 검증, 찜한 상태 -->
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-verified chip-on-photo">✓ 사진검증</span>
+          <span class="heart on" aria-label="찜한 공간">♥</span>
+          <span class="label">외관</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row">
+            <span>NO. 1042</span><span class="dot">·</span><span>성수동 · 12평</span>
+          </div>
+          <div class="space-title">성수동 12평 1층 통유리 코너</div>
+          <div class="space-tag-row">
+            <span class="tag">통유리</span><span class="tag">코너</span><span class="tag">카페형</span>
+          </div>
+          <div class="space-price-row">
+            <span class="space-price"><span class="unit">이용료</span>8만/일</span>
+            <span class="chip chip-negotiable">협의 가능</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 2 — 검증, 일반 -->
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-verified-strong chip-on-photo">✓✓ 방문검증</span>
+          <span class="heart" aria-label="찜하기">♡</span>
+          <span class="label">내부</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row">
+            <span>NO. 0987</span><span class="dot">·</span><span>성수동2가 · 18평</span>
+          </div>
+          <div class="space-title">서울숲 도보 5분 — 통째 1층</div>
+          <div class="space-tag-row">
+            <span class="tag">대형</span><span class="tag">전시형</span><span class="tag">주차</span>
+          </div>
+          <div class="space-price-row">
+            <span class="space-price"><span class="unit">이용료</span>12만/일</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 3 — 미검증 -->
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-unverified chip-on-photo">미검증</span>
+          <span class="heart" aria-label="찜하기">♡</span>
+          <span class="label">외관</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row">
+            <span>NO. 1088</span><span class="dot">·</span><span>성수동1가 · 8평</span>
+          </div>
+          <div class="space-title">성수역 도보 6분 골목 가게</div>
+          <div class="space-tag-row">
+            <span class="tag">아담</span><span class="tag">카페형</span>
+          </div>
+          <div class="space-price-row">
+            <span class="space-price"><span class="unit">이용료</span>4만/일</span>
+            <span class="chip chip-negotiable">협의 가능</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 4 — wide, 큐레이션 -->
+      <article class="space-card wide">
+        <div class="space-photo">
+          <span class="chip chip-verified-strong chip-on-photo">✓✓ 방문검증</span>
+          <span class="heart" aria-label="찜하기">♡</span>
+          <span class="label">EDITORIAL · PICK</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row">
+            <span>EDITORIAL PICK</span><span class="dot">·</span><span>NO. 0921</span>
+          </div>
+          <div class="space-title">카페거리 안쪽 골목 — 15평 코너 자리</div>
+          <p class="description">
+            성수역 2호선 도보 3분. 카페거리 끝자락에 자리한 코너 공간으로, 외부 노출이 좋고 통유리가 양쪽으로 열려 있어 디스플레이가 자연스럽게 살아납니다. 한 달 단위 임대도 협의 가능.
+          </p>
+          <div class="space-tag-row">
+            <span class="tag">에디터스픽</span><span class="tag">코너</span><span class="tag">통유리</span><span class="tag">15평</span>
+          </div>
+          <div class="space-price-row">
+            <span class="space-price"><span class="unit">이용료</span>10만/일</span>
+            <span class="chip chip-negotiable">한 달 협의</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 5 -->
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-verified chip-on-photo">✓ 사진검증</span>
+          <span class="heart" aria-label="찜하기">♡</span>
+          <span class="label">내부</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row">
+            <span>NO. 1051</span><span class="dot">·</span><span>성수1가 · 10평</span>
+          </div>
+          <div class="space-title">붉은 벽돌 외관 · 1층 단독</div>
+          <div class="space-tag-row">
+            <span class="tag">벽돌</span><span class="tag">매장형</span>
+          </div>
+          <div class="space-price-row">
+            <span class="space-price"><span class="unit">이용료</span>6만/일</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 6 -->
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-pending chip-on-photo">⌛ 검증 대기</span>
+          <span class="heart" aria-label="찜하기">♡</span>
+          <span class="label">외관</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row">
+            <span>NO. 1102</span><span class="dot">·</span><span>성수2가 · 22평</span>
+          </div>
+          <div class="space-title">성수 사거리 · 통째 1층 + 작은 마당</div>
+          <div class="space-tag-row">
+            <span class="tag">대형</span><span class="tag">마당</span><span class="tag">전시형</span>
+          </div>
+          <div class="space-price-row">
+            <span class="space-price"><span class="unit">이용료</span>18만/일</span>
+            <span class="chip chip-negotiable">협의 가능</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 7 -->
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-verified chip-on-photo">✓ 사진검증</span>
+          <span class="heart" aria-label="찜하기">♡</span>
+          <span class="label">외관</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row">
+            <span>NO. 1019</span><span class="dot">·</span><span>성수1가 · 6평</span>
+          </div>
+          <div class="space-title">팝업 전용 작은 1층 — 카페 옆</div>
+          <div class="space-tag-row">
+            <span class="tag">초소형</span><span class="tag">3일 가능</span>
+          </div>
+          <div class="space-price-row">
+            <span class="space-price"><span class="unit">이용료</span>3만/일</span>
+            <span class="chip chip-negotiable">협의 가능</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 8 -->
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-verified chip-on-photo">✓ 사진검증</span>
+          <span class="heart" aria-label="찜하기">♡</span>
+          <span class="label">내부</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row">
+            <span>NO. 0998</span><span class="dot">·</span><span>성수2가 · 14평</span>
+          </div>
+          <div class="space-title">옥상 사용 가능 · 1.5층 구조</div>
+          <div class="space-tag-row">
+            <span class="tag">옥상</span><span class="tag">촬영</span>
+          </div>
+          <div class="space-price-row">
+            <span class="space-price"><span class="unit">이용료</span>9만/일</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 9 -->
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-unverified chip-on-photo">미검증</span>
+          <span class="heart" aria-label="찜하기">♡</span>
+          <span class="label">외관</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row">
+            <span>NO. 1115</span><span class="dot">·</span><span>성수1가 · 9평</span>
+          </div>
+          <div class="space-title">신축 1층 — 화이트 박스 공간</div>
+          <div class="space-tag-row">
+            <span class="tag">신축</span><span class="tag">화이트</span>
+          </div>
+          <div class="space-price-row">
+            <span class="space-price"><span class="unit">이용료</span>5만/일</span>
+            <span class="chip chip-negotiable">협의 가능</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Pagination -->
+    <nav class="pagination" aria-label="페이지">
+      <a href="#" class="prev">← PREV</a>
+      <a href="#" class="on">1</a>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <a href="#">…</a>
+      <a href="#">9</a>
+      <a href="#" class="next">NEXT →</a>
+    </nav>
+  </div>
+</section>
+
+<!-- ────── FOOTER ────── -->
+<footer class="foot">
+  <div class="container">
+    <div class="foot-top">
+      <span class="foot-wordmark">Spot<span class="dot">.</span></span>
+      <span class="mono-xs" style="color: var(--color-gray-500);">POPUP SPACE · SHORT TERM</span>
+    </div>
+    <div class="foot-links">
+      <a href="story.html">이야기</a>
+      <a href="guide.html">이용 안내</a>
+      <a href="guide.html#tos">이용약관</a>
+      <a href="guide.html#privacy">개인정보</a>
+      <a href="guide.html#biz">사업자정보</a>
+      <a href="guide.html#std">표준계약서</a>
+    </div>
+    <div class="foot-legal">© 2026 SPOT · 건물주 임대료와 Spot 서비스 이용료는 분리 정산됩니다</div>
+  </div>
+</footer>
+
+<script>
+  // KO/EN 토글 — 시각적 표시만 (EN 클릭 시 find-en.html로 이동)
+  (function () {
+    var hearts = document.querySelectorAll('.heart');
+    hearts.forEach(function(h){
+      h.addEventListener('click', function(){
+        h.classList.toggle('on');
+        h.textContent = h.classList.contains('on') ? '♥' : '♡';
+      });
+    });
+    var fchips = document.querySelectorAll('.fchip');
+    fchips.forEach(function(c){ c.addEventListener('click', function(){ c.classList.toggle('on'); }); });
+  })();
+</script>
+
+</body>
+</html>

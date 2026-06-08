@@ -1,0 +1,859 @@
+<!-- Spot Hero — v0.2 (1F Street) -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>Spot — 동네 1층, 잠깐의 자리</title>
+
+<!-- Pretendard (한글) + JetBrains Mono (영문/숫자) — google fonts 외 외부 라이브러리 X -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ─── design tokens (design_tokens.md v0.1 — 토큰만 사용, 임의 값 금지) ─── */
+:root {
+  --color-ink: #0A0A0A;
+  --color-paper: #F4EFE6;
+  --color-paper-pure: #FFFFFF;
+  --color-accent: #FF5A1F;
+  --color-accent-deep: #D8410F;
+  --color-accent-soft: #FFE7DC;
+  --color-gray-100: #E8E4DD;
+  --color-gray-300: #BDB7AD;
+  --color-gray-500: #7A736A;
+  --color-gray-700: #3F3A33;
+
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+  --r-md: 8px;
+  --r-lg: 16px;
+  --r-pill: 9999px;
+
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --container: 1200px;
+
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html, body { margin: 0; padding: 0; min-width: 1280px; }
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+
+/* 1024px 이하: 비례 축소 (별도 모바일 분기 X) */
+@media (max-width: 1023px) {
+  html { zoom: 0.78; }
+}
+
+/* ── shared type ── */
+.mono-sm { font-family: var(--font-mono); font-size: 12px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.mono-xs { font-family: var(--font-mono); font-size: 11px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.body-lg { font-size: 18px; line-height: 1.55; font-weight: 400; word-break: keep-all; }
+.body    { font-size: 17px; line-height: 1.55; font-weight: 400; word-break: keep-all; }
+.body-sm { font-size: 15px; line-height: 1.5;  font-weight: 400; word-break: keep-all; }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   HERO — 풀스크린 오렌지 색면 (88vh)
+   ───────────────────────────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  min-height: 720px;
+  height: 88vh;
+  background: var(--color-accent);
+  color: var(--color-paper-pure);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* 헤더 pill — 헤로 위에 떠 있는 형태 */
+.hero-header {
+  position: absolute;
+  top: var(--s-6);
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(var(--container) - 32px);
+  max-width: calc(100% - 48px);
+  height: 60px;
+  padding: 6px 8px 6px 28px;
+  display: flex;
+  align-items: center;
+  gap: var(--s-6);
+  background: var(--color-paper-pure);
+  border-radius: var(--r-pill);
+  z-index: 20;
+}
+.hero-header .wordmark {
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.035em;
+  color: var(--color-ink);
+  padding-right: var(--s-3);
+  border-right: 1px solid var(--color-gray-100);
+  margin-right: var(--s-3);
+}
+.hero-header .wordmark .dot { color: var(--color-accent); }
+
+.hero-header nav {
+  display: flex;
+  gap: var(--s-6);
+}
+.hero-header nav a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-ink);
+  padding: 6px 2px;
+  position: relative;
+  transition: color 120ms;
+}
+.hero-header nav a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 100%;
+  bottom: 2px;
+  height: 1px;
+  background: var(--color-ink);
+  transition: right 200ms var(--ease-out-soft);
+}
+.hero-header nav a:hover::after { right: 0; }
+
+.hero-header .right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--s-5);
+}
+.lang-toggle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--color-gray-300);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+  cursor: pointer;
+}
+.lang-toggle .lang { padding: 2px 2px; transition: color 120ms; }
+.lang-toggle .lang.on { color: var(--color-ink); font-weight: 700; }
+.lang-toggle .sep { color: var(--color-gray-300); }
+
+.hero-header .login {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-ink);
+  padding: 6px 2px;
+  transition: opacity 120ms;
+}
+.hero-header .login:hover { opacity: 0.6; }
+
+.hero-header .signup {
+  background: var(--color-ink);
+  color: var(--color-paper-pure);
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--r-pill);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  transition: background 120ms, transform 120ms;
+}
+.hero-header .signup:hover { background: #1f1c1a; }
+.hero-header .signup:active { transform: scale(0.97); }
+
+/* 헤로 본문 컨테이너 */
+.hero-inner {
+  position: relative;
+  max-width: var(--container);
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 var(--s-12);
+}
+
+/* 좌하단 — 캡션 + 거대 한글 카피 + 보조 카피 + CTA */
+.hero-text {
+  position: absolute;
+  left: var(--s-12);
+  bottom: 88px;
+  max-width: 620px;
+  z-index: 3;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--color-paper-pure);
+  margin-bottom: var(--s-6);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.hero-eyebrow::before {
+  content: "";
+  width: 24px; height: 1px;
+  background: currentColor;
+  display: inline-block;
+  margin-right: 2px;
+}
+.hero-h1 {
+  margin: 0;
+  font-size: 80px;
+  line-height: 0.98;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--color-paper-pure);
+  word-break: keep-all;
+}
+.hero-h1 .line {
+  display: block;
+  white-space: nowrap; /* 줄 중간 잘림("아이/디어가") 방지 — 줄나눔은 <br/> 한 번만 */
+}
+.hero-h1 .quiet { opacity: 0.85; }
+.hero-sub {
+  margin: var(--s-8) 0 0;
+  max-width: 500px;
+  font-size: 18px;
+  line-height: 1.6;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  word-break: keep-all;
+}
+.hero-ctas {
+  display: flex;
+  gap: var(--s-3);
+  margin-top: var(--s-10);
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 16px 26px;
+  border-radius: var(--r-md); /* 8px */
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  border: none;
+  letter-spacing: -0.005em;
+  transition: background 160ms var(--ease-out-soft), color 160ms, transform 120ms, border-color 160ms;
+}
+.btn-primary {
+  background: var(--color-paper-pure);
+  color: var(--color-ink);
+}
+.btn-primary:hover { background: #f3eee5; }
+.btn-primary:hover .arrow { transform: translateX(4px); }
+.btn-primary:active { transform: scale(0.985); }
+.btn-secondary {
+  background: transparent;
+  color: var(--color-paper-pure);
+  border: 1.5px solid var(--color-paper-pure);
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.1); }
+.btn-secondary:active { transform: scale(0.985); }
+.arrow { display: inline-block; transition: transform 200ms var(--ease-out-soft); }
+
+/* 우하단 — SPOT EDITORIAL 캡션 */
+.hero-edit {
+  position: absolute;
+  right: var(--s-12);
+  bottom: 88px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--color-paper-pure);
+  opacity: 0.85;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  z-index: 3;
+  text-transform: uppercase;
+  white-space: nowrap; /* 한 줄 강제 */
+}
+.hero-edit::after {
+  content: "";
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--color-paper-pure);
+}
+
+/* 우상단 — 작은 인덱스 */
+.hero-index {
+  position: absolute;
+  right: var(--s-12);
+  top: calc(60px + var(--s-6) + var(--s-12) + 20px); /* below header pill */
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.75);
+  text-align: right;
+  z-index: 3;
+  white-space: nowrap; /* 한 줄 강제 */
+}
+.hero-index .big {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-paper-pure);
+  display: block;
+  margin-top: 2px;
+}
+
+/* ── 1F 거리 풍경 SVG 배치 ── */
+.hero-street {
+  position: absolute;
+  right: 0;
+  bottom: 180px;
+  width: 50%;
+  max-width: 660px;
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* 가게 본체·간판·쇼윈도 배경 (정적) */
+.shop-body    { fill: var(--color-paper-pure); }
+.signboard    { fill: var(--color-paper-pure); }
+.window-bg    { fill: rgba(255, 255, 255, 0.82); }  /* 비어 있음 — 흰의 살짝 어두운 톤 */
+.street       { fill: var(--color-paper-pure); }
+.street-shadow{ fill: var(--color-accent-deep); opacity: 0.5; }  /* 거리 라인 아래 짙은 오렌지 그림자 */
+
+/* 셔터 슬라이드 모션 — 위에서 아래로 0.6s ease-out-soft */
+.shutter {
+  fill: var(--color-ink);
+  transform: translateY(-80px);   /* 비어 있음: 쇼윈도 위로 숨음 (clipPath로 가려짐) */
+  transition: transform 600ms var(--ease-out-soft);
+}
+.shutter.filled {
+  transform: translateY(0);       /* 차 있음: 셔터가 내려와 쇼윈도 전체를 채움 */
+}
+
+/* 진입 모션 — 한 번만 */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes rise-edit { /* 우하단 캡션은 위치가 absolute라 transform 따로 */
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 0.85; transform: translateY(0); }
+}
+@keyframes building-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.anim-1 { animation: rise 800ms var(--ease-out-soft) both; }
+.anim-2 { animation: rise 800ms var(--ease-out-soft) 120ms both; }
+.anim-3 { animation: rise 800ms var(--ease-out-soft) 240ms both; }
+.anim-4 { animation: rise 800ms var(--ease-out-soft) 360ms both; }
+.anim-edit { animation: rise-edit 800ms var(--ease-out-soft) 480ms both; }
+.anim-street { animation: building-in 1000ms var(--ease-out-soft) 200ms both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-1, .anim-2, .anim-3, .anim-4, .anim-edit, .anim-street { animation: none; opacity: 1; transform: none; }
+  .anim-edit { opacity: 0.85; }
+  .shutter { transition: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   하단 섹션 (Main Page.html 데스크탑에서 가져옴 — Popin → Spot 교체)
+   ───────────────────────────────────────────────────────────────────────── */
+.container { max-width: var(--container); margin: 0 auto; padding: 0 var(--s-12); }
+
+.section { padding: var(--s-16) 0; }
+.section.paper      { background: var(--color-paper); }
+.section.paper-pure { background: var(--color-paper-pure); }
+
+.section-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding-bottom: var(--s-8);
+}
+.section-head .eyebrow { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-2); }
+.section-head h2 { margin: 0; font-size: 40px; font-weight: 800; line-height: 1.1; letter-spacing: -0.025em; }
+.section-head .more { font-size: 15px; font-weight: 500; color: var(--color-ink); text-decoration: underline; text-underline-offset: 4px; }
+.section-head .more:hover { color: var(--color-accent-deep); }
+
+/* 팝업타운 카드 4종 */
+.towns { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-6); }
+.town {
+  border-radius: var(--r-lg);
+  padding: var(--s-6);
+  min-height: 280px;
+  display: flex; flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: transform 200ms var(--ease-out-soft);
+}
+.town:hover { transform: translateY(-2px); }
+.town .top { display: flex; justify-content: space-between; align-items: flex-start; }
+.town .top .en { opacity: 0.7; }
+.town .top .no { font-weight: 700; opacity: 0.85; }
+.town .body { margin-top: auto; padding-top: var(--s-6); }
+.town h3 { margin: 0; font-size: 36px; font-weight: 800; line-height: 1.05; letter-spacing: -0.025em; }
+.town .meta { margin-top: var(--s-3); font-size: 15px; opacity: 0.85; }
+.town .meta .dot { opacity: 0.5; margin: 0 4px; }
+.town .tag { margin-top: var(--s-2); font-size: 13px; opacity: 0.7; }
+.town .accent { position: absolute; bottom: var(--s-5); right: var(--s-5); width: 10px; height: 10px; border-radius: 50%; }
+
+.town.t1 { background: var(--color-accent); color: #fff; }
+.town.t1 .accent { background: #fff; }
+.town.t2 { background: var(--color-paper); color: var(--color-ink); }
+.town.t2 .accent { background: var(--color-accent); }
+.town.t3 { background: var(--color-ink); color: #fff; }
+.town.t3 .accent { background: var(--color-accent); }
+.town.t4 { background: var(--color-paper-pure); color: var(--color-ink); border: 1px solid var(--color-gray-100); }
+.town.t4 .accent { background: var(--color-gray-500); }
+
+/* 최근 등록 카드 */
+.spaces { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); }
+.space-card {
+  background: var(--color-paper-pure);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--color-gray-100);
+  overflow: hidden;
+  transition: transform 200ms var(--ease-out-soft), box-shadow 200ms var(--ease-out-soft);
+}
+.space-card:hover { transform: translateY(-2px); box-shadow: 0 1px 2px rgba(10,10,10,0.06); }
+.space-photo {
+  aspect-ratio: 4 / 3;
+  background: var(--color-gray-100);
+  position: relative;
+  display: flex; align-items: flex-end;
+  padding: var(--s-4);
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(189,183,173,0.25) 8px, rgba(189,183,173,0.25) 9px);
+}
+.space-photo .label {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--color-gray-500);
+  background: rgba(255,255,255,0.85);
+  padding: 4px 8px; border-radius: 4px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 6px 10px;
+  border-radius: var(--r-pill);
+  font-size: 12px; font-weight: 500; line-height: 1;
+  white-space: nowrap;
+}
+.chip-verified { background: var(--color-accent-soft); color: var(--color-accent-deep); }
+.chip-unverified { background: rgba(255,255,255,0.92); color: var(--color-gray-500); border: 1px solid var(--color-gray-100); }
+.chip-negotiable { background: var(--color-accent-soft); color: var(--color-accent-deep); }
+.chip-on-photo { position: absolute; top: var(--s-4); left: var(--s-4); }
+.space-body { padding: var(--s-4) var(--s-5) var(--s-5); }
+.space-title { font-size: 17px; font-weight: 700; line-height: 1.4; }
+.space-price-row { margin-top: var(--s-2); display: flex; align-items: baseline; gap: var(--s-2); flex-wrap: wrap; }
+.space-price { font-size: 19px; font-weight: 700; letter-spacing: -0.015em; }
+
+/* 하단 타운 라인 */
+.town-stripe {
+  background: var(--color-ink);
+  color: #fff;
+  padding: 20px var(--s-12);
+  display: flex; align-items: baseline; gap: var(--s-5);
+  justify-content: center;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+.town-stripe .head { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--color-gray-300); text-transform: uppercase; }
+.town-stripe .lead { font-size: 15px; color: var(--color-gray-300); }
+.town-stripe .name { font-size: 17px; font-weight: 700; color: #fff; }
+.town-stripe .sep  { color: var(--color-gray-500); margin: 0 6px; font-weight: 400; }
+
+/* 푸터 */
+footer.foot {
+  background: var(--color-paper);
+  padding: var(--s-12) 0;
+  border-top: 1px solid var(--color-gray-100);
+}
+.foot-top { display: flex; align-items: baseline; gap: var(--s-4); margin-bottom: var(--s-6); }
+.foot-wordmark { font-weight: 800; font-size: 24px; letter-spacing: -0.035em; }
+.foot-wordmark .dot { color: var(--color-accent); }
+.foot-links { display: flex; flex-wrap: wrap; gap: var(--s-8); }
+.foot-links a { font-size: 15px; color: var(--color-gray-500); transition: color 120ms; }
+.foot-links a:hover { color: var(--color-ink); }
+.foot-legal { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-300); margin-top: var(--s-6); text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<!-- ────────────────────────────────────────────────────────────────────
+     HERO
+     ──────────────────────────────────────────────────────────────────── -->
+<section class="hero" aria-label="Spot — 동네 1층, 잠깐의 자리">
+
+  <!-- 헤더 pill -->
+  <header class="hero-header" role="navigation">
+    <a href="hero.html" class="wordmark">Spot<span class="dot">.</span></a>
+    <nav>
+      <a href="find.html">공간 찾기</a>
+      <a href="towns.html">팝업타운</a>
+      <a href="list-space.html">내 공간 등록</a>
+      <a href="story.html">이야기</a>
+      <a href="guide.html">이용 안내</a>
+    </nav>
+    <div class="right">
+      <div class="lang-toggle" id="langToggle" role="group" aria-label="언어 선택">
+        <span class="lang on" data-lang="KO">KO</span>
+        <span class="sep">/</span>
+        <a href="find-en.html"><span class="lang" data-lang="EN">EN</span></a>
+      </div>
+      <a href="#login" class="login">로그인</a>
+      <button class="signup" type="button">회원가입</button>
+    </div>
+  </header>
+
+  <div class="hero-inner">
+
+    <!-- 우상단 인덱스 -->
+    <div class="hero-index anim-edit" aria-hidden="true">
+      EDITION · NO. 01
+      <span class="big">2026 / 05</span>
+    </div>
+
+    <!-- 1F 거리 풍경 SVG -->
+    <!--
+      viewBox 600x320 — 정면 투영 (front view)
+      shop_w=70, shop_h=98, gap=7  →  6 shops total width 455, left pad ~73
+      shop_x = 73 + i*77 for i=0..5  →  73, 150, 227, 304, 381, 458
+      각 가게:
+        - body white rect (shop_x, 100, 70, 98)
+        - signboard 3px line (shop_x+10, 88, 50, 3)
+        - window-bg rect (shop_x+10, 110, 50, 78)  ← 비어 있음
+        - shutter rect (shop_x+10, 110, 50, 78), clipPath로 윈도 영역에 한정
+          · 비어 있음 transform translateY(-80px)
+          · 차 있음   transform translateY(0)
+          · 0.6s ease-out-soft
+      거리 라인: (20, 200, 560, 6) 흰 + 그 아래 (20, 210, 560, 2) accent-deep 그림자
+    -->
+    <svg class="hero-street anim-street" viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+
+      <!-- 윈도 클립 — 셔터가 윈도 영역 밖으로 나가면 안 보이게 -->
+      <defs>
+        <clipPath id="winClip-0"><rect x="83"  y="110" width="50" height="78"/></clipPath>
+        <clipPath id="winClip-1"><rect x="160" y="110" width="50" height="78"/></clipPath>
+        <clipPath id="winClip-2"><rect x="237" y="110" width="50" height="78"/></clipPath>
+        <clipPath id="winClip-3"><rect x="314" y="110" width="50" height="78"/></clipPath>
+        <clipPath id="winClip-4"><rect x="391" y="110" width="50" height="78"/></clipPath>
+        <clipPath id="winClip-5"><rect x="468" y="110" width="50" height="78"/></clipPath>
+      </defs>
+
+      <!-- ▌ 거리 라인 (인도) + 짙은 오렌지 그림자 -->
+      <rect class="street"        x="20" y="200" width="560" height="6"/>
+      <rect class="street-shadow" x="20" y="210" width="560" height="2"/>
+
+      <!-- ▌ 가게 6개 (좌→우) -->
+
+      <!-- shop 0 -->
+      <rect class="signboard"  x="83"  y="88"  width="50" height="3"/>
+      <rect class="shop-body"  x="73"  y="100" width="70" height="100"/>
+      <rect class="window-bg"  x="83"  y="110" width="50" height="78"/>
+      <g clip-path="url(#winClip-0)">
+        <rect class="shutter" data-slot="0" x="83"  y="110" width="50" height="78"/>
+      </g>
+
+      <!-- shop 1 -->
+      <rect class="signboard"  x="160" y="88"  width="50" height="3"/>
+      <rect class="shop-body"  x="150" y="100" width="70" height="100"/>
+      <rect class="window-bg"  x="160" y="110" width="50" height="78"/>
+      <g clip-path="url(#winClip-1)">
+        <rect class="shutter" data-slot="1" x="160" y="110" width="50" height="78"/>
+      </g>
+
+      <!-- shop 2 -->
+      <rect class="signboard"  x="237" y="88"  width="50" height="3"/>
+      <rect class="shop-body"  x="227" y="100" width="70" height="100"/>
+      <rect class="window-bg"  x="237" y="110" width="50" height="78"/>
+      <g clip-path="url(#winClip-2)">
+        <rect class="shutter" data-slot="2" x="237" y="110" width="50" height="78"/>
+      </g>
+
+      <!-- shop 3 -->
+      <rect class="signboard"  x="314" y="88"  width="50" height="3"/>
+      <rect class="shop-body"  x="304" y="100" width="70" height="100"/>
+      <rect class="window-bg"  x="314" y="110" width="50" height="78"/>
+      <g clip-path="url(#winClip-3)">
+        <rect class="shutter" data-slot="3" x="314" y="110" width="50" height="78"/>
+      </g>
+
+      <!-- shop 4 -->
+      <rect class="signboard"  x="391" y="88"  width="50" height="3"/>
+      <rect class="shop-body"  x="381" y="100" width="70" height="100"/>
+      <rect class="window-bg"  x="391" y="110" width="50" height="78"/>
+      <g clip-path="url(#winClip-4)">
+        <rect class="shutter" data-slot="4" x="391" y="110" width="50" height="78"/>
+      </g>
+
+      <!-- shop 5 -->
+      <rect class="signboard"  x="468" y="88"  width="50" height="3"/>
+      <rect class="shop-body"  x="458" y="100" width="70" height="100"/>
+      <rect class="window-bg"  x="468" y="110" width="50" height="78"/>
+      <g clip-path="url(#winClip-5)">
+        <rect class="shutter" data-slot="5" x="468" y="110" width="50" height="78"/>
+      </g>
+
+    </svg>
+
+    <!-- 좌하단 텍스트 블록 -->
+    <div class="hero-text">
+      <div class="hero-eyebrow anim-1">POPUP&nbsp;SPACE&nbsp;·&nbsp;SHORT&nbsp;TERM</div>
+      <h1 class="hero-h1 anim-2">
+        <span class="line">당신의 아이디어가</span>
+        <span class="line">머물 자리<span class="quiet">.</span></span>
+      </h1>
+      <p class="hero-sub anim-3">
+        비어 있는 동네 1층 상가를, 잠깐의 자리로 잇는
+        시설 이용 서비스. 매칭부터 계약·결제·운영 데이터까지 한 화면에서.
+      </p>
+      <div class="hero-ctas anim-4">
+        <a class="btn btn-primary" href="find.html">
+          공간 찾기 <span class="arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn-secondary" href="list-space.html">
+          내 공간 등록하기
+        </a>
+      </div>
+    </div>
+
+    <!-- 우하단 SPOT EDITORIAL -->
+    <div class="hero-edit anim-edit">
+      SPOT EDITORIAL · 동네 1층, 잠깐의 자리.
+    </div>
+
+  </div>
+</section>
+
+<!-- ────────────────────────────────────────────────────────────────────
+     팝업타운 둘러보기
+     ──────────────────────────────────────────────────────────────────── -->
+<section class="section paper" id="town">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">EXPLORE TOWNS · NO.01—04</div>
+        <h2>팝업타운 둘러보기</h2>
+      </div>
+      <a class="more" href="towns.html">전체 보기 →</a>
+    </div>
+
+    <div class="towns">
+
+      <article class="town t1">
+        <div class="top">
+          <span class="mono-xs en">SEONGSU · POPUP TOWN</span>
+          <span class="mono-sm no">NO.01</span>
+        </div>
+        <div class="body">
+          <h3>성수</h3>
+          <div class="meta">매물 12개 <span class="dot">·</span> 평균 1주 220만</div>
+          <div class="tag">카페 · 갤러리 골목</div>
+        </div>
+        <span class="accent"></span>
+      </article>
+
+      <article class="town t2">
+        <div class="top">
+          <span class="mono-xs en">YEONNAM · POPUP TOWN</span>
+          <span class="mono-sm no">NO.02</span>
+        </div>
+        <div class="body">
+          <h3>연남</h3>
+          <div class="meta">매물 7개 <span class="dot">·</span> 평균 1주 180만</div>
+          <div class="tag">편집숍 · 작업실</div>
+        </div>
+        <span class="accent"></span>
+      </article>
+
+      <article class="town t3">
+        <div class="top">
+          <span class="mono-xs en">BUAM · POPUP TOWN</span>
+          <span class="mono-sm no">NO.03</span>
+        </div>
+        <div class="body">
+          <h3>부암</h3>
+          <div class="meta">매물 3개 <span class="dot">·</span> 평균 1주 120만</div>
+          <div class="tag">한적 · 골목</div>
+        </div>
+        <span class="accent"></span>
+      </article>
+
+      <article class="town t4">
+        <div class="top">
+          <span class="mono-xs en">MANGWON · POPUP TOWN</span>
+          <span class="mono-sm no">NO.04</span>
+        </div>
+        <div class="body">
+          <h3>망원</h3>
+          <div class="meta">매물 5개 <span class="dot">·</span> 평균 1주 150만</div>
+          <div class="tag">가성비 · 로컬</div>
+        </div>
+        <span class="accent"></span>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ────────────────────────────────────────────────────────────────────
+     최근 등록
+     ──────────────────────────────────────────────────────────────────── -->
+<section class="section paper-pure" id="find">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">RECENTLY ADDED · 3</div>
+        <h2>최근 등록</h2>
+      </div>
+      <a class="more" href="find.html">전체 보기 →</a>
+    </div>
+
+    <div class="spaces">
+
+      <article class="space-card">
+        <a href="space-detail.html" style="display:block; color:inherit;">
+        <div class="space-photo">
+          <span class="chip chip-verified chip-on-photo">✓ 사진검증</span>
+          <span class="label">외관</span>
+        </div>
+        <div class="space-body">
+          <div class="space-title">성수동 12평 1층 통유리 코너</div>
+          <div class="space-price-row">
+            <span class="space-price">이용료 8만원 / 일</span>
+            <span class="chip chip-negotiable">+ 임대료 별도</span>
+          </div>
+        </div>
+        </a>
+      </article>
+
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-unverified chip-on-photo">미검증</span>
+          <span class="label">외관</span>
+        </div>
+        <div class="space-body">
+          <div class="space-title">망원동 8평 1층 골목 가게</div>
+          <div class="space-price-row">
+            <span class="space-price">이용료 5만원 / 일</span>
+            <span class="chip chip-negotiable">+ 임대료 별도</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-verified chip-on-photo">✓ 사진검증</span>
+          <span class="label">외관</span>
+        </div>
+        <div class="space-body">
+          <div class="space-title">부암동 한옥 리모델링 10평</div>
+          <div class="space-price-row">
+            <span class="space-price">이용료 6만원 / 일</span>
+            <span class="chip chip-negotiable">+ 임대료 별도</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ────────────────────────────────────────────────────────────────────
+     하단 타운 라인
+     ──────────────────────────────────────────────────────────────────── -->
+<div class="town-stripe" aria-label="지금 매장이 열리는 동네">
+  <span class="head">NOW OPEN ·</span>
+  <span class="lead">지금 매장이 열리는 동네 —</span>
+  <span class="name">망원</span><span class="sep">·</span>
+  <span class="name">성수</span><span class="sep">·</span>
+  <span class="name">연남</span><span class="sep">·</span>
+  <span class="name">광안리</span><span class="sep">·</span>
+  <span class="name">강릉 원도심</span><span class="sep">·</span>
+  <span class="name">일산 라페스타</span>
+</div>
+
+<!-- ────────────────────────────────────────────────────────────────────
+     푸터
+     ──────────────────────────────────────────────────────────────────── -->
+<footer class="foot">
+  <div class="container">
+    <div class="foot-top">
+      <span class="foot-wordmark">Spot<span class="dot">.</span></span>
+      <span class="mono-xs" style="color: var(--color-gray-500);">POPUP SPACE · SHORT TERM</span>
+    </div>
+    <div class="foot-links">
+      <a href="guide.html#std">표준 시설 이용계약서</a>
+      <a href="list-space.html#faq">FAQ</a>
+      <a href="guide.html#tos">이용약관</a>
+      <a href="guide.html#privacy">개인정보</a>
+      <a href="guide.html#biz">사업자정보</a>
+    </div>
+    <div class="foot-legal">© 2026 SPOT · 건물주 임대료와 Spot 서비스 이용료는 분리 정산됩니다</div>
+  </div>
+</footer>
+
+<!-- ────────────────────────────────────────────────────────────────────
+     1층 슬롯 토글 모션 — vanilla JS (CSS transition으로 0.6s ease-out-soft)
+     ──────────────────────────────────────────────────────────────────── -->
+<script>
+(function () {
+  var slots = document.querySelectorAll('.shutter');
+  if (!slots.length) return;
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // prefers-reduced-motion: 슬롯 1,3,5만 정적으로 채워 둠 (0-indexed: 0,2,4)
+  if (reduced) {
+    [0, 2, 4].forEach(function (i) { slots[i].classList.add('filled'); });
+    return;
+  }
+
+  // 시퀀스 (0-indexed) — spec: 0s {1,3} / 1.5s {3,5} / 3s {2,5} / 4.5s {2,6} / 6s {1,4} / 루프
+  var states = [
+    [0, 2],  // 0s   슬롯 1, 3
+    [2, 4],  // 1.5s 슬롯 3, 5
+    [1, 4],  // 3s   슬롯 2, 5
+    [1, 5],  // 4.5s 슬롯 2, 6
+    [0, 3]   // 6s   슬롯 1, 4
+  ];
+  var idx = 0;
+  function apply() {
+    var set = states[idx];
+    slots.forEach(function (s, i) {
+      var on = set.indexOf(i) !== -1;
+      s.classList.toggle('filled', on);
+    });
+    idx = (idx + 1) % states.length;
+  }
+  apply();
+  setInterval(apply, 1500);
+})();
+
+// 헤더 KO / EN 토글 — 시각적 토글만
+(function () {
+  var t = document.getElementById('langToggle');
+  if (!t) return;
+  t.addEventListener('click', function (e) {
+    var target = e.target.closest('.lang');
+    if (!target) return;
+    t.querySelectorAll('.lang').forEach(function (l) { l.classList.remove('on'); });
+    target.classList.add('on');
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>다시, 육거리 — 공실 활성화 팜플렛 (DL)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --navy:#1A2238; --terra:#E2552B; --paper:#FBF7F1; --panel:#F2ECE2;
+    --ink:#1A2238; --line:#D9CFBE; --muted:#6B6456; --cream:#FBF7F1;
+    --gap:5px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{
+    font-family:'Pretendard Variable','Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
+    color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    word-break:keep-all;line-height:1.5;
+  }
+  body{background:#3a3a3f;}
+
+  /* ===== screen scaffold ===== */
+  .stage{padding:40px 24px 80px;display:flex;flex-direction:column;align-items:center;gap:48px;}
+  .doc-head{color:#d9d4cc;text-align:center;max-width:620px;}
+  .doc-head h1{font-size:18px;font-weight:700;letter-spacing:.02em;}
+  .doc-head p{font-size:13px;color:#a6a199;margin-top:6px;line-height:1.6;}
+  .sheet-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .sheet-label{color:#bdb8b0;font-size:12.5px;font-weight:600;letter-spacing:.04em;display:flex;align-items:center;gap:10px;}
+  .sheet-label .tag{background:#26262b;border:1px solid #3d3d44;color:#cfcac2;padding:3px 10px;border-radius:100px;font-size:11px;}
+
+  /* ===== print geometry : DL bifold (sheet 200x210, panel 100x210) ===== */
+  .sheet{
+    width:200mm;height:210mm;display:flex;background:var(--paper);
+    box-shadow:0 24px 60px rgba(0,0,0,.4);overflow:hidden;position:relative;
+  }
+  .panel{width:100mm;height:210mm;position:relative;overflow:hidden;display:flex;flex-direction:column;}
+  .sheet::before,.sheet::after{content:"";position:absolute;left:50%;width:0;height:5mm;border-left:.3pt solid rgba(0,0,0,.35);}
+  .sheet::before{top:0;}.sheet::after{bottom:0;}
+
+  /* uniform spacing engine: even distribution between sections */
+  .pad{padding:11mm 8.5mm;flex:1;display:flex;flex-direction:column;justify-content:flex-start;min-height:0;}
+  /* 내용 면: 위에서부터 균일한 간격으로 쌓기 */
+  .p2 .pad,.p3 .pad,.p4 .pad{gap:11px;}
+  /* 내용 면 전반 확대 (여백 여유에 맞춰 면별로) */
+  .p2 .pad{zoom:1.12;}
+  .p3 .pad{zoom:1.09;}
+  .p4 .pad{zoom:1.13;}
+  .section{display:flex;flex-direction:column;gap:var(--gap);}
+
+  .eyebrow{font-size:9.5px;font-weight:700;color:var(--terra);letter-spacing:.01em;line-height:1.4;}
+  .panel-title{font-size:19px;font-weight:800;line-height:1.22;letter-spacing:-.02em;color:var(--navy);}
+  .panel-title .accent{color:var(--terra);}
+  .chip{display:inline-flex;align-self:flex-start;background:rgba(226,85,43,.12);color:var(--terra);font-size:9.5px;font-weight:700;padding:4px 9px;border-radius:100px;}
+
+  /* ============ COVER ============ */
+  .cover{background:var(--navy);color:var(--cream);}
+  .cover .pad{position:relative;z-index:2;}
+  .cover-water{position:absolute;right:-20mm;top:-14mm;width:78mm;height:78mm;opacity:.06;z-index:1;pointer-events:none;}
+  .cover-top{display:flex;flex-direction:column;gap:3px;}
+  .cover-top .b1{display:flex;align-items:center;gap:7px;font-weight:800;font-size:14px;}
+  .cover-top .re{font-size:9px;letter-spacing:.34em;font-weight:600;color:rgba(251,247,241,.55);}
+  .cover-head{margin-top:13mm;}
+  .cover-head h2{font-size:27px;font-weight:800;line-height:1.2;letter-spacing:-.02em;}
+  .cover-head h2 .accent{color:var(--terra);}
+  .cover-sub{margin-top:6mm;font-size:12px;font-weight:500;line-height:1.6;color:rgba(251,247,241,.82);}
+  .cover-illo{margin-top:auto;width:100%;}
+  .cover-illo svg{width:100%;height:auto;display:block;}
+  .cover-foot{margin-top:7mm;padding-top:5mm;border-top:.6pt solid rgba(251,247,241,.18);}
+  .cover-foot .pj{font-size:11px;font-weight:700;color:var(--terra);}
+  .cover-foot .org{font-size:9.5px;color:rgba(251,247,241,.6);margin-top:3px;line-height:1.55;}
+
+  /* ============ steps (panel2 cycle as 1-col list) ============ */
+  .vlist{display:flex;flex-direction:column;gap:4px;}
+  .varrow{display:flex;justify-content:center;align-items:center;color:var(--terra);font-size:11px;font-weight:800;line-height:1;height:9px;}
+  .vrow{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;
+        background:var(--panel);border:.8pt solid var(--line);border-radius:9px;padding:6px 9px;}
+  .vrow .vn{width:20px;height:20px;border-radius:50%;background:var(--navy);color:var(--cream);
+        font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .vrow .vt-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .vrow .vt{font-size:12px;font-weight:800;color:var(--navy);line-height:1.1;}
+  .vrow .vzero{font-size:8px;font-weight:700;color:var(--terra);background:rgba(226,85,43,.12);padding:1px 6px;border-radius:100px;}
+  .vrow .vd{font-size:9.5px;font-weight:500;color:var(--muted);line-height:1.4;margin-top:3px;}
+  .sublabel{font-size:13px;font-weight:800;color:var(--navy);letter-spacing:-.01em;}
+  .secdsc{font-size:9.7px;font-weight:500;color:var(--muted);line-height:1.45;}
+  .payrow{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;background:var(--paper);border:.8pt solid var(--line);border-radius:8px;padding:8px 10px;}
+  .payrow .pn{width:18px;height:18px;border-radius:50%;background:rgba(226,85,43,.12);color:var(--terra);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;}
+  .payrow .pt{font-size:11px;font-weight:800;color:var(--navy);line-height:1.15;}
+  .payrow .pdz{font-size:9.3px;font-weight:500;color:var(--muted);line-height:1.4;margin-top:3px;}
+  /* 2면 마무리: 비용 부담 설명 (슬로건/0원 없이) */
+  .cost-note{background:var(--navy);color:var(--cream);border-radius:10px;padding:11px 13px;}
+  .cost-note .cn-t{font-size:11px;font-weight:600;line-height:1.55;color:rgba(251,247,241,.9);}
+  .cost-note .cn-t b{color:#fff;font-weight:800;}
+  .cost-note .cn-trust{display:flex;flex-wrap:wrap;gap:11px;margin-top:9px;padding-top:9px;
+        border-top:.6pt solid rgba(251,247,241,.18);font-size:9.5px;font-weight:700;color:rgba(251,247,241,.92);}
+  .cost-note .cn-trust span{display:inline-flex;align-items:center;gap:4px;}
+  .cost-note .ck{color:var(--terra);font-weight:800;}
+  /* 3면 수익 흐름 비주얼 */
+  .rotwrap{display:flex;flex-direction:column;gap:10px;}
+  .rotrow{display:flex;flex-direction:column;gap:4px;}
+  .rotrow .rl{font-size:9.5px;font-weight:800;color:var(--muted);}
+  .rotrow .rl.hl{color:var(--terra);}
+  .track{display:flex;gap:3px;height:20px;}
+  .seg{flex:1;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;border-radius:4px;}
+  .seg.rent{background:#D8CEBC;color:#6B6456;}
+  .seg.vac{background:repeating-linear-gradient(45deg,#E7E0D4,#E7E0D4 3px,#DCD3C4 3px,#DCD3C4 6px);color:#A89F8C;border:.7pt solid #D3C9B6;}
+  .seg.pop{background:var(--terra);color:#fff;}
+  .rcap{font-size:9px;font-weight:700;display:flex;align-items:center;gap:5px;}
+  .rcap.gray{color:var(--muted);}
+  .rcap.terra{color:var(--terra);}
+  .fitchips{display:flex;flex-wrap:wrap;gap:6px;}
+  .fitchip{font-size:9.5px;font-weight:700;color:#5b5341;background:var(--paper);border:.8pt solid var(--line);border-radius:100px;padding:4px 10px;}
+  /* 3면 추가 이점 */
+  .benr{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;background:var(--paper);border:.8pt solid var(--line);border-radius:8px;padding:8px 10px;}
+  .benr .bi{width:20px;height:20px;border-radius:6px;background:rgba(226,85,43,.12);color:var(--terra);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex:none;}
+  .benr .bt{font-size:11px;font-weight:800;color:var(--navy);line-height:1.15;}
+  .benr .bd{font-size:9.3px;font-weight:500;color:var(--muted);line-height:1.4;margin-top:3px;}
+  /* 3면 일일 대관료 계산식 */
+  .calc{display:flex;align-items:stretch;gap:4px;}
+  .calc-box{flex:1;background:var(--paper);border:.8pt solid var(--line);border-radius:8px;padding:8px 3px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:3px;}
+  .calc-box.hl{background:var(--navy);border-color:var(--navy);}
+  .calc-box .cb-n{font-size:8px;font-weight:700;color:var(--muted);line-height:1.2;}
+  .calc-box.hl .cb-n{color:rgba(251,247,241,.7);}
+  .calc-box .cb-v{font-size:11.5px;font-weight:800;color:var(--navy);line-height:1.05;}
+  .calc-box.hl .cb-v{color:var(--terra);}
+  .calc-op{display:flex;align-items:center;font-size:12px;font-weight:800;color:var(--terra);}
+  /* 2면 맡기신 뒤 안내 */
+  .after-note{background:var(--panel);border:.8pt solid var(--line);border-radius:9px;padding:9px 11px;display:flex;gap:8px;align-items:flex-start;}
+  .after-note .an-ico{color:var(--terra);font-weight:800;font-size:12px;line-height:1.3;flex:none;}
+  .after-note .an-t{font-size:9.8px;font-weight:600;color:var(--navy);line-height:1.5;}
+  .after-note .an-t b{font-weight:800;}
+  /* 2면 맡겨도 안심 3문답 */
+  .faq .fh{font-size:13px;font-weight:800;color:var(--navy);letter-spacing:-.01em;margin-bottom:1px;}
+  .faqitem{padding:5px 0;border-bottom:.7pt dashed var(--line);}
+  .faqitem:last-child{border-bottom:none;}
+  .faqitem .fq{font-size:10px;font-weight:800;color:var(--navy);line-height:1.35;}
+  .faqitem .fq .qn{color:var(--terra);}
+  .faqitem .fa{font-size:9.5px;font-weight:500;color:var(--muted);line-height:1.4;margin-top:2px;}
+  .faqitem .fa .an{color:var(--terra);font-weight:800;margin-right:3px;}
+  .faqitem .fa b{color:var(--navy);font-weight:700;}
+
+  .risk-banner{background:var(--navy);border-radius:9px;padding:11px 12px;text-align:center;
+        color:var(--cream);font-size:12.5px;font-weight:800;line-height:1.35;}
+  .risk-banner .zero{color:var(--terra);font-size:17px;}
+  .trust-line{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;
+        font-size:9.5px;font-weight:700;color:var(--navy);}
+  .trust-line span{display:inline-flex;align-items:center;gap:4px;}
+  .trust-line .ck{color:var(--terra);font-weight:800;}
+  .trust-line .dot{color:var(--line);}
+
+  /* ============ panel 3 ============ */
+  .p3{background:var(--panel);}
+  .body-txt{font-size:10.5px;font-weight:500;line-height:1.55;color:#403a30;}
+  .body-txt b{color:var(--navy);font-weight:700;}
+  .quote-box{background:var(--paper);border-left:3px solid var(--terra);border-radius:0 8px 8px 0;
+        padding:9px 11px;font-size:11px;font-weight:600;line-height:1.5;color:var(--navy);}
+  .quote-box .qm{color:var(--terra);font-weight:800;}
+  .pay{background:var(--paper);border:.8pt solid var(--line);border-radius:9px;padding:9px 11px;}
+  .pay .ph{font-size:10.5px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:6px;}
+  .pay .ph .won{color:var(--terra);font-size:12px;}
+  .pay .pd{font-size:9.7px;font-weight:500;color:var(--muted);line-height:1.45;margin-top:5px;}
+  .pay .pd b{color:var(--navy);font-weight:700;}
+
+  .proof-card{background:var(--navy);color:var(--cream);border-radius:11px;overflow:hidden;}
+  .proof-img{height:13mm;display:flex;align-items:center;justify-content:center;
+        background:repeating-linear-gradient(45deg,#212a45,#212a45 8px,#283254 8px,#283254 16px);
+        border-bottom:1pt solid rgba(251,247,241,.12);}
+  .proof-img .ph-tag{border:1pt dashed rgba(251,247,241,.45);border-radius:5px;padding:4px 10px;
+        background:rgba(26,34,56,.55);font-size:9px;font-weight:700;color:rgba(251,247,241,.62);letter-spacing:.04em;}
+  .proof-body{padding:10px 11px 11px;}
+  .proof-card .pc-h{font-size:11.5px;font-weight:800;}
+  .proof-card .pc-h .y{color:var(--terra);}
+  .proof-lead{font-size:9.3px;font-weight:500;color:rgba(251,247,241,.76);line-height:1.5;margin-top:5px;}
+  .coop-row{display:flex;flex-wrap:wrap;gap:4px;margin:7px 0 8px;}
+  .coop-badge{font-size:8px;font-weight:700;color:rgba(251,247,241,.92);background:rgba(251,247,241,.08);
+        border:.7pt solid rgba(251,247,241,.2);border-radius:100px;padding:2px 7px;}
+  .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+  .metric{background:rgba(251,247,241,.06);border:.7pt solid rgba(251,247,241,.14);border-radius:7px;padding:8px 4px;text-align:center;}
+  .metric .num{font-size:16px;font-weight:800;color:var(--cream);line-height:1.05;}
+  .metric .num.ph{font-size:9px;color:rgba(251,247,241,.5);font-weight:600;padding:3px 0;}
+  .metric .cap{font-size:7.6px;font-weight:600;color:rgba(251,247,241,.6);margin-top:3px;line-height:1.2;}
+
+  /* ============ panel 4 ============ */
+  .p4{background:var(--paper);}
+  .back-sub{font-size:10.5px;font-weight:500;line-height:1.55;color:var(--muted);}
+  .back-sub b{color:var(--navy);font-weight:700;}
+  .sech{font-size:11px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:7px;}
+  .sech::after{content:"";flex:1;height:.8pt;background:var(--line);}
+  .steps{display:flex;flex-direction:column;gap:5px;}
+  .step{display:grid;grid-template-columns:auto auto 1fr;gap:7px;align-items:center;background:var(--panel);border-radius:8px;padding:6px 9px;}
+  .step .n{width:19px;height:19px;border-radius:50%;background:var(--navy);color:var(--cream);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .step .st-t{font-size:10.5px;font-weight:800;color:var(--navy);white-space:nowrap;}
+  .step .st-d{font-size:9px;font-weight:500;color:var(--muted);line-height:1.25;}
+  .notice{font-size:9.5px;font-weight:500;color:var(--muted);line-height:1.5;background:var(--panel);border-radius:8px;padding:8px 10px;}
+  .notice b{color:var(--navy);font-weight:700;}
+  .reg-card{background:var(--navy);color:var(--cream);border-radius:10px;padding:10px 11px;display:flex;align-items:center;gap:10px;}
+  .reg-card .qr{width:46px;height:46px;border-radius:7px;flex:none;background:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-size:7.5px;font-weight:600;color:#9a958c;line-height:1.25;}
+  .reg-card .reg-scan{font-size:11.5px;font-weight:800;line-height:1.3;}
+  .reg-card .reg-scan .hl{color:var(--terra);}
+  .reg-card .reg-info{font-size:9.3px;color:rgba(251,247,241,.72);margin-top:5px;line-height:1.45;}
+  .reg-card .reg-info .ph{color:var(--terra);font-weight:700;}
+  .back-foot{padding-top:4mm;border-top:.6pt solid var(--line);font-size:9px;color:var(--muted);line-height:1.5;}
+  .back-foot .ft-h{font-weight:700;color:var(--navy);}
+  .logo-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px;}
+  .logo-ph{border:.8pt dashed var(--line);border-radius:5px;padding:3px 7px;font-size:8.5px;font-weight:600;color:var(--muted);background:var(--panel);}
+
+  @media print{
+    @page{size:200mm 210mm;margin:0;}
+    html,body{background:#fff;margin:0;padding:0;}
+    .stage{padding:0;gap:0;display:block;}
+    .doc-head,.sheet-label{display:none!important;}
+    .sheet{box-shadow:none;page-break-after:always;break-after:page;transform:none!important;}
+    .sheet:last-child{page-break-after:auto;break-after:auto;}
+    .sheet-wrap{gap:0;height:auto!important;margin:0;display:block;}
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="doc-head">
+    <h1>다시, 육거리 — 공실 활성화 팜플렛 (DL 2단 접이)</h1>
+    <p>전체 200×210mm · 반 접으면 한 면 100×210mm. 인쇄 시 <b style="color:#cfcac2">⌘/Ctrl+P → 용지 200×210 · 여백 없음 · 배경 그래픽 켜기</b>.</p>
+  </div>
+
+  <!-- ============ OUTER (back | cover) ============ -->
+  <div class="sheet-wrap">
+    <div class="sheet-label"><span class="tag">바깥 면 · 인쇄 앞장</span> 왼쪽 = 뒷면(4) · 오른쪽 = 표지(1)</div>
+    <div class="sheet">
+
+      <!-- ===== PANEL 4 : BACK ===== -->
+      <section class="panel p4">
+        <div class="pad">
+          <div class="section">
+            <span class="chip">이번 시즌 30곳 한정</span>
+            <h2 class="panel-title">신청하면,<br>이렇게 진행됩니다</h2>
+            <p class="back-sub">함께할 공간은 <b>30곳으로 한정</b>되어 있습니다. 일찍 신청하실수록 좋은 자리와 시기를 먼저 정하실 수 있습니다.</p>
+          </div>
+
+          <div class="section">
+            <div class="sech">이렇게 진행됩니다</div>
+            <div class="steps">
+              <div class="step"><span class="n">1</span><span class="st-t">등록</span><span class="st-d">문자·카톡으로 간단히</span></div>
+              <div class="step"><span class="n">2</span><span class="st-t">상담</span><span class="st-d">저희가 찾아가 공간을 확인합니다</span></div>
+              <div class="step"><span class="n">3</span><span class="st-t">준비</span><span class="st-d">계약·청소·세팅까지 저희가</span></div>
+              <div class="step"><span class="n">4</span><span class="st-t">운영 시작</span><span class="st-d">공간이 채워지고, 수익이 발생합니다</span></div>
+            </div>
+          </div>
+
+          <div class="notice">등록만 해두시면 진행 상황을 문자·카톡으로 보내드립니다. <b>먼저 연락드리니, 번거롭게 챙기실 필요 없습니다.</b></div>
+
+          <div class="reg-card">
+            <div class="qr">QR 코드<br>삽입 예정</div>
+            <div>
+              <div class="reg-scan"><span class="hl">휴대폰으로 스캔</span>하면 등록</div>
+              <div class="reg-info">문의 · <span class="ph">[담당자 · 연락처]</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PANEL 1 : COVER ===== -->
+      <section class="panel cover">
+        <svg class="cover-water" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+          <g stroke="#FBF7F1" stroke-width="1.3" stroke-linecap="round">
+            <line x1="50" y1="50" x2="50" y2="6"/><line x1="50" y1="50" x2="50" y2="94"/>
+            <line x1="50" y1="50" x2="88" y2="28"/><line x1="50" y1="50" x2="12" y2="72"/>
+            <line x1="50" y1="50" x2="88" y2="72"/><line x1="50" y1="50" x2="12" y2="28"/>
+          </g>
+          <circle cx="50" cy="50" r="4" fill="#FBF7F1"/>
+        </svg>
+        <div class="pad">
+          <div class="cover-top">
+            <span class="b1">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <g stroke="#E2552B" stroke-width="1.6" stroke-linecap="round">
+                  <line x1="12" y1="12" x2="12" y2="2"/><line x1="12" y1="12" x2="12" y2="22"/>
+                  <line x1="12" y1="12" x2="20.6" y2="7"/><line x1="12" y1="12" x2="3.4" y2="17"/>
+                  <line x1="12" y1="12" x2="20.6" y2="17"/><line x1="12" y1="12" x2="3.4" y2="7"/></g>
+                <circle cx="12" cy="12" r="2" fill="#E2552B"/></svg>
+              다시, 육거리
+            </span>
+            <span class="re">RE:CROSSING</span>
+          </div>
+
+          <div class="cover-head">
+            <h2>공실, 그대로<br><span class="accent">두실 건가요?</span></h2>
+          </div>
+          <p class="cover-sub">방치된 공실을 —<br>관리되고, 수익이 나는 공간으로.</p>
+
+          <div class="cover-illo">
+            <svg viewBox="0 0 420 250" fill="none" aria-hidden="true">
+              <defs>
+                <radialGradient id="glow" cx="50%" cy="100%" r="70%">
+                  <stop offset="0%" stop-color="#E2552B" stop-opacity=".55"/>
+                  <stop offset="55%" stop-color="#E2552B" stop-opacity=".16"/>
+                  <stop offset="100%" stop-color="#E2552B" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <g stroke="#FBF7F1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <line x1="24" y1="226" x2="396" y2="226"/>
+                <path d="M96 226 V70 H324 V226"/>
+                <rect x="96" y="70" width="228" height="26"/>
+                <path d="M88 96 H332 V112 L320 124 L308 112 L296 124 L284 112 L272 124 L260 112 L248 124 L236 112 L224 124 L212 112 L200 124 L188 112 L176 124 L164 112 L152 124 L140 112 L128 124 L116 112 L104 124 L92 112 Z" stroke="#E2552B"/>
+                <line x1="88" y1="96" x2="96" y2="70" stroke="#E2552B"/>
+                <line x1="332" y1="96" x2="324" y2="70" stroke="#E2552B"/>
+                <rect x="118" y="130" width="184" height="96"/>
+                <rect x="118" y="130" width="184" height="13"/>
+                <line x1="122" y1="150" x2="298" y2="150"/><line x1="122" y1="158" x2="298" y2="158"/>
+                <line x1="122" y1="166" x2="298" y2="166"/><line x1="122" y1="174" x2="298" y2="174"/>
+                <line x1="120" y1="181" x2="300" y2="181" stroke-width="2.6"/>
+              </g>
+              <rect x="120" y="182" width="180" height="44" fill="url(#glow)"/>
+              <g stroke="#E2552B" stroke-width="1.6" stroke-linecap="round" fill="none">
+                <line x1="150" y1="226" x2="138" y2="244" opacity=".7"/>
+                <line x1="210" y1="226" x2="210" y2="246" opacity=".7"/>
+                <line x1="268" y1="226" x2="282" y2="244" opacity=".7"/>
+                <line x1="146" y1="214" x2="200" y2="214" opacity=".8"/>
+              </g>
+              <g stroke="#FBF7F1" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".92">
+                <circle cx="246" cy="196" r="6"/>
+                <path d="M246 202 V216 M246 207 L238 213 M246 207 L254 213 M246 216 L240 226 M246 216 L252 226"/>
+              </g>
+              <g>
+                <line x1="160" y1="143" x2="160" y2="152" stroke="#FBF7F1" stroke-width="1.5"/>
+                <rect x="138" y="152" width="44" height="18" rx="3" stroke="#E2552B" stroke-width="1.7" fill="#1A2238"/>
+                <text x="160" y="165" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="10" font-weight="800" fill="#E2552B" letter-spacing="1">OPEN</text>
+              </g>
+              <g stroke="#FBF7F1" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M330 226 L334 208 H352 L356 226 Z"/>
+                <path d="M343 208 V190 M343 196 C335 192 332 184 334 178 C340 180 343 186 343 196 Z M343 198 C351 194 354 186 352 180 C346 182 343 188 343 198 Z"/>
+              </g>
+            </svg>
+          </div>
+
+          <div class="cover-foot">
+            <div class="pj">공실 활성화 프로젝트</div>
+            <div class="org">한동대학교 · 중앙상가상인회 · 한국헤리티지문화재단 · 포항시 · 경상북도 경제진흥원</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ============ INNER (panel 2 | panel 3) ============ -->
+  <div class="sheet-wrap">
+    <div class="sheet-label"><span class="tag">안쪽 면 · 인쇄 뒷장</span> 왼쪽 = 2면 · 오른쪽 = 3면</div>
+    <div class="sheet">
+
+      <!-- ===== PANEL 2 ===== -->
+      <section class="panel p2">
+        <div class="pad">
+          <div class="section">
+            <span class="eyebrow">운영 대행</span>
+            <h2 class="panel-title">모집부터 원상복구까지,<br>저희가 대신합니다</h2>
+            <p class="secdsc">입점자 모집 → 청소 → 운영 → 원상복구까지, 네 단계로 진행됩니다.</p>
+          </div>
+
+          <div class="vlist">
+            <div class="vrow"><span class="vn">1</span><div>
+              <div class="vt-line"><span class="vt">입점자 모집</span></div>
+              <div class="vd">팝업 운영자를 플랫폼으로 계속 연결해, 공실이 비지 않게 채웁니다.</div></div></div>
+            <div class="varrow">↓</div>
+            <div class="vrow"><span class="vn">2</span><div>
+              <div class="vt-line"><span class="vt">입·퇴실 청소</span></div>
+              <div class="vd">입실·퇴실 청소비까지 저희가 부담해, 늘 깨끗하게 유지합니다.</div></div></div>
+            <div class="varrow">↓</div>
+            <div class="vrow"><span class="vn">3</span><div>
+              <div class="vt-line"><span class="vt">운영 대행</span></div>
+              <div class="vd">홍보·정산·고객 응대까지, 운영비도 저희가 부담합니다.</div></div></div>
+            <div class="varrow">↓</div>
+            <div class="vrow"><span class="vn">4</span><div>
+              <div class="vt-line"><span class="vt">퇴거 · 원상복구</span></div>
+              <div class="vd">종료일을 계약으로 정해, 다음 입점자를 위해 다시 정비합니다.</div></div></div>
+          </div>
+
+          <div class="cost-note">
+            <div class="cn-t">청소·중개·운영·원상복구까지, <b>이 모든 비용을 저희가 부담합니다.</b> 건물주님이 따로 내실 돈은 없습니다.</div>
+          </div>
+
+          <div class="faq">
+            <div class="fh">자주 묻는 질문</div>
+            <div class="faqitem">
+              <div class="fq"><span class="qn">Q1.</span> 건물이 더러워지지 않나요?</div>
+              <div class="fa"><span class="an">A.</span> 입·퇴실 청소를 저희가 직접 해, 들어올 때보다 깨끗하게 비워드립니다.</div>
+            </div>
+            <div class="faqitem">
+              <div class="fq"><span class="qn">Q2.</span> 시설이 망가지면 어떡하죠?</div>
+              <div class="fa"><span class="an">A.</span> <b>표준계약서로 원상복구를 보증</b>합니다. 전담 운영팀이 관리합니다.</div>
+            </div>
+            <div class="faqitem">
+              <div class="fq"><span class="qn">Q3.</span> 약속한 날에 안 비우면요?</div>
+              <div class="fa"><span class="an">A.</span> 종료일을 계약으로 정해, <b>저희가 책임지고 비워드립니다.</b></div>
+            </div>
+            <div class="faqitem">
+              <div class="fq"><span class="qn">Q4.</span> 수익은 언제, 어떻게 받나요?</div>
+              <div class="fa"><span class="an">A.</span> 매달 정산해 드리고, 진행 상황은 문자·카톡으로 안내합니다.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PANEL 3 ===== -->
+      <section class="panel p3">
+        <div class="pad">
+          <div class="section">
+            <span class="eyebrow">수익 구조</span>
+            <h2 class="panel-title">비는 기간 없이,<br>수익이 이어집니다</h2>
+          </div>
+
+          <p class="body-txt">긴 임차인을 기다리며 몇 달씩 비워두지 않습니다. <b>2주~한 달 단위의 짧은 팝업</b>을 끊김 없이 이어 채워, 한 팀이 나가면 곧바로 다음 팀이 들어옵니다. 호텔이 객실을 계속 채우듯, <b>공실 기간 없이 매달 수익이 발생합니다.</b></p>
+
+          <div class="rotwrap">
+            <div class="rotrow">
+              <span class="rl">기존 임대</span>
+              <div class="track"><span class="seg rent">임대</span><span class="seg vac">공실</span><span class="seg rent">임대</span><span class="seg vac">공실</span></div>
+              <div class="rcap gray">비는 달엔 수익이 끊깁니다</div>
+            </div>
+            <div class="rotrow">
+              <span class="rl hl">팝업 운영</span>
+              <div class="track"><span class="seg pop">팝업</span><span class="seg pop">팝업</span><span class="seg pop">팝업</span><span class="seg pop">팝업</span></div>
+              <div class="rcap terra">공실 없이 매달 수익이 들어옵니다</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <span class="sublabel">수익은 하루 단위 대관료로 발생합니다</span>
+            <p class="body-txt">팝업이 운영된 날만큼 대관료가 쌓이고, 빈 날 없이 이어져 매달 모입니다.</p>
+            <div class="calc">
+              <div class="calc-box"><div class="cb-n">일일 대관료</div><div class="cb-v">[&nbsp;]원</div></div>
+              <div class="calc-op">×</div>
+              <div class="calc-box"><div class="cb-n">월 운영일수</div><div class="cb-v">[&nbsp;]일</div></div>
+              <div class="calc-op">=</div>
+              <div class="calc-box hl"><div class="cb-n">한 달 수익</div><div class="cb-v">[&nbsp;]원</div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <span class="sublabel">손님은 저희가 모읍니다</span>
+            <p class="body-txt">단순히 공간만 빌려드리는 게 아닙니다. 행사·SNS 홍보·할인으로 손님과 입점자를 저희가 모아, <b>운영 일수를 채웁니다.</b></p>
+          </div>
+
+          <div class="section">
+            <span class="sublabel">수익은 여기서 더 커집니다</span>
+            <p class="secdsc">공실을 채우는 데서 그치지 않습니다.</p>
+            <div class="benr"><span class="bi">↗</span><div>
+              <div class="bt">장기 임차로 전환</div>
+              <div class="bd">팝업으로 검증된 입점자를 장기 계약으로 이어, 안정적인 수익으로 만듭니다.</div></div></div>
+            <div class="benr"><span class="bi">↑</span><div>
+              <div class="bt">건물 가치 상승</div>
+              <div class="bd">공실이 채워져 거리가 살아나면, 건물 가치 상승도 기대할 수 있습니다.</div></div></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function fit(){
+    if(window.matchMedia('print').matches) return;
+    document.querySelectorAll('.sheet').forEach(s=>{
+      s.style.transform='none';
+      const w=s.getBoundingClientRect().width;
+      const avail=Math.min(window.innerWidth-48,760);
+      const scale=Math.min(1, avail/w);
+      s.style.transform='scale('+scale+')';s.style.transformOrigin='top center';
+      s.parentElement.style.height=(s.getBoundingClientRect().height)+'px';
+    });
+  }
+  window.addEventListener('resize',fit);window.addEventListener('load',fit);
+  document.fonts && document.fonts.ready.then(fit);fit();
+</script>
+</body>
+</html>

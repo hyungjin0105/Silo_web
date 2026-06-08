@@ -1,0 +1,456 @@
+<!-- Spot — 이야기 (Story / Manifesto) v0.1 -->
+<!-- 톤: 가장 편집·매니페스토 톤. 거대 한글 + 작은 영문 모노 캡션. 사진 X. -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>Spot — 이야기</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --color-ink: #0A0A0A;
+  --color-paper: #F4EFE6;
+  --color-paper-pure: #FFFFFF;
+  --color-accent: #FF5A1F;
+  --color-accent-deep: #D8410F;
+  --color-accent-soft: #FFE7DC;
+  --color-gray-100: #E8E4DD;
+  --color-gray-300: #BDB7AD;
+  --color-gray-500: #7A736A;
+  --color-gray-700: #3F3A33;
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px; --s-24: 96px; --s-32: 128px;
+  --r-md: 8px; --r-lg: 16px; --r-xl: 24px; --r-pill: 9999px;
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --container: 1200px;
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html, body { margin: 0; padding: 0; min-width: 1280px; }
+body { font-family: var(--font-sans); color: var(--color-ink); background: var(--color-paper); letter-spacing: -0.01em; word-break: keep-all; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+@media (max-width: 1023px) { html { zoom: 0.78; } }
+
+.mono-sm { font-family: var(--font-mono); font-size: 12px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.mono-xs { font-family: var(--font-mono); font-size: 11px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* ─── header pill (floating, dark hero 위) ─── */
+.hero-header {
+  position: absolute; top: var(--s-6); left: 50%; transform: translateX(-50%);
+  width: calc(var(--container) - 0px); max-width: calc(100% - 48px);
+  height: 60px; padding: 6px 8px 6px 28px;
+  display: flex; align-items: center; gap: var(--s-6);
+  background: var(--color-paper-pure); border-radius: var(--r-pill);
+  z-index: 20;
+}
+.hero-header .wordmark { font-weight: 800; font-size: 20px; letter-spacing: -0.035em; color: var(--color-ink); padding-right: var(--s-3); border-right: 1px solid var(--color-gray-100); margin-right: var(--s-3); }
+.hero-header .wordmark .dot { color: var(--color-accent); }
+.hero-header nav { display: flex; gap: var(--s-6); }
+.hero-header nav a { font-size: 14px; font-weight: 500; color: var(--color-ink); padding: 6px 2px; position: relative; transition: color 120ms; }
+.hero-header nav a.active { color: var(--color-accent-deep); }
+.hero-header nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 2px; height: 1px; background: currentColor; transition: right 200ms var(--ease-out-soft); }
+.hero-header nav a:hover::after, .hero-header nav a.active::after { right: 0; }
+.hero-header .right { margin-left: auto; display: flex; align-items: center; gap: var(--s-5); }
+.lang-toggle { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: var(--color-gray-300); display: inline-flex; align-items: center; gap: 6px; }
+.lang-toggle .lang { padding: 2px 2px; }
+.lang-toggle .lang.on { color: var(--color-ink); font-weight: 700; }
+.lang-toggle .sep { color: var(--color-gray-300); }
+.hero-header .login { font-size: 14px; font-weight: 500; padding: 6px 2px; }
+.hero-header .signup { background: var(--color-ink); color: var(--color-paper-pure); border: none; padding: 10px 20px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; }
+
+/* ─── HERO — 풀스크린 매니페스토 색면 (ink 검정, 거대 한글) ─── */
+.hero {
+  position: relative;
+  min-height: 760px;
+  height: 95vh;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  overflow: hidden;
+  isolation: isolate;
+}
+.hero-inner { position: relative; max-width: var(--container); margin: 0 auto; height: 100%; padding: 0 var(--s-12); }
+
+/* 거대 디스플레이 카피 — 화면 중앙 좌측 */
+.hero-text { position: absolute; left: var(--s-12); bottom: 130px; max-width: 940px; z-index: 3; }
+.hero-eyebrow { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.12em; color: var(--color-paper); margin-bottom: var(--s-8); display: inline-flex; align-items: center; gap: var(--s-2); }
+.hero-eyebrow::before { content: ""; width: 32px; height: 1px; background: currentColor; }
+.hero-h1 {
+  margin: 0;
+  font-size: 132px;
+  line-height: 0.92;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  color: var(--color-paper);
+  text-wrap: balance;
+}
+.hero-h1 .accent { color: var(--color-accent); }
+.hero-h1 .quiet { opacity: 0.5; }
+.hero-sub { margin: var(--s-10) 0 0; max-width: 580px; font-size: 19px; line-height: 1.6; font-weight: 400; color: rgba(244,239,230,0.7); }
+
+/* 우상단 거대 인덱스 — 매거진 톤 */
+.hero-no {
+  position: absolute; right: var(--s-12); top: 120px;
+  font-family: var(--font-mono); font-size: 14px; letter-spacing: 0.15em;
+  color: var(--color-accent); text-transform: uppercase; z-index: 3;
+}
+.hero-edition {
+  position: absolute; right: var(--s-12); top: 156px;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.5); text-transform: uppercase; z-index: 3;
+}
+
+/* 우하단 SPOT EDITORIAL */
+.hero-edit {
+  position: absolute; right: var(--s-12); bottom: 130px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em;
+  color: var(--color-paper); opacity: 0.85; text-align: right;
+  display: flex; align-items: center; gap: var(--s-2); z-index: 3; text-transform: uppercase;
+}
+.hero-edit::after { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); }
+
+@keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.anim-1 { animation: rise 800ms var(--ease-out-soft) both; }
+.anim-2 { animation: rise 800ms var(--ease-out-soft) 120ms both; }
+.anim-3 { animation: rise 800ms var(--ease-out-soft) 240ms both; }
+.anim-4 { animation: rise 800ms var(--ease-out-soft) 360ms both; }
+@media (prefers-reduced-motion: reduce) { .anim-1, .anim-2, .anim-3, .anim-4 { animation: none; opacity: 1; transform: none; } }
+
+/* ─── container ─── */
+.container { max-width: var(--container); margin: 0 auto; padding: 0 var(--s-12); }
+.section { padding: var(--s-24) 0; }
+.section.paper { background: var(--color-paper); }
+.section.paper-pure { background: var(--color-paper-pure); }
+.section.ink { background: var(--color-ink); color: #fff; }
+.section.accent { background: var(--color-accent); color: #fff; }
+
+/* ─── 매니페스토 1: 문제 — 큰 인용 + 거대 숫자 ─── */
+.problem-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: var(--s-16); align-items: start; }
+.problem .eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em; color: var(--color-accent-deep); text-transform: uppercase; margin-bottom: var(--s-6); display: inline-flex; align-items: center; gap: var(--s-2); }
+.problem .eyebrow::before { content: ""; width: 32px; height: 1px; background: currentColor; }
+.problem h2 { margin: 0; font-size: 72px; font-weight: 900; line-height: 0.96; letter-spacing: -0.03em; }
+.problem h2 .accent { color: var(--color-accent); }
+.problem .body p { margin: 0 0 var(--s-6); font-size: 21px; line-height: 1.6; color: var(--color-gray-700); }
+.problem .stats { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-8); margin-top: var(--s-10); padding-top: var(--s-8); border-top: 1px solid var(--color-gray-100); }
+.problem .stats .stat .num { font-size: 64px; font-weight: 900; letter-spacing: -0.025em; line-height: 1; display: block; }
+.problem .stats .stat .num .small { font-size: 28px; vertical-align: 6px; margin-left: 4px; opacity: 0.6; }
+.problem .stats .stat .lab { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--color-gray-500); text-transform: uppercase; margin-top: var(--s-3); display: block; }
+.problem .stats .src { grid-column: 1 / -1; font-size: 13px; color: var(--color-gray-500); margin-top: var(--s-3); font-style: italic; }
+
+/* ─── 매니페스토 2: 안 만드는 것 vs 만드는 것 (대비 2색면) ─── */
+.split { display: grid; grid-template-columns: 1fr 1fr; min-height: 640px; }
+.split-cell { padding: var(--s-16); display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-10); }
+.split .left { background: var(--color-ink); color: #fff; }
+.split .right { background: var(--color-accent); color: #fff; }
+.split .label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; opacity: 0.85; text-transform: uppercase; display: inline-flex; align-items: center; gap: var(--s-2); }
+.split .label::before { content: ""; width: 24px; height: 1px; background: currentColor; }
+.split h2 { margin: 0; font-size: 56px; font-weight: 900; line-height: 0.95; letter-spacing: -0.025em; }
+.split .strike { text-decoration: line-through; text-decoration-thickness: 3px; text-decoration-color: var(--color-accent); opacity: 0.9; }
+.split ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--s-4); }
+.split li { font-size: 22px; font-weight: 500; line-height: 1.4; padding-left: 28px; position: relative; }
+.split .left li::before { content: "✕"; position: absolute; left: 0; color: var(--color-accent); font-weight: 700; }
+.split .right li::before { content: "○"; position: absolute; left: 0; opacity: 0.7; font-weight: 700; }
+.split .foot { font-size: 16px; line-height: 1.55; opacity: 0.8; }
+.split .right .foot { opacity: 0.92; }
+
+/* ─── 매니페스토 3: 큰 인용 ─── */
+.quote { background: var(--color-paper-pure); }
+.quote-inner { max-width: 1080px; margin: 0 auto; padding: var(--s-24) var(--s-12); text-align: left; }
+.quote .mark { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em; color: var(--color-accent-deep); text-transform: uppercase; margin-bottom: var(--s-8); display: inline-flex; align-items: center; gap: var(--s-2); }
+.quote .mark::before { content: ""; width: 32px; height: 1px; background: currentColor; }
+.quote blockquote { margin: 0; font-size: 64px; font-weight: 800; line-height: 1.1; letter-spacing: -0.025em; color: var(--color-ink); }
+.quote blockquote .accent { color: var(--color-accent); }
+.quote cite { display: block; font-style: normal; font-size: 15px; color: var(--color-gray-500); margin-top: var(--s-10); font-family: var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* ─── 매니페스토 4: 3 원칙 (포스터 시리즈 톤) ─── */
+.principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); }
+.principle {
+  padding: var(--s-10) var(--s-8);
+  border-radius: var(--r-xl);
+  min-height: 360px;
+  display: flex; flex-direction: column; gap: var(--s-6);
+  transition: transform 200ms var(--ease-out-soft);
+}
+.principle:hover { transform: translateY(-3px); }
+.principle .no { font-family: var(--font-mono); font-size: 64px; font-weight: 500; line-height: 1; letter-spacing: -0.02em; opacity: 0.85; }
+.principle h3 { margin: 0; font-size: 32px; font-weight: 900; line-height: 1.05; letter-spacing: -0.02em; }
+.principle p { margin: auto 0 0; font-size: 15px; line-height: 1.6; opacity: 0.85; max-width: 280px; }
+.principle.p1 { background: var(--color-accent); color: #fff; }
+.principle.p2 { background: var(--color-paper); color: var(--color-ink); border: 1px solid var(--color-gray-100); }
+.principle.p3 { background: var(--color-ink); color: #fff; }
+
+/* ─── 팀 한 줄 ─── */
+.team-section { background: var(--color-paper); }
+.team-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: var(--s-16); align-items: start; }
+.team .eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-5); display: inline-flex; align-items: center; gap: var(--s-2); }
+.team .eyebrow::before { content: ""; width: 32px; height: 1px; background: currentColor; }
+.team h2 { margin: 0; font-size: 56px; font-weight: 900; line-height: 0.96; letter-spacing: -0.025em; }
+.team .body p { margin: 0 0 var(--s-5); font-size: 18px; line-height: 1.65; color: var(--color-gray-700); }
+.team .body p:last-child { margin-bottom: 0; }
+.team .sig { margin-top: var(--s-10); font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.1em; color: var(--color-gray-500); text-transform: uppercase; }
+
+/* ─── 마지막 — 큰 CTA 두 갈래 ─── */
+.split-cta { background: var(--color-paper-pure); padding: var(--s-24) 0; }
+.split-cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-6); }
+.cta-card {
+  border-radius: var(--r-xl);
+  padding: var(--s-12);
+  min-height: 360px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-8);
+  transition: transform 200ms var(--ease-out-soft);
+}
+.cta-card:hover { transform: translateY(-3px); }
+.cta-card .label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+.cta-card h3 { margin: 0; font-size: 48px; font-weight: 900; line-height: 0.96; letter-spacing: -0.025em; }
+.cta-card p { margin: var(--s-4) 0 0; font-size: 16px; line-height: 1.55; opacity: 0.85; }
+.cta-card .arrow-big { font-family: var(--font-mono); font-size: 32px; font-weight: 500; align-self: flex-end; }
+.cta-card.tenant { background: var(--color-accent); color: #fff; }
+.cta-card.host { background: var(--color-ink); color: #fff; }
+
+/* ─── footer ─── */
+footer.foot { background: var(--color-paper); padding: var(--s-12) 0; border-top: 1px solid var(--color-gray-100); }
+.foot-top { display: flex; align-items: baseline; gap: var(--s-4); margin-bottom: var(--s-6); }
+.foot-wordmark { font-weight: 800; font-size: 24px; letter-spacing: -0.035em; }
+.foot-wordmark .dot { color: var(--color-accent); }
+.foot-links { display: flex; flex-wrap: wrap; gap: var(--s-8); }
+.foot-links a { font-size: 15px; color: var(--color-gray-500); transition: color 120ms; }
+.foot-links a:hover { color: var(--color-ink); }
+.foot-legal { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-300); margin-top: var(--s-6); text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<!-- ────── HERO MANIFESTO ────── -->
+<section class="hero">
+  <header class="hero-header" role="navigation">
+    <a href="hero.html" class="wordmark">Spot<span class="dot">.</span></a>
+    <nav>
+      <a href="find.html">공간 찾기</a>
+      <a href="towns.html">팝업타운</a>
+      <a href="list-space.html">내 공간 등록</a>
+      <a href="story.html" class="active">이야기</a>
+      <a href="guide.html">이용 안내</a>
+    </nav>
+    <div class="right">
+      <div class="lang-toggle">
+        <span class="lang on">KO</span>
+        <span class="sep">/</span>
+        <a href="story-en.html"><span class="lang">EN</span></a>
+      </div>
+      <a href="#login" class="login">로그인</a>
+      <button class="signup" type="button">회원가입</button>
+    </div>
+  </header>
+
+  <div class="hero-inner">
+    <div class="hero-no anim-1" aria-hidden="true">MANIFESTO · NO. 01</div>
+    <div class="hero-edition anim-2" aria-hidden="true">EDITION · 2026 / 05</div>
+
+    <div class="hero-text">
+      <div class="hero-eyebrow anim-1">SPOT · WHAT WE BELIEVE</div>
+      <h1 class="hero-h1 anim-2">
+        잠깐의 자리가,<br/>
+        <span class="accent">길게</span> 남는다<span class="quiet">.</span>
+      </h1>
+      <p class="hero-sub anim-3">
+        모든 자리가 1년 단위로 계약될 필요는 없습니다.
+        Spot은 비어 있는 1층과 잠시 머물고 싶은 브랜드를 잇는
+        가장 가벼운 방식입니다.
+      </p>
+    </div>
+
+    <div class="hero-edit anim-4">SPOT EDITORIAL · MANIFESTO</div>
+  </div>
+</section>
+
+<!-- ────── 1. 문제: 1층 공실 + 짧은 머묾 ────── -->
+<section class="section paper problem">
+  <div class="container">
+    <div class="problem-grid">
+      <div>
+        <div class="eyebrow">CHAPTER · 01</div>
+        <h2>도시는 비어 있는데,<br/><span class="accent">머물 곳</span>은 부족합니다.</h2>
+      </div>
+
+      <div class="body">
+        <p>서울 1층 상가의 공실률은 9.5%. 강북 도심은 14.7%. 길게는 6개월, 짧아도 3개월. 한 자리가 비어 있는 동안 동네의 활기도 같이 비어요.</p>
+        <p>한편 인스타로 시작한 브랜드는 첫 오프라인 팝업 자리를 찾고 있습니다. 1년 계약은 부담스럽고, 임대인의 카카오톡 답장은 좀처럼 오지 않습니다. 한 줄 정리: 자리는 있고, 사람도 있는데 만남이 어렵습니다.</p>
+
+        <div class="stats">
+          <div class="stat">
+            <span class="num">9.5<span class="small">%</span></span>
+            <span class="lab">서울 1층 공실률</span>
+          </div>
+          <div class="stat">
+            <span class="num">3.6<span class="small">개월</span></span>
+            <span class="lab">평균 공실 기간</span>
+          </div>
+          <div class="stat">
+            <span class="num">73<span class="small">%</span></span>
+            <span class="lab">"1년 계약은 부담" 응답 (인디 브랜드 설문, n=204)</span>
+          </div>
+          <div class="stat">
+            <span class="num">14<span class="small">일</span></span>
+            <span class="lab">팝업 평균 운영 기간</span>
+          </div>
+          <div class="src">* 출처 표기는 PRD §1.1 시장 데이터 부록 참조. 수치는 시안용 근사값.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────── 2. 안 만드는 것 vs 만드는 것 (대비) ────── -->
+<section class="split">
+
+  <div class="split-cell left">
+    <div>
+      <span class="label">CHAPTER · 02 / A</span>
+      <h2 style="margin-top: var(--s-4);"><span class="strike">우리가</span><br/>안 만드는 것.</h2>
+    </div>
+    <ul>
+      <li>결제 · 에스크로 · PG</li>
+      <li>전자계약 · 서명</li>
+      <li>인앱 채팅 · 메시징</li>
+      <li>분쟁 중재</li>
+      <li>보증금 보관</li>
+    </ul>
+    <p class="foot">법적 책임의 무게는 두 분에게 있습니다. 표준계약서는 제공하지만, 거래는 두 분이 직접. 매칭만으로도 충분히 어려운 문제니까요.</p>
+  </div>
+
+  <div class="split-cell right">
+    <div>
+      <span class="label">CHAPTER · 02 / B</span>
+      <h2 style="margin-top: var(--s-4);">우리가<br/>만드는 것.</h2>
+    </div>
+    <ul>
+      <li>검색 — 동네 · 기간 · 예산</li>
+      <li>등록 — 사진 5장, 한 줄 소개</li>
+      <li>문의 — 임차인 → 임대인 1:1</li>
+      <li>수락 — 그제서야 카톡 · 전화 공개</li>
+      <li>검증 — 사진 · 방문 두 단계</li>
+    </ul>
+    <p class="foot">처음 보는 두 사람이 안전하게 만나는 자리까지. 그 다음은 두 분의 판단을 믿습니다.</p>
+  </div>
+
+</section>
+
+<!-- ────── 3. 인용 ────── -->
+<section class="quote">
+  <div class="quote-inner">
+    <div class="mark">CHAPTER · 03 / QUOTE</div>
+    <blockquote>
+      "1년을 묶지 않아도,<br/>
+      한 자리에서 시작할 수 있어요.<br/>
+      <span class="accent">짧게 머무는 일이 동네를 살린다고 믿습니다.</span>"
+    </blockquote>
+    <cite>— Spot Founding Note · 2026.05</cite>
+  </div>
+</section>
+
+<!-- ────── 4. 3 원칙 ────── -->
+<section class="section paper">
+  <div class="container">
+    <div style="margin-bottom: var(--s-10);">
+      <div style="font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-3); display: inline-flex; align-items: center; gap: var(--s-2);">
+        <span style="width: 32px; height: 1px; background: currentColor; display: inline-block;"></span>
+        CHAPTER · 04 · THREE PRINCIPLES
+      </div>
+      <h2 style="margin: 0; font-size: 56px; font-weight: 900; line-height: 0.96; letter-spacing: -0.025em;">우리가 매번 묻는 세 가지.</h2>
+    </div>
+
+    <div class="principles">
+      <article class="principle p1">
+        <span class="no">01/</span>
+        <h3>가볍게.<br/>최소만.</h3>
+        <p>한 화면에 들어갈 정보가 두 화면에 흩어지면 만들지 않습니다. 임대인 박 사장님이 핸드폰으로 3분 안에 끝낼 수 있어야 합니다.</p>
+      </article>
+
+      <article class="principle p2">
+        <span class="no">02/</span>
+        <h3>거래는,<br/>두 분 사이에서.</h3>
+        <p>매칭 이후에 끼어들지 않습니다. 결제도, 계약도, 분쟁도. 우리는 만남까지만이고, 그 이후는 두 분의 영역입니다.</p>
+      </article>
+
+      <article class="principle p3">
+        <span class="no">03/</span>
+        <h3>동네 단위로<br/>읽습니다.</h3>
+        <p>1층은 동네 안에 있습니다. 성수의 활기, 부암의 한적함, 망원의 가성비. 매물을 동네별로 묶어 읽을 수 있게 만듭니다.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ────── 5. 팀 한 줄 ────── -->
+<section class="section team-section team">
+  <div class="container">
+    <div class="team-grid">
+      <div>
+        <div class="eyebrow">CHAPTER · 05 / THE TEAM</div>
+        <h2>네 명이 만듭니다.</h2>
+      </div>
+      <div class="body">
+        <p>Spot은 서울에 있는 작은 팀입니다. 디자인 · 엔지니어링 · 운영 네 명. 2026년 5월에 시작해, 첫 다섯 동네(성수 · 연남 · 망원 · 부암 · 한남)부터 만들어가고 있어요.</p>
+        <p>우리는 결제를 만들지 않습니다. 계약도, 채팅도, 분쟁 조정도. 대신 단 하나의 문제 — 비어 있는 1층과 잠깐 머물고 싶은 사람의 만남 — 만 푸는 일에 머무릅니다. 작게 만들고, 자주 다듬습니다.</p>
+        <p>의견이 있으시면 카카오톡 채널 <strong>@spot.kr</strong> 또는 이메일 <strong>hello@spot.kr</strong> 로 보내주세요. 한 통 한 통 직접 읽습니다.</p>
+        <div class="sig">— SPOT TEAM · SEOUL · 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────── 6. 두 갈래 CTA ────── -->
+<section class="split-cta">
+  <div class="container">
+    <div class="split-cta-grid">
+
+      <a href="find.html" class="cta-card tenant">
+        <div>
+          <span class="label">FOR TENANTS · 임차인</span>
+          <h3>잠깐 머물<br/>자리를 찾습니다.</h3>
+          <p>성수 · 망원 · 연남에서 시작하세요. 1주부터, 한 달까지.</p>
+        </div>
+        <span class="arrow-big">→</span>
+      </a>
+
+      <a href="list-space.html" class="cta-card host">
+        <div>
+          <span class="label">FOR HOSTS · 임대인</span>
+          <h3>1층 공실,<br/>잠깐 채워봅니다.</h3>
+          <p>등록은 3분. 거절은 언제든. 매칭 성사돼야 7%.</p>
+        </div>
+        <span class="arrow-big">→</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ────── FOOTER ────── -->
+<footer class="foot">
+  <div class="container">
+    <div class="foot-top">
+      <span class="foot-wordmark">Spot<span class="dot">.</span></span>
+      <span class="mono-xs" style="color: var(--color-gray-500);">POPUP SPACE · SHORT TERM</span>
+    </div>
+    <div class="foot-links">
+      <a href="story.html">이야기</a>
+      <a href="guide.html">이용 안내</a>
+      <a href="guide.html#tos">이용약관</a>
+      <a href="guide.html#privacy">개인정보</a>
+      <a href="guide.html#biz">사업자정보</a>
+      <a href="guide.html#std">표준계약서</a>
+    </div>
+    <div class="foot-legal">© 2026 SPOT · MATCHING ONLY · 결제·계약은 외부에서 진행됩니다</div>
+  </div>
+</footer>
+
+</body>
+</html>

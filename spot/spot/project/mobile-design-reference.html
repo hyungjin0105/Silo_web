@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spot — Mobile Design System Reference</title>
+  
+  <!-- Pretendard Variable -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+  <!-- JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="mobile-tokens.css" />
+  
+  <style>
+    /* Component showcase styles */
+    .demo-section {
+      padding: var(--s-8) 0;
+      border-bottom: 1px solid var(--color-gray-100);
+    }
+    
+    .demo-section:first-child {
+      padding-top: var(--s-6);
+    }
+    
+    .demo-section h2 {
+      margin: 0 0 var(--s-6);
+      font-size: 22px;
+      font-weight: 700;
+    }
+    
+    .demo-grid {
+      display: grid;
+      gap: var(--s-6);
+    }
+    
+    .demo-item {
+      padding: var(--s-6);
+      background: var(--color-gray-50);
+      border-radius: var(--r-lg);
+    }
+    
+    .demo-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--color-gray-500);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: var(--s-3);
+    }
+    
+    .color-swatch {
+      width: 100%;
+      height: 80px;
+      border-radius: var(--r-lg);
+      border: 1px solid var(--color-gray-100);
+      margin-bottom: var(--s-2);
+    }
+    
+    .space-demo {
+      background: var(--color-paper-pure);
+      border: 1px dashed var(--color-gray-300);
+      border-radius: var(--r-md);
+    }
+  </style>
+</head>
+<body>
+  <div class="mobile-header">
+    <div class="back-button">←</div>
+    <div class="title">Design System</div>
+    <div class="action"></div>
+  </div>
+
+  <div class="container">
+    
+    <!-- Colors -->
+    <div class="demo-section">
+      <h2>Colors</h2>
+      
+      <div class="demo-grid">
+        <div class="demo-item">
+          <span class="demo-label">Primary</span>
+          <div class="color-swatch" style="background: var(--color-ink);"></div>
+          <div class="body-sm">--color-ink: #0A0A0A</div>
+        </div>
+        
+        <div class="demo-item">
+          <span class="demo-label">Accent</span>
+          <div class="color-swatch" style="background: var(--color-accent);"></div>
+          <div class="body-sm">--color-accent: #FF5A1F</div>
+        </div>
+        
+        <div class="demo-item">
+          <span class="demo-label">Accent Soft</span>
+          <div class="color-swatch" style="background: var(--color-accent-soft);"></div>
+          <div class="body-sm">--color-accent-soft: #FFE7DC</div>
+        </div>
+        
+        <div class="demo-item">
+          <span class="demo-label">Gray 500</span>
+          <div class="color-swatch" style="background: var(--color-gray-500);"></div>
+          <div class="body-sm">--color-gray-500: #7A736A</div>
+        </div>
+        
+        <div class="demo-item">
+          <span class="demo-label">Paper</span>
+          <div class="color-swatch" style="background: var(--color-paper);"></div>
+          <div class="body-sm">--color-paper: #F4EFE6</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spacing -->
+    <div class="demo-section">
+      <h2>Spacing (4px Grid)</h2>
+      
+      <div class="demo-grid">
+        <div class="demo-item">
+          <span class="demo-label">S-4 (16px)</span>
+          <div class="space-demo" style="height: 16px;"></div>
+        </div>
+        
+        <div class="demo-item">
+          <span class="demo-label">S-6 (24px)</span>
+          <div class="space-demo" style="height: 24px;"></div>
+        </div>
+        
+        <div class="demo-item">
+          <span class="demo-label">S-8 (32px)</span>
+          <div class="space-demo" style="height: 32px;"></div>
+        </div>
+        
+        <div class="demo-item">
+          <span class="demo-label">S-12 (48px)</span>
+          <div class="space-demo" style="height: 48px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typography -->
+    <div class="demo-section">
+      <h2>Typography</h2>
+      
+      <div class="demo-item">
+        <span class="demo-label">Heading 1 (t-h1)</span>
+        <div class="t-h1">매력적인 제목</div>
+      </div>
+      
+      <div class="demo-item">
+        <span class="demo-label">Heading 2 (t-h2)</span>
+        <div class="t-h2">섹션 제목</div>
+      </div>
+      
+      <div class="demo-item">
+        <span class="demo-label">Body (body)</span>
+        <div class="body">일반적인 본문 텍스트입니다. 주요 콘텐츠를 표시할 때 사용합니다.</div>
+      </div>
+      
+      <div class="demo-item">
+        <span class="demo-label">Body Small (body-sm)</span>
+        <div class="body-sm">작은 본문 텍스트입니다. 보조 정보나 설명에 사용합니다.</div>
+      </div>
+      
+      <div class="demo-item">
+        <span class="demo-label">Caption (t-caption)</span>
+        <div class="t-caption">캡션 텍스트</div>
+      </div>
+      
+      <div class="demo-item">
+        <span class="demo-label">Mono Small (mono-sm)</span>
+        <div class="mono-sm">CODE LABEL</div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="demo-section">
+      <h2>Buttons</h2>
+      
+      <div class="demo-item">
+        <span class="demo-label">CTA Button (Primary)</span>
+        <button class="cta">예약하기</button>
+      </div>
+      
+      <div class="demo-item">
+        <span class="demo-label">CTA Button (Disabled)</span>
+        <button class="cta" disabled>사용 불가</button>
+      </div>
+    </div>
+
+    <!-- Chips -->
+    <div class="demo-section">
+      <h2>Chips</h2>
+      
+      <div class="demo-item">
+        <span class="demo-label">Chip Accent</span>
+        <div class="chip chip-accent">추천</div>
+      </div>
+      
+      <div class="demo-item">
+        <span class="demo-label">Chip Gray</span>
+        <div class="chip chip-gray">카테고리</div>
+      </div>
+      
+      <div class="demo-item">
+        <span class="demo-label">Chip Ink</span>
+        <div class="chip chip-ink">특별</div>
+      </div>
+      
+      <div class="demo-item">
+        <span class="demo-label">Chip Mono</span>
+        <div class="chip chip-mono chip-gray">v1.0</div>
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="demo-section">
+      <h2>Cards</h2>
+      
+      <div class="card">
+        <div style="margin-bottom: var(--s-3);">
+          <img src="https://via.placeholder.com/300x200" style="width: 100%; border-radius: var(--r-md);" alt="placeholder" />
+        </div>
+        <h3 class="t-h3" style="margin: 0 0 var(--s-2);">공간 제목</h3>
+        <p class="body-sm" style="margin: 0 0 var(--s-4); color: var(--color-gray-500);">서울 강남구 • 월 ₩100,000</p>
+        <div class="flex gap-2">
+          <div class="chip chip-gray">카페</div>
+          <div class="chip chip-accent">찜하기</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lists -->
+    <div class="demo-section">
+      <h2>Lists</h2>
+      
+      <div class="card">
+        <div class="list-item">
+          <div style="flex: 1;">
+            <div class="t-h3" style="margin: 0 0 var(--s-1);">항목 1</div>
+            <div class="body-sm" style="margin: 0; color: var(--color-gray-500);">설명 텍스트</div>
+          </div>
+          <div style="font-size: 20px;">→</div>
+        </div>
+        
+        <div class="list-item">
+          <div style="flex: 1;">
+            <div class="t-h3" style="margin: 0 0 var(--s-1);">항목 2</div>
+            <div class="body-sm" style="margin: 0; color: var(--color-gray-500);">설명 텍스트</div>
+          </div>
+          <div style="font-size: 20px;">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tap Targets -->
+    <div class="demo-section">
+      <h2>Interactive Elements</h2>
+      
+      <div class="demo-item">
+        <span class="demo-label">Tap Target (44x44px minimum)</span>
+        <div class="tap" style="border: 2px dashed var(--color-gray-500); margin: var(--s-4) 0;">
+          터치 가능 영역
+        </div>
+      </div>
+    </div>
+
+    <!-- Radius -->
+    <div class="demo-section">
+      <h2>Border Radius</h2>
+      
+      <div class="flex gap-4" style="margin-bottom: var(--s-6);">
+        <div style="flex: 1;">
+          <div style="width: 60px; height: 60px; background: var(--color-accent); border-radius: var(--r-md);"></div>
+          <div class="mono-xs" style="margin-top: var(--s-2);">r-md (8px)</div>
+        </div>
+        <div style="flex: 1;">
+          <div style="width: 60px; height: 60px; background: var(--color-accent); border-radius: var(--r-lg);"></div>
+          <div class="mono-xs" style="margin-top: var(--s-2);">r-lg (16px)</div>
+        </div>
+        <div style="flex: 1;">
+          <div style="width: 60px; height: 60px; background: var(--color-accent); border-radius: var(--r-pill);"></div>
+          <div class="mono-xs" style="margin-top: var(--s-2);">r-pill</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA at bottom -->
+  <div class="cta-sticky">
+    <button class="cta">예약하기</button>
+  </div>
+
+</body>
+</html>

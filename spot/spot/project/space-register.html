@@ -1,0 +1,681 @@
+<!-- Spot — 매물 등록 (Space Register, Host wizard) v0.1 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>Spot — 내 공간 등록</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --color-ink: #0A0A0A;
+  --color-paper: #F4EFE6;
+  --color-paper-pure: #FFFFFF;
+  --color-accent: #FF5A1F;
+  --color-accent-deep: #D8410F;
+  --color-accent-soft: #FFE7DC;
+  --color-gray-50: #F7F5F1;
+  --color-gray-100: #E8E4DD;
+  --color-gray-300: #BDB7AD;
+  --color-gray-500: #7A736A;
+  --color-gray-700: #3F3A33;
+  --color-warning: #C7901A;
+  --color-success: #1F8C5B;
+
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-sm: 4px; --r-md: 8px; --r-lg: 16px; --r-pill: 9999px;
+  --font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --header-h: 60px;
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+html, body { margin: 0; padding: 0; min-width: 1280px; }
+body { font-family: var(--font-sans); color: var(--color-ink); background: var(--color-gray-50); letter-spacing: -0.01em; word-break: keep-all; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+input, select, textarea { font-family: inherit; }
+
+@media (max-width: 1023px) { html { zoom: 0.78; } }
+
+.mono-sm { font-family: var(--font-mono); font-size: 12px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.mono-xs { font-family: var(--font-mono); font-size: 11px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* 글로벌 헤더 */
+.gheader { position: sticky; top: 0; z-index: 30; background: var(--color-paper-pure); border-bottom: 1px solid var(--color-gray-100); }
+.gheader-inner { max-width: 1200px; margin: 0 auto; height: var(--header-h); padding: 0 var(--s-12); display: flex; align-items: center; gap: var(--s-6); }
+.wordmark { font-weight: 800; font-size: 20px; letter-spacing: -0.035em; padding-right: var(--s-3); border-right: 1px solid var(--color-gray-100); margin-right: var(--s-3); }
+.wordmark .dot { color: var(--color-accent); }
+.gnav { display: flex; gap: var(--s-6); }
+.gnav a { font-size: 14px; font-weight: 500; padding: 6px 2px; }
+.gnav a.on { color: var(--color-accent-deep); }
+.gheader .right { margin-left: auto; display: flex; align-items: center; gap: var(--s-5); }
+.lang-toggle { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: var(--color-gray-300); display: inline-flex; gap: 6px; }
+.lang-toggle .lang.on { color: var(--color-ink); font-weight: 700; }
+.gheader .login { font-size: 14px; font-weight: 500; }
+.gheader .signup { background: var(--color-ink); color: var(--color-paper-pure); border: none; padding: 10px 20px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; }
+
+/* 메인 그리드 — 좌측 stepper + 우측 폼 */
+main { max-width: 1200px; margin: 0 auto; padding: var(--s-10) var(--s-12) var(--s-16); }
+.title-row { margin-bottom: var(--s-8); }
+.title-row h1 { margin: 0; font-size: 36px; font-weight: 800; letter-spacing: -0.025em; }
+.title-row .sub { font-size: 16px; color: var(--color-gray-500); margin-top: var(--s-2); line-height: 1.55; }
+
+.layout { display: grid; grid-template-columns: 280px 1fr; gap: var(--s-10); align-items: start; }
+
+/* 좌측 stepper (sticky) */
+.stepper-side { position: sticky; top: calc(var(--header-h) + 24px); }
+.stepper-side .label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-5); }
+.step-list { list-style: none; margin: 0; padding: 0; }
+.step-item { padding: var(--s-3) 0; border-top: 1px solid var(--color-gray-100); display: flex; gap: var(--s-3); align-items: flex-start; cursor: pointer; }
+.step-item:first-child { border-top: none; }
+.step-item .n { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 12px; font-weight: 700; background: var(--color-gray-100); color: var(--color-gray-500); flex-shrink: 0; transition: background 200ms, color 200ms; }
+.step-item.on .n { background: var(--color-ink); color: var(--color-paper-pure); }
+.step-item.done .n { background: var(--color-accent); color: var(--color-paper-pure); }
+.step-item .t { font-size: 15px; font-weight: 700; color: var(--color-gray-500); margin-top: 4px; }
+.step-item .d { font-size: 12px; color: var(--color-gray-300); margin-top: 2px; line-height: 1.4; }
+.step-item.on .t { color: var(--color-ink); }
+.step-item.done .t { color: var(--color-ink); }
+
+.help-card { margin-top: var(--s-8); padding: var(--s-5); background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-md); }
+.help-card .title { font-size: 14px; font-weight: 700; }
+.help-card p { margin: var(--s-2) 0 0; font-size: 13px; color: var(--color-gray-500); line-height: 1.55; }
+.help-card .ch { display: inline-block; margin-top: var(--s-3); font-size: 13px; color: var(--color-accent-deep); font-weight: 700; }
+
+/* 우측 폼 */
+.form-area { background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-lg); padding: var(--s-10); }
+.form-step { display: none; }
+.form-step.active { display: block; animation: fadeIn 240ms var(--ease-out-soft); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.step-head { padding-bottom: var(--s-5); border-bottom: 1px solid var(--color-gray-100); margin-bottom: var(--s-8); }
+.step-head .ey { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-accent-deep); text-transform: uppercase; font-weight: 700; }
+.step-head h2 { margin: var(--s-2) 0 0; font-size: 28px; font-weight: 800; letter-spacing: -0.025em; }
+.step-head .desc { font-size: 15px; color: var(--color-gray-500); margin-top: var(--s-2); line-height: 1.55; }
+
+/* 폼 필드 */
+.field { margin-top: var(--s-6); }
+.field:first-of-type { margin-top: 0; }
+.field label { display: block; font-size: 14px; font-weight: 700; margin-bottom: var(--s-2); }
+.field label .req { color: var(--color-accent-deep); margin-left: 4px; }
+.field .hint { font-size: 13px; color: var(--color-gray-500); margin-top: 6px; line-height: 1.55; }
+.input, .select, .textarea { width: 100%; padding: 13px 14px; border: 1px solid var(--color-gray-100); background: var(--color-paper-pure); border-radius: var(--r-md); font-size: 16px; color: var(--color-ink); transition: border-color 120ms; }
+.input:focus, .select:focus, .textarea:focus { outline: none; border-color: var(--color-ink); }
+.textarea { min-height: 120px; resize: vertical; line-height: 1.5; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); }
+.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--s-4); }
+
+/* 지도 mock */
+.map-mock { margin-top: var(--s-4); height: 240px; border-radius: var(--r-md); background: var(--color-gray-50); background-image:
+  linear-gradient(rgba(189,183,173,0.2) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(189,183,173,0.2) 1px, transparent 1px);
+  background-size: 32px 32px;
+  position: relative; border: 1px solid var(--color-gray-100); overflow: hidden;
+}
+.map-pin { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); width: 36px; height: 36px; border-radius: 50% 50% 50% 0; background: var(--color-accent); transform: translate(-50%, -100%) rotate(-45deg); box-shadow: 0 4px 12px rgba(216,65,15,0.3); }
+.map-pin::before { content: ""; position: absolute; top: 9px; left: 9px; width: 18px; height: 18px; background: #fff; border-radius: 50%; }
+.map-cap { position: absolute; bottom: var(--s-3); left: var(--s-3); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-500); background: rgba(255,255,255,0.9); padding: 4px 8px; border-radius: 4px; text-transform: uppercase; }
+
+/* 칩 선택 (단일/다중) */
+.chips { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-2); }
+.chip-btn { padding: 10px 18px; border-radius: var(--r-pill); border: 1px solid var(--color-gray-100); background: var(--color-paper-pure); color: var(--color-gray-700); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 120ms; }
+.chip-btn:hover { border-color: var(--color-ink); }
+.chip-btn.on { background: var(--color-ink); color: var(--color-paper-pure); border-color: var(--color-ink); }
+
+/* 사진 업로드 그리드 */
+.photo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-3); margin-top: var(--s-3); }
+.photo-slot { aspect-ratio: 1; border-radius: var(--r-md); border: 1.5px dashed var(--color-gray-100); background: var(--color-gray-50); display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; overflow: hidden; }
+.photo-slot.filled { border-style: solid; border-color: var(--color-gray-100); background-image: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(189,183,173,0.25) 8px, rgba(189,183,173,0.25) 9px); }
+.photo-slot.filled .badge { position: absolute; top: 6px; left: 6px; font-family: var(--font-mono); font-size: 10px; padding: 3px 6px; background: rgba(0,0,0,0.7); color: #fff; border-radius: 3px; letter-spacing: 0.04em; text-transform: uppercase; }
+.photo-slot .add { color: var(--color-gray-300); font-size: 28px; font-weight: 300; }
+.photo-slot.main { grid-column: span 2; grid-row: span 2; }
+.photo-info { display: flex; justify-content: space-between; align-items: center; margin-top: var(--s-3); font-size: 13px; color: var(--color-gray-500); }
+.photo-info .count strong { color: var(--color-ink); }
+
+/* 시설 toggle 그리드 */
+.fac-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); margin-top: var(--s-3); }
+.fac-row { display: flex; gap: var(--s-3); align-items: center; padding: var(--s-3) var(--s-4); border: 1px solid var(--color-gray-100); border-radius: var(--r-md); cursor: pointer; }
+.fac-row.on { border-color: var(--color-ink); background: var(--color-paper); }
+.fac-row .ic { width: 32px; height: 32px; border-radius: var(--r-md); background: var(--color-gray-100); display: inline-flex; align-items: center; justify-content: center; font-size: 14px; }
+.fac-row.on .ic { background: var(--color-accent); color: #fff; }
+.fac-row .nm { font-size: 14px; font-weight: 700; }
+.fac-row .d { font-size: 12px; color: var(--color-gray-500); }
+
+/* 가격 카드 */
+.price-card { padding: var(--s-6); background: var(--color-paper); border-radius: var(--r-md); margin-top: var(--s-4); }
+.price-row { display: grid; grid-template-columns: 1fr 200px; gap: var(--s-4); align-items: end; }
+.price-row .input-big { font-size: 28px; font-weight: 800; padding: 16px 14px; }
+.split-info { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); margin-top: var(--s-5); }
+.split-info .cell { padding: var(--s-4); border-radius: var(--r-md); background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); }
+.split-info .cell .l { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-500); text-transform: uppercase; }
+.split-info .cell .v { font-size: 22px; font-weight: 700; margin-top: 4px; }
+.split-info .cell .n { font-size: 12px; color: var(--color-gray-500); margin-top: 2px; line-height: 1.5; }
+.svc-note { margin-top: var(--s-5); padding: var(--s-4); background: var(--color-accent-soft); color: var(--color-accent-deep); border-radius: var(--r-md); font-size: 13px; line-height: 1.6; }
+
+/* 캘린더 */
+.cal-wrap { margin-top: var(--s-3); }
+.cal-nav { display: flex; align-items: center; justify-content: space-between; padding: var(--s-3) 0; }
+.cal-nav .month { font-size: 18px; font-weight: 700; }
+.cal-nav button { padding: 8px 14px; border: 1px solid var(--color-gray-100); background: var(--color-paper-pure); border-radius: var(--r-md); font-size: 14px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; padding: var(--s-4); background: var(--color-gray-50); border-radius: var(--r-md); }
+.cal-dow { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); letter-spacing: 0.08em; text-align: center; padding: var(--s-2) 0; }
+.cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; border-radius: var(--r-sm); cursor: pointer; background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); transition: all 120ms; }
+.cal-day:hover { border-color: var(--color-ink); }
+.cal-day.empty { background: transparent; border: none; cursor: default; }
+.cal-day.avail { background: var(--color-accent-soft); border-color: rgba(216,65,15,0.2); color: var(--color-accent-deep); font-weight: 700; }
+.cal-day.closed { background: var(--color-gray-100); color: var(--color-gray-300); cursor: pointer; }
+.cal-legend { display: flex; gap: var(--s-5); margin-top: var(--s-3); font-size: 12px; color: var(--color-gray-500); }
+.cal-legend .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -2px; }
+
+/* 검토(미리보기) — 마지막 단계 */
+.review-card { padding: var(--s-6); border: 1px solid var(--color-gray-100); border-radius: var(--r-md); margin-top: var(--s-4); }
+.review-card .top { display: flex; justify-content: space-between; align-items: center; padding-bottom: var(--s-3); border-bottom: 1px solid var(--color-gray-100); margin-bottom: var(--s-3); }
+.review-card .top .t { font-size: 13px; font-weight: 700; }
+.review-card .top .edit { font-size: 12px; color: var(--color-accent-deep); font-weight: 700; }
+.kv-row { display: flex; padding: 6px 0; font-size: 14px; }
+.kv-row .k { width: 140px; color: var(--color-gray-500); flex-shrink: 0; }
+.kv-row .v { color: var(--color-ink); font-weight: 500; }
+
+/* 푸터 navigation */
+.form-footer { display: flex; justify-content: space-between; align-items: center; padding-top: var(--s-8); border-top: 1px solid var(--color-gray-100); margin-top: var(--s-10); }
+.btn { padding: 14px 26px; border-radius: var(--r-md); font-size: 15px; font-weight: 700; border: none; cursor: pointer; transition: all 160ms; display: inline-flex; align-items: center; gap: var(--s-2); }
+.btn-prev { background: transparent; color: var(--color-gray-700); }
+.btn-prev:hover { background: var(--color-gray-50); }
+.btn-prev:disabled { color: var(--color-gray-300); cursor: not-allowed; }
+.btn-next { background: var(--color-accent); color: #fff; }
+.btn-next:hover { background: var(--color-accent-deep); }
+.btn-submit { background: var(--color-ink); color: #fff; padding: 14px 32px; font-size: 16px; }
+.btn-submit:hover { background: #1a1814; }
+.save-draft { font-size: 13px; color: var(--color-gray-500); text-decoration: underline; }
+.save-draft:hover { color: var(--color-ink); }
+
+/* 완료 화면 */
+.success-screen { display: none; text-align: center; padding: var(--s-16) var(--s-12); }
+.success-screen.active { display: block; }
+.success-circle { width: 80px; height: 80px; border-radius: 50%; background: rgba(31,140,91,0.12); color: var(--color-success); display: inline-flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 800; animation: pop 600ms var(--ease-out-soft); margin-bottom: var(--s-6); }
+@keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.success-screen h2 { margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.025em; }
+.success-screen .sub { font-size: 16px; color: var(--color-gray-500); margin-top: var(--s-3); line-height: 1.6; }
+.success-actions { display: flex; gap: var(--s-3); justify-content: center; margin-top: var(--s-8); }
+</style>
+</head>
+<body>
+
+<header class="gheader">
+  <div class="gheader-inner">
+    <a href="hero.html" class="wordmark">Spot<span class="dot">.</span></a>
+    <nav class="gnav">
+      <a href="find.html">공간 찾기</a>
+      <a href="towns.html">팝업타운</a>
+      <a href="list-space.html" class="on">내 공간 등록</a>
+      <a href="story.html">이야기</a>
+      <a href="guide.html">이용 안내</a>
+    </nav>
+    <div class="right">
+      <div class="lang-toggle"><span class="lang on">KO</span><span>/</span><span class="lang">EN</span></div>
+      <a class="login" href="#">로그인</a>
+      <button class="signup">회원가입</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="title-row">
+    <h1>내 공간 등록하기</h1>
+    <p class="sub">5단계만 거치면 매물이 노출됩니다. 한 단계당 약 1~2분, 전체 약 10분.<br/>중간에 저장하고 나중에 이어 작성할 수 있습니다.</p>
+  </div>
+
+  <div class="layout">
+
+    <!-- 좌측 stepper -->
+    <aside class="stepper-side">
+      <div class="label">REGISTRATION · 5 STEPS</div>
+      <ol class="step-list">
+        <li class="step-item on" data-step="1"><span class="n">1</span><div><div class="t">위치</div><div class="d">주소·지도 핀</div></div></li>
+        <li class="step-item" data-step="2"><span class="n">2</span><div><div class="t">공간</div><div class="d">평수·층·시설</div></div></li>
+        <li class="step-item" data-step="3"><span class="n">3</span><div><div class="t">사진</div><div class="d">5~20장</div></div></li>
+        <li class="step-item" data-step="4"><span class="n">4</span><div><div class="t">임대 조건</div><div class="d">일 단위 임대료·규칙</div></div></li>
+        <li class="step-item" data-step="5"><span class="n">5</span><div><div class="t">가능 기간</div><div class="d">캘린더</div></div></li>
+        <li class="step-item" data-step="6"><span class="n">6</span><div><div class="t">검토 · 등록</div><div class="d">미리보기 후 게시</div></div></li>
+      </ol>
+
+      <div class="help-card">
+        <div class="title">막히면 운영팀에 알려주세요</div>
+        <p>"디지털이 처음이라 어려워요." 한 마디면 됩니다. 운영팀이 전화 또는 방문으로 도와드립니다.</p>
+        <a href="#" class="ch">@spot.kr 카톡 문의 →</a>
+      </div>
+    </aside>
+
+    <!-- 우측 폼 -->
+    <section class="form-area">
+
+      <!-- STEP 1: 위치 -->
+      <div class="form-step active" data-step="1">
+        <div class="step-head">
+          <div class="ey">STEP · 01 / 06</div>
+          <h2>공간 위치를 알려주세요</h2>
+          <div class="desc">정확한 주소가 노출되지는 않습니다. 임차 요청을 수락한 후에만 공개돼요.</div>
+        </div>
+
+        <div class="field">
+          <label>주소 검색 <span class="req">*</span></label>
+          <input class="input" type="text" placeholder="도로명 주소 또는 건물명" value="경상북도 포항시 북구 중앙로 ○○○" />
+          <div class="hint">검색하면 지도가 자동으로 이동합니다.</div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label>상세 주소 (호수·층)</label>
+            <input class="input" type="text" placeholder="예: 1층 좌측" value="1층 코너" />
+          </div>
+          <div class="field">
+            <label>노출용 별칭 (선택)</label>
+            <input class="input" type="text" placeholder="예: 중앙상가 통유리 코너" value="육거리 중앙상가 통유리 코너" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>지도 위치 확인</label>
+          <div class="map-mock">
+            <div class="map-pin"></div>
+            <div class="map-cap">포항 · 육거리 중앙상가</div>
+          </div>
+          <div class="hint">핀이 정확하지 않으면 드래그로 이동할 수 있습니다.</div>
+        </div>
+      </div>
+
+      <!-- STEP 2: 공간 -->
+      <div class="form-step" data-step="2">
+        <div class="step-head">
+          <div class="ey">STEP · 02 / 06</div>
+          <h2>공간을 알려주세요</h2>
+          <div class="desc">이 정보는 임차인이 가장 많이 보는 부분이에요. 정확할수록 매칭이 빠릅니다.</div>
+        </div>
+
+        <div class="row3">
+          <div class="field"><label>전용 면적 <span class="req">*</span></label><input class="input" type="text" value="12평 (39.6㎡)" /></div>
+          <div class="field"><label>층 <span class="req">*</span></label>
+            <select class="select"><option>1층</option><option>2층</option><option>3층 이상</option><option>지하</option></select>
+          </div>
+          <div class="field"><label>천장고</label><input class="input" type="text" value="3.2m" /></div>
+        </div>
+
+        <div class="field">
+          <label>공간 형태</label>
+          <div class="chips">
+            <button type="button" class="chip-btn on">코너</button>
+            <button type="button" class="chip-btn">통유리</button>
+            <button type="button" class="chip-btn">기둥 없음</button>
+            <button type="button" class="chip-btn">단독 입구</button>
+            <button type="button" class="chip-btn">2면 노출</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>시설 (해당하는 항목 선택)</label>
+          <div class="fac-grid">
+            <div class="fac-row on"><span class="ic">⚡</span><div><div class="nm">전기 증설 가능</div><div class="d">현재 5kW · 증설 협의</div></div></div>
+            <div class="fac-row on"><span class="ic">🚻</span><div><div class="nm">내부 화장실</div><div class="d">1실</div></div></div>
+            <div class="fac-row on"><span class="ic">❄</span><div><div class="nm">시스템 에어컨</div><div class="d">기본 설치</div></div></div>
+            <div class="fac-row"><span class="ic">💧</span><div><div class="nm">정화조 · 환기</div><div class="d">F&amp;B 협의 필요</div></div></div>
+            <div class="fac-row on"><span class="ic">📶</span><div><div class="nm">WiFi · POS 자리</div><div class="d">기본 제공</div></div></div>
+            <div class="fac-row"><span class="ic">🚗</span><div><div class="nm">주차 가능</div><div class="d">건물 주차장 협의</div></div></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>가능 업종 카테고리</label>
+          <div class="chips">
+            <button type="button" class="chip-btn on">패션·잡화</button>
+            <button type="button" class="chip-btn on">아트·전시</button>
+            <button type="button" class="chip-btn on">F&amp;B (시음·시식)</button>
+            <button type="button" class="chip-btn">F&amp;B (본격 조리)</button>
+            <button type="button" class="chip-btn on">뷰티·라이프스타일</button>
+            <button type="button" class="chip-btn">기타</button>
+          </div>
+          <div class="hint">F&amp;B 본격 조리는 정화조·환기 시설이 필요해서 단기로 어려운 경우가 많습니다.</div>
+        </div>
+
+        <div class="field">
+          <label>공간 한 줄 소개</label>
+          <textarea class="textarea">육거리 한복판, 통유리 두 면이 보행 동선을 그대로 받아내는 1층 코너. 천장 높고 기둥 없어 디스플레이 자유도가 높습니다.</textarea>
+        </div>
+      </div>
+
+      <!-- STEP 3: 사진 -->
+      <div class="form-step" data-step="3">
+        <div class="step-head">
+          <div class="ey">STEP · 03 / 06</div>
+          <h2>사진을 올려주세요</h2>
+          <div class="desc">사진이 의사결정의 70%입니다. 외관·내부·도면 PDF까지 골고루 5~20장.</div>
+        </div>
+
+        <div class="field">
+          <label>매물 사진 <span class="req">*</span></label>
+          <div class="photo-grid">
+            <div class="photo-slot main filled"><span class="badge">메인 · 외관</span></div>
+            <div class="photo-slot filled"><span class="badge">정면</span></div>
+            <div class="photo-slot filled"><span class="badge">측면</span></div>
+            <div class="photo-slot filled"><span class="badge">내부 — 카운터</span></div>
+            <div class="photo-slot filled"><span class="badge">야간</span></div>
+            <div class="photo-slot filled"><span class="badge">도면 PDF</span></div>
+            <div class="photo-slot"><span class="add">+</span></div>
+            <div class="photo-slot"><span class="add">+</span></div>
+          </div>
+          <div class="photo-info">
+            <div class="count">현재 <strong>6장</strong> · 최소 5장, 최대 20장</div>
+            <a href="#" style="color: var(--color-accent-deep); font-weight: 700;">사진 잘 찍는 법 가이드 보기 →</a>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>360° / VR 투어 (선택)</label>
+          <input class="input" type="text" placeholder="외부 도구 결과 URL을 붙여주세요" />
+          <div class="hint">없어도 괜찮습니다. 있으면 매물 상세에 임베드되어 전환율이 올라갑니다.</div>
+        </div>
+      </div>
+
+      <!-- STEP 4: 임대 조건 -->
+      <div class="form-step" data-step="4">
+        <div class="step-head">
+          <div class="ey">STEP · 04 / 06</div>
+          <h2>임대 조건을 정해주세요</h2>
+          <div class="desc">사장님이 받을 시설 사용료(임대료)는 일 단위 정액으로 책정합니다. Spot 서비스 이용료는 임차인이 별도 부담합니다.</div>
+        </div>
+
+        <div class="field">
+          <label>시설 사용료 (일 단위) <span class="req">*</span></label>
+          <div class="price-card">
+            <div class="price-row">
+              <input class="input input-big" type="text" value="50,000" />
+              <div style="font-size: 16px; font-weight: 700; color: var(--color-gray-500); padding-bottom: 16px;">원 / 일</div>
+            </div>
+            <div class="hint" style="margin-top: var(--s-3);">최근 6개월 육거리 평균 임대료: <strong>40,000~70,000원/일</strong></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>임차인 결제 시 표시 (참고)</label>
+          <div class="split-info">
+            <div class="cell">
+              <div class="l">사장님이 받는 임대료</div>
+              <div class="v">50,000원 / 일</div>
+              <div class="n">사장님 계좌로 직접 정산</div>
+            </div>
+            <div class="cell">
+              <div class="l">Spot 서비스 이용료 (임차인 부담)</div>
+              <div class="v">80,000원 / 일</div>
+              <div class="n">Spot이 임차인에게 청구</div>
+            </div>
+          </div>
+          <div class="svc-note">
+            Spot 서비스 이용료는 매칭·계약·결제·세금계산서·QR 방문자 측정·매출 대시보드·후기·분쟁 조율 등의 종합 인프라 대가입니다. 사장님은 이 부분과 무관합니다.
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label>보증금</label>
+            <input class="input" type="text" value="100,000" />
+            <div class="hint">종료 3영업일 내 환급. 시설 파손 시 차감.</div>
+          </div>
+          <div class="field">
+            <label>최소 이용 기간</label>
+            <select class="select">
+              <option>1일 (최소 단위)</option>
+              <option selected>3일</option>
+              <option>1주</option>
+              <option>2주</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label>운영 가능 시간</label>
+            <input class="input" type="text" value="10:00 ~ 22:00" />
+          </div>
+          <div class="field">
+            <label>입퇴실 시각</label>
+            <input class="input" type="text" value="입주 09:00 / 철수 22:00" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>이용 규칙 (선택)</label>
+          <textarea class="textarea">간판 시트지 부착 가능 (철거 시 원상복구). 야간 운영은 사전 협의. 화기 사용 금지. 원상복구 의무.</textarea>
+        </div>
+      </div>
+
+      <!-- STEP 5: 가능 기간 -->
+      <div class="form-step" data-step="5">
+        <div class="step-head">
+          <div class="ey">STEP · 05 / 06</div>
+          <h2>가능한 날짜를 선택해주세요</h2>
+          <div class="desc">이미 다른 일정이 있는 날은 클릭해서 마감 표시. 비어 있는 날을 선택하면 임차인이 그 안에서 요청할 수 있습니다.</div>
+        </div>
+
+        <div class="cal-wrap">
+          <div class="cal-nav">
+            <button type="button">← 이전 달</button>
+            <div class="month">2026년 6월</div>
+            <button type="button">다음 달 →</button>
+          </div>
+          <div class="cal-grid">
+            <div class="cal-dow">월</div><div class="cal-dow">화</div><div class="cal-dow">수</div><div class="cal-dow">목</div><div class="cal-dow">금</div><div class="cal-dow">토</div><div class="cal-dow">일</div>
+
+            <div class="cal-day empty"></div>
+            <div class="cal-day empty"></div>
+            <div class="cal-day empty"></div>
+            <div class="cal-day empty"></div>
+            <div class="cal-day closed">1</div>
+            <div class="cal-day closed">2</div>
+            <div class="cal-day closed">3</div>
+
+            <div class="cal-day avail">4</div>
+            <div class="cal-day avail">5</div>
+            <div class="cal-day avail">6</div>
+            <div class="cal-day avail">7</div>
+            <div class="cal-day avail">8</div>
+            <div class="cal-day avail">9</div>
+            <div class="cal-day avail">10</div>
+
+            <div class="cal-day avail">11</div>
+            <div class="cal-day avail">12</div>
+            <div class="cal-day avail">13</div>
+            <div class="cal-day avail">14</div>
+            <div class="cal-day avail">15</div>
+            <div class="cal-day avail">16</div>
+            <div class="cal-day avail">17</div>
+
+            <div class="cal-day avail">18</div>
+            <div class="cal-day avail">19</div>
+            <div class="cal-day avail">20</div>
+            <div class="cal-day closed">21</div>
+            <div class="cal-day closed">22</div>
+            <div class="cal-day closed">23</div>
+            <div class="cal-day closed">24</div>
+
+            <div class="cal-day avail">25</div>
+            <div class="cal-day avail">26</div>
+            <div class="cal-day avail">27</div>
+            <div class="cal-day avail">28</div>
+            <div class="cal-day avail">29</div>
+            <div class="cal-day avail">30</div>
+            <div class="cal-day empty"></div>
+          </div>
+          <div class="cal-legend">
+            <span><span class="swatch" style="background: var(--color-accent-soft); border:1px solid rgba(216,65,15,0.2);"></span>임대 가능 (클릭하면 마감으로)</span>
+            <span><span class="swatch" style="background: var(--color-gray-100);"></span>마감 (클릭하면 가능으로)</span>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top: var(--s-8);">
+          <label>가능 기간 메모 (선택)</label>
+          <textarea class="textarea" placeholder="예: 6월은 모두 가능. 7월부터는 협의 후 결정.">6월은 모두 가능. 21~24일은 가족 행사로 마감.</textarea>
+        </div>
+      </div>
+
+      <!-- STEP 6: 검토·등록 -->
+      <div class="form-step" data-step="6">
+        <div class="step-head">
+          <div class="ey">STEP · 06 / 06</div>
+          <h2>입력한 내용 확인</h2>
+          <div class="desc">최종 등록 전 확인하세요. 등록 후에도 언제든 수정·일시 비활성화할 수 있습니다.</div>
+        </div>
+
+        <div class="review-card">
+          <div class="top"><div class="t">① 위치</div><a class="edit" data-go="1">수정 →</a></div>
+          <div class="kv-row"><span class="k">주소</span><span class="v">경상북도 포항시 북구 중앙로 ○○○ · 1층 코너</span></div>
+          <div class="kv-row"><span class="k">노출 별칭</span><span class="v">육거리 중앙상가 통유리 코너</span></div>
+        </div>
+
+        <div class="review-card">
+          <div class="top"><div class="t">② 공간</div><a class="edit" data-go="2">수정 →</a></div>
+          <div class="kv-row"><span class="k">면적·층</span><span class="v">12평 (39.6㎡) · 1층</span></div>
+          <div class="kv-row"><span class="k">천장고</span><span class="v">3.2m</span></div>
+          <div class="kv-row"><span class="k">형태</span><span class="v">코너 · 통유리 · 2면 노출</span></div>
+          <div class="kv-row"><span class="k">시설</span><span class="v">전기 증설 가능 · 화장실 · 시스템 에어컨 · WiFi</span></div>
+          <div class="kv-row"><span class="k">업종</span><span class="v">패션·잡화 · 아트·전시 · F&amp;B 시음 · 뷰티</span></div>
+        </div>
+
+        <div class="review-card">
+          <div class="top"><div class="t">③ 사진</div><a class="edit" data-go="3">수정 →</a></div>
+          <div class="kv-row"><span class="k">업로드</span><span class="v">사진 6장 · 도면 PDF 포함</span></div>
+        </div>
+
+        <div class="review-card">
+          <div class="top"><div class="t">④ 임대 조건</div><a class="edit" data-go="4">수정 →</a></div>
+          <div class="kv-row"><span class="k">시설 사용료</span><span class="v" style="color: var(--color-accent-deep); font-weight: 700;">50,000원 / 일</span></div>
+          <div class="kv-row"><span class="k">보증금</span><span class="v">100,000원</span></div>
+          <div class="kv-row"><span class="k">최소 기간</span><span class="v">3일</span></div>
+          <div class="kv-row"><span class="k">운영 시간</span><span class="v">10:00 ~ 22:00</span></div>
+        </div>
+
+        <div class="review-card">
+          <div class="top"><div class="t">⑤ 가능 기간</div><a class="edit" data-go="5">수정 →</a></div>
+          <div class="kv-row"><span class="k">2026년 6월</span><span class="v">25일 가능 · 6일 마감</span></div>
+        </div>
+
+        <div style="padding: var(--s-5); background: var(--color-paper); border-radius: var(--r-md); margin-top: var(--s-5); font-size: 14px; line-height: 1.7;">
+          <strong>매물 게시 전 마지막 확인</strong><br/>
+          <span style="color: var(--color-gray-700);">소유 확인 서류(등기부 또는 임대 권한 위임장)는 등록 직후 운영팀이 검토합니다. 보통 1~2 영업일 내에 ✓ 검증 마크가 부여되고, 그때부터 매물이 검색 결과에 노출됩니다.</span>
+        </div>
+      </div>
+
+      <!-- 완료 화면 -->
+      <div class="success-screen" id="success">
+        <div class="success-circle">✓</div>
+        <h2>매물이 등록되었습니다</h2>
+        <p class="sub">소유 확인 서류 검토 후 보통 1~2 영업일 내 매물이 검색 결과에 노출됩니다.<br/>임차 요청이 들어오면 카카오톡과 메일로 알려드립니다.</p>
+        <div class="success-actions">
+          <a href="hero.html" class="btn btn-prev" style="border: 1px solid var(--color-gray-100);">홈으로</a>
+          <a href="space-detail.html" class="btn btn-submit">내 매물 보기 →</a>
+        </div>
+      </div>
+
+      <!-- 폼 푸터 (이전/다음) -->
+      <div class="form-footer" id="form-footer">
+        <button type="button" class="btn btn-prev" id="prevBtn" disabled>← 이전</button>
+        <a href="#" class="save-draft">중간 저장 (나중에 이어쓰기)</a>
+        <button type="button" class="btn btn-next" id="nextBtn">다음 →</button>
+      </div>
+
+    </section>
+  </div>
+</main>
+
+<script>
+(function() {
+  var stepNo = 1;
+  var maxStep = 6;
+  var stepItems = document.querySelectorAll('.step-item');
+  var formSteps = document.querySelectorAll('.form-step');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var footer = document.getElementById('form-footer');
+  var success = document.getElementById('success');
+
+  function showStep(n) {
+    stepNo = n;
+    stepItems.forEach(function(item, i) {
+      var s = i + 1;
+      item.classList.toggle('on', s === n);
+      item.classList.toggle('done', s < n);
+    });
+    formSteps.forEach(function(fs) {
+      fs.classList.toggle('active', parseInt(fs.dataset.step, 10) === n);
+    });
+    prevBtn.disabled = (n === 1);
+    if (n === maxStep) {
+      nextBtn.textContent = '매물 등록하기 ✓';
+      nextBtn.classList.remove('btn-next');
+      nextBtn.classList.add('btn-submit');
+    } else {
+      nextBtn.textContent = '다음 →';
+      nextBtn.classList.remove('btn-submit');
+      nextBtn.classList.add('btn-next');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  prevBtn.addEventListener('click', function() {
+    if (stepNo > 1) showStep(stepNo - 1);
+  });
+  nextBtn.addEventListener('click', function() {
+    if (stepNo < maxStep) {
+      showStep(stepNo + 1);
+    } else {
+      // 등록 완료
+      formSteps.forEach(function(fs) { fs.classList.remove('active'); });
+      footer.style.display = 'none';
+      success.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+  stepItems.forEach(function(item) {
+    item.addEventListener('click', function() {
+      showStep(parseInt(item.dataset.step, 10));
+    });
+  });
+  // 검토 화면 수정 → 해당 단계로
+  document.querySelectorAll('.review-card .edit').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      showStep(parseInt(a.dataset.go, 10));
+    });
+  });
+  // 시설 fac-row 토글
+  document.querySelectorAll('.fac-row').forEach(function(r) {
+    r.addEventListener('click', function() { r.classList.toggle('on'); });
+  });
+  // 칩 토글
+  document.querySelectorAll('.chip-btn').forEach(function(c) {
+    c.addEventListener('click', function() { c.classList.toggle('on'); });
+  });
+  // 캘린더 일 토글
+  document.querySelectorAll('.cal-day').forEach(function(d) {
+    if (d.classList.contains('empty')) return;
+    d.addEventListener('click', function() {
+      if (d.classList.contains('avail')) {
+        d.classList.remove('avail');
+        d.classList.add('closed');
+      } else {
+        d.classList.remove('closed');
+        d.classList.add('avail');
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

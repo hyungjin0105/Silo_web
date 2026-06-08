@@ -1,0 +1,433 @@
+<!-- Spot — 계약 검토·서명 (Contract Review & Sign) v0.1 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>Spot — 시설 이용계약서 검토·서명</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --color-ink: #0A0A0A;
+  --color-paper: #F4EFE6;
+  --color-paper-pure: #FFFFFF;
+  --color-accent: #FF5A1F;
+  --color-accent-deep: #D8410F;
+  --color-accent-soft: #FFE7DC;
+  --color-gray-50: #F7F5F1;
+  --color-gray-100: #E8E4DD;
+  --color-gray-300: #BDB7AD;
+  --color-gray-500: #7A736A;
+  --color-gray-700: #3F3A33;
+  --color-warning: #C7901A;
+  --color-success: #1F8C5B;
+
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+  --r-sm: 4px; --r-md: 8px; --r-lg: 16px; --r-pill: 9999px;
+
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --container: 1200px;
+  --header-h: 60px;
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+html, body { margin: 0; padding: 0; min-width: 1280px; }
+body { font-family: var(--font-sans); color: var(--color-ink); background: var(--color-gray-50); letter-spacing: -0.01em; word-break: keep-all; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+
+@media (max-width: 1023px) { html { zoom: 0.78; } }
+
+.mono-sm { font-family: var(--font-mono); font-size: 12px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.mono-xs { font-family: var(--font-mono); font-size: 11px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* 헤더 공통 */
+.gheader { position: sticky; top: 0; z-index: 30; background: var(--color-paper-pure); border-bottom: 1px solid var(--color-gray-100); }
+.gheader-inner { max-width: 1200px; margin: 0 auto; height: var(--header-h); padding: 0 var(--s-12); display: flex; align-items: center; gap: var(--s-6); }
+.wordmark { font-weight: 800; font-size: 20px; letter-spacing: -0.035em; padding-right: var(--s-3); border-right: 1px solid var(--color-gray-100); margin-right: var(--s-3); }
+.wordmark .dot { color: var(--color-accent); }
+.gnav { display: flex; gap: var(--s-6); }
+.gnav a { font-size: 14px; font-weight: 500; padding: 6px 2px; }
+.gnav a.on { color: var(--color-accent-deep); }
+.gheader .right { margin-left: auto; display: flex; align-items: center; gap: var(--s-5); }
+.lang-toggle { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: var(--color-gray-300); display: inline-flex; gap: 6px; }
+.lang-toggle .lang.on { color: var(--color-ink); font-weight: 700; }
+.gheader .login { font-size: 14px; font-weight: 500; }
+.gheader .signup { background: var(--color-ink); color: var(--color-paper-pure); border: none; padding: 10px 20px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; }
+
+/* 진행 단계 — 3/4 */
+.stepper { background: var(--color-paper-pure); border-bottom: 1px solid var(--color-gray-100); }
+.stepper-inner { max-width: 1100px; margin: 0 auto; padding: var(--s-5) var(--s-12); display: flex; align-items: center; }
+.step { display: flex; align-items: center; gap: var(--s-3); flex: 1; }
+.step .n { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 12px; font-weight: 700; background: var(--color-gray-100); color: var(--color-gray-500); }
+.step.on .n { background: var(--color-ink); color: var(--color-paper-pure); }
+.step.done .n { background: var(--color-accent); color: var(--color-paper-pure); }
+.step .l { font-size: 13px; font-weight: 500; color: var(--color-gray-500); }
+.step.on .l, .step.done .l { color: var(--color-ink); }
+.step-bar { flex: 0 1 32px; height: 1px; background: var(--color-gray-100); margin: 0 var(--s-2); }
+.step-bar.done { background: var(--color-accent); }
+
+/* 본문 */
+main { max-width: var(--container); margin: 0 auto; padding: var(--s-10) var(--s-12) var(--s-16); }
+.title-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: var(--s-6); }
+.title-row h1 { margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.025em; }
+.title-row .sub { font-size: 14px; color: var(--color-gray-500); margin-top: var(--s-2); }
+.title-row .right-info { font-family: var(--font-mono); font-size: 12px; color: var(--color-gray-500); letter-spacing: 0.08em; text-transform: uppercase; }
+
+.layout { display: grid; grid-template-columns: 1fr 360px; gap: var(--s-8); align-items: start; }
+
+/* 계약서 본체 */
+.doc { background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-lg); overflow: hidden; }
+.doc-head { padding: var(--s-10) var(--s-12) var(--s-8); border-bottom: 1px solid var(--color-gray-100); text-align: center; background: linear-gradient(to bottom, var(--color-paper) 0%, var(--color-paper-pure) 100%); }
+.doc-head .crest { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; color: var(--color-gray-500); text-transform: uppercase; }
+.doc-head h2 { margin: var(--s-3) 0 0; font-size: 28px; font-weight: 800; letter-spacing: -0.025em; }
+.doc-head .meta { margin-top: var(--s-3); font-size: 13px; color: var(--color-gray-500); }
+
+/* 파티 정보 */
+.parties { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--color-gray-100); border-bottom: 1px solid var(--color-gray-100); }
+.party { background: var(--color-paper-pure); padding: var(--s-6) var(--s-8); }
+.party .role { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); letter-spacing: 0.08em; text-transform: uppercase; }
+.party .nm { font-size: 18px; font-weight: 700; margin-top: 6px; }
+.party .ln { font-size: 13px; color: var(--color-gray-500); margin-top: 4px; line-height: 1.5; }
+
+/* 조항 */
+.clauses { padding: var(--s-8) var(--s-12) var(--s-12); }
+.clause { padding: var(--s-6) 0; border-top: 1px solid var(--color-gray-100); }
+.clause:first-child { border-top: none; padding-top: 0; }
+.clause-head { display: flex; align-items: baseline; gap: var(--s-3); margin-bottom: var(--s-3); }
+.clause-head .no { font-family: var(--font-mono); font-size: 12px; color: var(--color-gray-500); letter-spacing: 0.08em; font-weight: 700; }
+.clause-head h3 { margin: 0; font-size: 17px; font-weight: 700; }
+.clause-head .help {
+  margin-left: auto; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--color-accent-soft); color: var(--color-accent-deep);
+  border: none; font-size: 13px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.clause-help { display: none; background: var(--color-accent-soft); color: var(--color-accent-deep); border-radius: var(--r-md); padding: var(--s-3) var(--s-4); font-size: 13px; line-height: 1.55; margin-top: var(--s-3); }
+.clause.open .clause-help { display: block; }
+.clause-body { font-size: 15px; line-height: 1.75; color: var(--color-gray-700); }
+.clause-body strong { color: var(--color-ink); font-weight: 700; }
+.clause-body .var { background: var(--color-accent-soft); color: var(--color-accent-deep); padding: 1px 6px; border-radius: 3px; font-weight: 700; }
+
+/* 표 (조항 안에 들어가는 표) */
+.tbl { width: 100%; border-collapse: collapse; margin-top: var(--s-3); font-size: 14px; }
+.tbl th, .tbl td { border: 1px solid var(--color-gray-100); padding: 10px 14px; text-align: left; }
+.tbl th { background: var(--color-gray-50); font-weight: 700; }
+
+/* 서명 패널 (우측) */
+.sign-card { background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-lg); padding: var(--s-6); position: sticky; top: calc(var(--header-h) + 24px); }
+.sign-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); letter-spacing: 0.08em; text-transform: uppercase; }
+.sign-status { margin-top: var(--s-3); }
+.sign-row { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-4) 0; border-top: 1px solid var(--color-gray-100); }
+.sign-row:first-of-type { border-top: none; }
+.sign-row .av { width: 40px; height: 40px; border-radius: 50%; background: var(--color-gray-100); color: var(--color-gray-500); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+.sign-row .info { flex: 1; }
+.sign-row .role { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); letter-spacing: 0.08em; text-transform: uppercase; }
+.sign-row .nm { font-size: 14px; font-weight: 700; margin-top: 2px; }
+.sign-row .when { font-size: 11px; color: var(--color-gray-500); margin-top: 2px; font-family: var(--font-mono); letter-spacing: 0.04em; }
+.sign-mark { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: var(--r-pill); }
+.sign-mark.done { background: rgba(31,140,91,0.12); color: var(--color-success); }
+.sign-mark.pend { background: var(--color-gray-100); color: var(--color-gray-500); }
+
+.sign-cta { display: block; width: 100%; background: var(--color-accent); color: #fff; border: none; border-radius: var(--r-md); height: 52px; font-size: 16px; font-weight: 700; margin-top: var(--s-5); text-align: center; line-height: 52px; }
+.sign-cta:hover { background: var(--color-accent-deep); }
+.sign-foot { font-size: 12px; color: var(--color-gray-500); text-align: center; margin-top: var(--s-3); line-height: 1.5; }
+.sign-aux { display: flex; gap: var(--s-2); margin-top: var(--s-3); }
+.sign-aux button { flex: 1; background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-md); padding: 10px; font-size: 13px; color: var(--color-gray-700); }
+.sign-aux button:hover { border-color: var(--color-ink); }
+
+/* 결제 미리보기 카드 */
+.preview { background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-lg); padding: var(--s-6); margin-top: var(--s-5); }
+.preview h3 { margin: 0 0 var(--s-3); font-size: 14px; font-weight: 700; }
+.preview .pr { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; color: var(--color-gray-700); }
+.preview .pr.total { border-top: 1px solid var(--color-gray-100); padding-top: var(--s-3); margin-top: var(--s-2); font-size: 15px; font-weight: 700; color: var(--color-ink); }
+
+/* 서명 모달 */
+.modal-bg { position: fixed; inset: 0; background: rgba(10,10,10,0.5); display: none; align-items: center; justify-content: center; z-index: 100; }
+.modal-bg.on { display: flex; }
+.modal { background: var(--color-paper-pure); border-radius: var(--r-lg); padding: var(--s-10); width: 480px; box-shadow: 0 8px 40px rgba(10,10,10,0.2); }
+.modal h3 { margin: 0 0 var(--s-3); font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+.modal p { font-size: 14px; color: var(--color-gray-500); line-height: 1.55; }
+.sig-pad { margin-top: var(--s-5); border: 1.5px dashed var(--color-gray-100); border-radius: var(--r-md); background: var(--color-gray-50); height: 160px; display: flex; align-items: center; justify-content: center; color: var(--color-gray-300); font-size: 14px; }
+.sig-pad.signed { background: var(--color-paper-pure); border-style: solid; color: var(--color-ink); font-family: 'Brush Script MT', cursive; font-size: 42px; }
+.modal-actions { display: flex; gap: var(--s-3); margin-top: var(--s-5); }
+.btn-line { flex: 1; padding: 12px; border: 1px solid var(--color-gray-100); background: var(--color-paper-pure); border-radius: var(--r-md); font-size: 14px; font-weight: 500; }
+.btn-fill { flex: 2; padding: 12px; background: var(--color-ink); color: var(--color-paper-pure); border: none; border-radius: var(--r-md); font-size: 14px; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<header class="gheader">
+  <div class="gheader-inner">
+    <a href="hero.html" class="wordmark">Spot<span class="dot">.</span></a>
+    <nav class="gnav">
+      <a href="find.html" class="on">공간 찾기</a>
+      <a href="towns.html">팝업타운</a>
+      <a href="list-space.html">내 공간 등록</a>
+      <a href="story.html">이야기</a>
+      <a href="guide.html">이용 안내</a>
+    </nav>
+    <div class="right">
+      <div class="lang-toggle"><span class="lang on">KO</span><span>/</span><span class="lang">EN</span></div>
+      <a class="login" href="#">로그인</a>
+      <button class="signup">회원가입</button>
+    </div>
+  </div>
+</header>
+
+<div class="stepper">
+  <div class="stepper-inner">
+    <div class="step done"><span class="n">✓</span><span class="l">요청 보내기</span></div>
+    <div class="step-bar done"></div>
+    <div class="step done"><span class="n">✓</span><span class="l">임대인 수락</span></div>
+    <div class="step-bar done"></div>
+    <div class="step on"><span class="n">3</span><span class="l">계약·서명</span></div>
+    <div class="step-bar"></div>
+    <div class="step"><span class="n">4</span><span class="l">결제 · 입주</span></div>
+  </div>
+</div>
+
+<main>
+
+  <div class="title-row">
+    <div>
+      <h1>시설 이용계약서 검토·서명</h1>
+      <div class="sub">조항 옆 <strong>?</strong> 버튼을 누르면 쉬운 말 풀이가 펼쳐집니다. 임대인은 이미 서명을 마쳤습니다.</div>
+    </div>
+    <div class="right-info">계약 번호 · C-2026-0528-K07</div>
+  </div>
+
+  <div class="layout">
+
+    <div class="doc">
+
+      <div class="doc-head">
+        <div class="crest">SPOT · 표준 시설 이용계약서</div>
+        <h2>시설 이용계약서</h2>
+        <div class="meta">2026년 6월 4일 ~ 6월 10일 (7일) · 성수동 12평 1층 통유리 코너</div>
+      </div>
+
+      <!-- 당사자 -->
+      <div class="parties">
+        <div class="party">
+          <div class="role">시설 제공자 (대관자)</div>
+          <div class="nm">박○○</div>
+          <div class="ln">서울 성동구 성수동2가 ○○○-○○<br/>휴대폰 010-○○○○-○○○○</div>
+        </div>
+        <div class="party">
+          <div class="role">시설 이용자 (대관 이용자)</div>
+          <div class="nm">㈜브랜드K · 김○○</div>
+          <div class="ln">사업자번호 ○○○-○○-○○○○○<br/>휴대폰 010-○○○○-○○○○</div>
+        </div>
+      </div>
+
+      <!-- 조항 -->
+      <div class="clauses">
+
+        <article class="clause">
+          <div class="clause-head">
+            <span class="no">제 1 조</span>
+            <h3>본 계약의 성격</h3>
+            <button class="help" type="button" aria-label="쉬운 말 풀이">?</button>
+          </div>
+          <div class="clause-help">이 계약은 "공간을 통째로 빌리는 임대차"가 아니라 "정해진 기간 동안 시설을 사용하도록 허락하는 것"입니다. 그래서 계약서 이름도 '시설 이용계약서'입니다.</div>
+          <div class="clause-body">
+            본 계약은 시설 제공자가 시설 이용자에게 별첨 시설(이하 "시설")의 <strong>일시적 사용을 허락</strong>하는 것을 목적으로 하며, 부동산 임대차 계약이 아니다. 시설 이용자는 본 계약에서 정한 목적과 기간에 한정하여 시설을 사용한다.
+          </div>
+        </article>
+
+        <article class="clause">
+          <div class="clause-head">
+            <span class="no">제 2 조</span>
+            <h3>사용 목적</h3>
+            <button class="help" type="button" aria-label="쉬운 말 풀이">?</button>
+          </div>
+          <div class="clause-help">"팝업스토어로만 쓰겠다"는 약속입니다. 음식점·미용실 같이 별도 시설·인허가가 필요한 영업은 사전 협의가 필요합니다.</div>
+          <div class="clause-body">
+            시설 이용자는 시설을 <span class="var">팝업스토어 운영 (판매·홍보·체험)</span> 목적으로만 사용하며, 그 외 목적으로 사용할 수 없다. 본 계약의 사용 목적은 시설 이용자의 사업 카테고리 <span class="var">패션·잡화</span>에 한정한다.
+          </div>
+        </article>
+
+        <article class="clause">
+          <div class="clause-head">
+            <span class="no">제 3 조</span>
+            <h3>사용 기간 및 운영 시간</h3>
+            <button class="help" type="button" aria-label="쉬운 말 풀이">?</button>
+          </div>
+          <div class="clause-help">언제부터 언제까지, 매일 몇 시부터 몇 시까지 쓸 수 있는지 정확히 적어두는 조항입니다. 입장과 철수 시각도 분 단위로.</div>
+          <div class="clause-body">
+            <table class="tbl">
+              <tr><th>사용 시작</th><td><span class="var">2026년 6월 4일 (목) 09:00</span> — 입주·설치 시작</td></tr>
+              <tr><th>사용 종료</th><td><span class="var">2026년 6월 10일 (수) 22:00</span> — 철수 완료</td></tr>
+              <tr><th>운영 시간</th><td><span class="var">매일 10:00 ~ 20:00</span></td></tr>
+              <tr><th>총 일수</th><td><span class="var">7일</span></td></tr>
+            </table>
+          </div>
+        </article>
+
+        <article class="clause">
+          <div class="clause-head">
+            <span class="no">제 4 조</span>
+            <h3>사용료 및 Spot 서비스 이용료</h3>
+            <button class="help" type="button" aria-label="쉬운 말 풀이">?</button>
+          </div>
+          <div class="clause-help">돈이 두 종류로 나뉩니다. ① 시설 사용료(임대료)는 건물주에게. ② Spot 서비스 이용료는 플랫폼에. 다음 결제 화면에서 함께 결제하지만 정산은 분리됩니다.</div>
+          <div class="clause-body">
+            본 계약의 대가는 두 항목으로 구성된다. 시설 이용자는 결제 단계에서 양 항목을 분리하여 인지하고 지급한다.
+            <table class="tbl">
+              <tr><th></th><th>지급 대상</th><th>단가</th><th>총액</th></tr>
+              <tr><td><strong>① 시설 사용료</strong></td><td>시설 제공자 (박○○)</td><td><span class="var">50,000원 / 일</span></td><td><span class="var">350,000원</span></td></tr>
+              <tr><td><strong>② Spot 서비스 이용료</strong></td><td>㈜Spot</td><td><span class="var">80,000원 / 일</span></td><td><span class="var">560,000원</span></td></tr>
+              <tr><th>합계</th><td colspan="3"><strong>910,000원</strong> (부가세 별도)</td></tr>
+            </table>
+            <p style="margin-top: var(--s-3);">Spot 서비스 이용료는 본 계약을 가능하게 하는 종합 인프라(매물 검증·계약·결제·세금계산서·QR 방문자 측정·매출 대시보드·후기 관리·분쟁 조율·보험 안내)의 대가이며, 시설 사용료와는 별개의 서비스 대가이다.</p>
+          </div>
+        </article>
+
+        <article class="clause">
+          <div class="clause-head">
+            <span class="no">제 5 조</span>
+            <h3>보증금 및 원상복구</h3>
+            <button class="help" type="button" aria-label="쉬운 말 풀이">?</button>
+          </div>
+          <div class="clause-help">시설을 망가뜨리거나 원상복구를 안 했을 때를 대비해 미리 받아두는 돈입니다. 문제 없으면 종료 후 3일 안에 전액 돌려받습니다.</div>
+          <div class="clause-body">
+            시설 이용자는 보증금 <span class="var">100,000원</span>을 결제와 함께 예치한다. 종료일 점검 후 <strong>3영업일 이내 환급</strong>한다. 시설물 파손·원상복구 미흡 시 그 비용을 보증금에서 차감 후 잔액 환급한다.
+          </div>
+        </article>
+
+        <article class="clause">
+          <div class="clause-head">
+            <span class="no">제 6 조</span>
+            <h3>시설물 파손·사고 책임</h3>
+            <button class="help" type="button" aria-label="쉬운 말 풀이">?</button>
+          </div>
+          <div class="clause-help">운영 중 사고가 났을 때 누가 책임지는지 정한 조항. 행사 배상책임보험에 가입하면 안심입니다.</div>
+          <div class="clause-body">
+            시설 이용자의 운영으로 발생한 시설물 파손, 방문객 안전 사고, 인접 점포·보행자 피해는 시설 이용자가 책임진다. Spot은 행사 배상책임보험 일 단위 가입 옵션을 제공한다.
+          </div>
+        </article>
+
+        <article class="clause">
+          <div class="clause-head">
+            <span class="no">제 7 조</span>
+            <h3>취소·환불</h3>
+            <button class="help" type="button" aria-label="쉬운 말 풀이">?</button>
+          </div>
+          <div class="clause-help">취소 시점에 따라 돌려받는 금액이 달라집니다. 시설 사용료·서비스 이용료 모두 동일한 비율로 적용됩니다.</div>
+          <div class="clause-body">
+            <table class="tbl">
+              <tr><th>시작일 기준</th><th>시설 사용료</th><th>Spot 서비스 이용료</th></tr>
+              <tr><td>14일 전</td><td>100% 환불</td><td>100% 환불</td></tr>
+              <tr><td>7일 전</td><td>50% 환불</td><td>50% 환불</td></tr>
+              <tr><td>3일 전</td><td>환불 불가</td><td>환불 불가</td></tr>
+            </table>
+          </div>
+        </article>
+
+        <article class="clause">
+          <div class="clause-head">
+            <span class="no">제 8 조</span>
+            <h3>인허가 책임</h3>
+            <button class="help" type="button" aria-label="쉬운 말 풀이">?</button>
+          </div>
+          <div class="clause-help">사업자등록·영업신고는 임차인이 직접 책임집니다. F&amp;B 본격 조리 같이 시설 요건이 있는 영업은 사전에 가능 여부를 확인하세요.</div>
+          <div class="clause-body">
+            시설에서 이루어지는 영업 활동에 필요한 <strong>사업자등록·영업신고·인허가</strong>는 모두 시설 이용자의 책임이다. 시설 제공자와 Spot은 인허가 미비로 발생하는 손해에 대해 책임지지 않는다.
+          </div>
+        </article>
+
+        <article class="clause">
+          <div class="clause-head">
+            <span class="no">제 9 조</span>
+            <h3>분쟁 해결</h3>
+            <button class="help" type="button" aria-label="쉬운 말 풀이">?</button>
+          </div>
+          <div class="clause-help">문제가 생기면 먼저 Spot 운영팀이 양측 이야기를 듣고 조율을 시도합니다. 합의가 안 되면 정해진 법원으로 갑니다.</div>
+          <div class="clause-body">
+            본 계약과 관련된 분쟁은 우선 Spot 운영팀의 1차 조율을 거치고, 합의에 이르지 못한 경우 <strong>서울중앙지방법원</strong>을 1심 관할 법원으로 한다.
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- 우측 서명 패널 -->
+    <div>
+      <div class="sign-card">
+        <div class="sign-eyebrow">서명 진행 상황</div>
+        <div class="sign-status">
+          <div class="sign-row">
+            <span class="av" style="background: rgba(31,140,91,0.12); color: var(--color-success);">박</span>
+            <div class="info">
+              <div class="role">시설 제공자</div>
+              <div class="nm">박○○</div>
+              <div class="when">2026.05.28 14:32 서명 완료</div>
+            </div>
+            <span class="sign-mark done">완료</span>
+          </div>
+          <div class="sign-row">
+            <span class="av">K</span>
+            <div class="info">
+              <div class="role">시설 이용자 (당신)</div>
+              <div class="nm">㈜브랜드K · 김○○</div>
+              <div class="when">서명 대기 중</div>
+            </div>
+            <span class="sign-mark pend">대기</span>
+          </div>
+        </div>
+
+        <button class="sign-cta" onclick="document.getElementById('mb').classList.add('on')">동의 후 서명하기</button>
+        <div class="sign-foot">서명 완료 시 법적 효력이 발생하고 결제 단계로 이동합니다.</div>
+
+        <div class="sign-aux">
+          <button>PDF 미리보기</button>
+          <button>의견 남기기</button>
+        </div>
+      </div>
+
+      <div class="preview">
+        <h3>다음 단계 결제 미리보기</h3>
+        <div class="pr"><span>① 시설 사용료 (건물주)</span><span>350,000원</span></div>
+        <div class="pr"><span>② Spot 서비스 이용료</span><span>560,000원</span></div>
+        <div class="pr"><span>③ 보증금</span><span>100,000원</span></div>
+        <div class="pr total"><span>결제 합계</span><span>1,010,000원</span></div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- 서명 모달 -->
+<div class="modal-bg" id="mb">
+  <div class="modal">
+    <h3>전자서명</h3>
+    <p>서명란에 이름 또는 사인을 입력하면 법적 효력이 발생합니다. 시연 환경에서는 클릭 한 번으로 서명됩니다.</p>
+    <div class="sig-pad" id="sp" onclick="this.classList.add('signed'); this.textContent='김○○';">클릭하여 서명</div>
+    <div class="modal-actions">
+      <button class="btn-line" onclick="document.getElementById('mb').classList.remove('on')">취소</button>
+      <button class="btn-fill" onclick="window.location='payment.html'">서명 완료 → 결제로</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// 조항 쉬운 말 풀이 토글
+document.querySelectorAll('.clause .help').forEach(btn => {
+  btn.addEventListener('click', () => btn.closest('.clause').classList.toggle('open'));
+});
+</script>
+
+</body>
+</html>

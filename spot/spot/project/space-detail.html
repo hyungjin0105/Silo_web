@@ -1,0 +1,592 @@
+<!-- Spot — 매물 상세 (Space Detail) v0.1 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>Spot — 성수동 12평 1층 통유리 코너</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --color-ink: #0A0A0A;
+  --color-paper: #F4EFE6;
+  --color-paper-pure: #FFFFFF;
+  --color-accent: #FF5A1F;
+  --color-accent-deep: #D8410F;
+  --color-accent-soft: #FFE7DC;
+  --color-gray-50: #F7F5F1;
+  --color-gray-100: #E8E4DD;
+  --color-gray-300: #BDB7AD;
+  --color-gray-500: #7A736A;
+  --color-gray-700: #3F3A33;
+  --color-warning: #C7901A;
+
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 16px;
+  --r-pill: 9999px;
+
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --container: 1200px;
+  --header-h: 60px;
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html, body { margin: 0; padding: 0; min-width: 1280px; }
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: var(--color-paper-pure);
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+img { display: block; max-width: 100%; }
+
+@media (max-width: 1023px) { html { zoom: 0.78; } }
+
+.mono-sm { font-family: var(--font-mono); font-size: 12px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.mono-xs { font-family: var(--font-mono); font-size: 11px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.body-lg { font-size: 18px; line-height: 1.55; font-weight: 400; }
+.body    { font-size: 17px; line-height: 1.55; font-weight: 400; }
+.body-sm { font-size: 15px; line-height: 1.5;  font-weight: 400; }
+.body-xs { font-size: 13px; line-height: 1.45; font-weight: 400; color: var(--color-gray-500); }
+
+/* ── 글로벌 헤더 pill ── */
+.gheader {
+  position: sticky; top: 0; z-index: 30;
+  background: var(--color-paper-pure);
+  border-bottom: 1px solid var(--color-gray-100);
+}
+.gheader-inner {
+  max-width: var(--container); margin: 0 auto;
+  height: var(--header-h);
+  padding: 0 var(--s-12);
+  display: flex; align-items: center; gap: var(--s-6);
+}
+.wordmark {
+  font-weight: 800; font-size: 20px; letter-spacing: -0.035em;
+  color: var(--color-ink);
+  padding-right: var(--s-3);
+  border-right: 1px solid var(--color-gray-100);
+  margin-right: var(--s-3);
+}
+.wordmark .dot { color: var(--color-accent); }
+.gnav { display: flex; gap: var(--s-6); }
+.gnav a {
+  font-size: 14px; font-weight: 500; color: var(--color-ink);
+  padding: 6px 2px; position: relative;
+}
+.gnav a.on { color: var(--color-accent-deep); }
+.gnav a::after {
+  content: ""; position: absolute; left: 0; right: 100%; bottom: 2px;
+  height: 1px; background: var(--color-ink);
+  transition: right 200ms var(--ease-out-soft);
+}
+.gnav a:hover::after { right: 0; }
+.gheader .right { margin-left: auto; display: flex; align-items: center; gap: var(--s-5); }
+.lang-toggle {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
+  color: var(--color-gray-300); display: inline-flex; align-items: center; gap: 6px;
+}
+.lang-toggle .lang.on { color: var(--color-ink); font-weight: 700; }
+.gheader .login { font-size: 14px; font-weight: 500; color: var(--color-ink); }
+.gheader .signup {
+  background: var(--color-ink); color: var(--color-paper-pure);
+  border: none; padding: 10px 20px; border-radius: var(--r-pill);
+  font-size: 13px; font-weight: 700;
+}
+
+/* ── 브레드크럼 ── */
+.crumb {
+  max-width: var(--container); margin: 0 auto;
+  padding: var(--s-6) var(--s-12) 0;
+}
+.crumb ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-2); font-size: 13px; color: var(--color-gray-500); }
+.crumb li::after { content: " / "; margin: 0 var(--s-1); color: var(--color-gray-300); }
+.crumb li:last-child::after { content: ""; }
+.crumb a:hover { color: var(--color-ink); }
+
+/* ── 매물 헤더 ── */
+.detail {
+  max-width: var(--container); margin: 0 auto;
+  padding: var(--s-6) var(--s-12) var(--s-16);
+}
+.detail-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin: var(--s-6) 0 var(--s-5);
+  gap: var(--s-6);
+}
+.detail-head h1 { margin: 0; font-size: 36px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.15; }
+.detail-meta { margin-top: var(--s-3); display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-3); font-size: 15px; color: var(--color-gray-700); }
+.detail-meta .dot { color: var(--color-gray-300); }
+.detail-actions { display: flex; gap: var(--s-2); }
+.icon-btn {
+  width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--color-gray-100); background: var(--color-paper-pure);
+  border-radius: var(--r-pill); font-size: 16px;
+}
+.icon-btn:hover { border-color: var(--color-ink); }
+
+/* ── chip ── */
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: var(--r-pill); font-size: 12px; font-weight: 500; line-height: 1; white-space: nowrap; }
+.chip-mono { font-family: var(--font-mono); letter-spacing: 0.05em; }
+.chip-accent { background: var(--color-accent-soft); color: var(--color-accent-deep); }
+.chip-gray   { background: var(--color-gray-100); color: var(--color-gray-500); }
+.chip-ink    { background: var(--color-ink); color: var(--color-paper-pure); }
+.chip-warning { background: rgba(199,144,26,0.12); color: var(--color-warning); }
+
+/* ── 갤러리 ── */
+.gallery {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: var(--s-2);
+  height: 480px;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.g-cell { position: relative; background: var(--color-gray-100); display: flex; align-items: flex-end; padding: var(--s-4); background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(189,183,173,0.18) 10px, rgba(189,183,173,0.18) 11px); }
+.g-cell.main { grid-row: span 2; }
+.g-cell .label { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); background: rgba(255,255,255,0.92); padding: 4px 8px; border-radius: 4px; letter-spacing: 0.08em; text-transform: uppercase; }
+.g-cell .chip-on-photo { position: absolute; top: var(--s-4); left: var(--s-4); }
+.g-cell .more-btn { position: absolute; bottom: var(--s-4); right: var(--s-4); background: rgba(10,10,10,0.7); color: #fff; border: none; backdrop-filter: blur(8px); padding: 8px 14px; border-radius: var(--r-pill); font-size: 12px; font-weight: 500; }
+
+/* ── 본문 2컬럼 ── */
+.layout { display: grid; grid-template-columns: 1fr 360px; gap: var(--s-12); margin-top: var(--s-12); align-items: start; }
+
+/* 섹션 공통 */
+.sec { padding: var(--s-10) 0; border-top: 1px solid var(--color-gray-100); }
+.sec:first-child { border-top: none; padding-top: 0; }
+.sec h2 { margin: 0 0 var(--s-5); font-size: 22px; font-weight: 700; letter-spacing: -0.015em; }
+.sec p { margin: var(--s-3) 0; }
+
+/* 시설 정보 카드 */
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-4); margin-top: var(--s-4); }
+.fact { background: var(--color-gray-50); border-radius: var(--r-md); padding: var(--s-4) var(--s-5); }
+.fact .k { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); letter-spacing: 0.08em; text-transform: uppercase; }
+.fact .v { font-size: 17px; font-weight: 700; margin-top: 6px; }
+.fact .note { font-size: 12px; color: var(--color-gray-500); margin-top: 2px; }
+
+/* 종합 서비스 — 8 항목 grid */
+.svc-intro { background: var(--color-accent-soft); border-radius: var(--r-md); padding: var(--s-4) var(--s-5); font-size: 14px; color: var(--color-accent-deep); margin-top: var(--s-4); }
+.svc { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-3); margin-top: var(--s-4); }
+.svc-item { display: flex; gap: var(--s-3); padding: var(--s-3) 0; }
+.svc-item .ic { width: 32px; height: 32px; flex-shrink: 0; border-radius: var(--r-pill); background: var(--color-accent-soft); color: var(--color-accent-deep); display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.svc-item .t { font-size: 15px; font-weight: 700; }
+.svc-item .d { font-size: 13px; color: var(--color-gray-500); margin-top: 2px; }
+
+/* 이용 규칙 */
+.rules { margin-top: var(--s-4); }
+.rule { display: flex; gap: var(--s-3); padding: var(--s-3) 0; border-top: 1px solid var(--color-gray-100); }
+.rule:first-child { border-top: none; }
+.rule .k { font-size: 14px; font-weight: 700; min-width: 140px; }
+.rule .v { font-size: 14px; color: var(--color-gray-700); }
+
+/* 이전 운영 사례 */
+.cases { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-4); margin-top: var(--s-4); }
+.case { border: 1px solid var(--color-gray-100); border-radius: var(--r-md); padding: var(--s-5); }
+.case .when { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); letter-spacing: 0.08em; text-transform: uppercase; }
+.case .nm { font-size: 16px; font-weight: 700; margin-top: 6px; }
+.case .cat { font-size: 12px; color: var(--color-gray-500); margin-top: 2px; }
+.case .nums { display: flex; gap: var(--s-5); margin-top: var(--s-3); }
+.case .num .n { font-size: 18px; font-weight: 700; }
+.case .num .l { font-size: 11px; color: var(--color-gray-500); margin-top: 2px; font-family: var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* 캘린더 */
+.cal-head { display: flex; align-items: center; justify-content: space-between; }
+.cal-legend { display: flex; gap: var(--s-4); font-size: 12px; color: var(--color-gray-500); }
+.cal-legend .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -2px; }
+.cal { margin-top: var(--s-4); border: 1px solid var(--color-gray-100); border-radius: var(--r-md); padding: var(--s-5); }
+.cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s-4); }
+.cal-nav .month { font-size: 16px; font-weight: 700; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal-dow { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); letter-spacing: 0.08em; text-align: center; padding: var(--s-2) 0; }
+.cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; border-radius: var(--r-sm); position: relative; }
+.cal-day.empty { color: var(--color-gray-300); }
+.cal-day.avail { background: var(--color-paper-pure); color: var(--color-ink); border: 1px solid var(--color-gray-100); cursor: pointer; }
+.cal-day.avail:hover { border-color: var(--color-accent); }
+.cal-day.nego { background: rgba(199,144,26,0.12); color: var(--color-warning); border: 1px solid rgba(199,144,26,0.3); }
+.cal-day.closed { background: var(--color-gray-50); color: var(--color-gray-300); text-decoration: line-through; }
+.cal-day.today { outline: 2px solid var(--color-ink); }
+
+/* 임대인 카드 */
+.host { display: flex; gap: var(--s-4); align-items: center; padding: var(--s-5); border: 1px solid var(--color-gray-100); border-radius: var(--r-md); margin-top: var(--s-4); }
+.host .ava { width: 56px; height: 56px; border-radius: 50%; background: var(--color-gray-100); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; color: var(--color-gray-500); }
+.host .info { flex: 1; }
+.host .nm { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: var(--s-2); }
+.host .desc { font-size: 13px; color: var(--color-gray-500); margin-top: 2px; }
+.host .stats { display: flex; gap: var(--s-5); margin-top: var(--s-2); font-size: 12px; color: var(--color-gray-700); }
+
+/* 후기 */
+.reviews { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); margin-top: var(--s-4); }
+.rev { background: var(--color-paper); border-radius: var(--r-md); padding: var(--s-5); }
+.rev-stars { color: var(--color-accent); font-size: 14px; letter-spacing: 2px; }
+.rev-txt { font-size: 14px; line-height: 1.55; margin-top: var(--s-2); }
+.rev-by { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); letter-spacing: 0.08em; text-transform: uppercase; margin-top: var(--s-3); }
+
+/* ── 우측 sticky 가격 박스 ── */
+.aside { position: sticky; top: calc(var(--header-h) + 24px); }
+.price-card { background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-lg); padding: var(--s-6); }
+.price-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); letter-spacing: 0.08em; text-transform: uppercase; }
+.price-big { display: flex; align-items: baseline; gap: var(--s-2); margin-top: var(--s-2); }
+.price-big .v { font-size: 34px; font-weight: 800; letter-spacing: -0.025em; }
+.price-big .u { font-size: 15px; color: var(--color-gray-500); }
+.price-sub { font-size: 13px; color: var(--color-gray-500); margin-top: var(--s-2); line-height: 1.5; }
+.price-sep { height: 1px; background: var(--color-gray-100); margin: var(--s-5) 0; }
+.range-row { display: flex; gap: var(--s-3); }
+.range-cell { flex: 1; padding: var(--s-3) var(--s-4); border: 1px solid var(--color-gray-100); border-radius: var(--r-md); cursor: pointer; }
+.range-cell .l { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); letter-spacing: 0.08em; text-transform: uppercase; }
+.range-cell .d { font-size: 14px; font-weight: 700; margin-top: 4px; }
+.calc { margin-top: var(--s-5); font-size: 13px; }
+.calc .row { display: flex; justify-content: space-between; padding: 6px 0; color: var(--color-gray-700); }
+.calc .row.total { border-top: 1px solid var(--color-gray-100); padding-top: var(--s-3); margin-top: var(--s-2); font-size: 15px; font-weight: 700; color: var(--color-ink); }
+.cta { display: block; width: 100%; background: var(--color-accent); color: #fff; border: none; border-radius: var(--r-md); height: 52px; font-size: 16px; font-weight: 700; margin-top: var(--s-5); transition: background 160ms; text-align: center; line-height: 52px; }
+.cta:hover { background: var(--color-accent-deep); }
+.aside-note { font-size: 12px; color: var(--color-gray-500); margin-top: var(--s-3); line-height: 1.5; text-align: center; }
+
+/* 푸터 */
+footer.foot { background: var(--color-paper); padding: var(--s-12) 0; border-top: 1px solid var(--color-gray-100); margin-top: var(--s-16); }
+.foot-inner { max-width: var(--container); margin: 0 auto; padding: 0 var(--s-12); }
+.foot-top { display: flex; align-items: baseline; gap: var(--s-4); margin-bottom: var(--s-6); }
+.foot-wordmark { font-weight: 800; font-size: 24px; letter-spacing: -0.035em; }
+.foot-wordmark .dot { color: var(--color-accent); }
+.foot-links { display: flex; flex-wrap: wrap; gap: var(--s-8); }
+.foot-links a { font-size: 15px; color: var(--color-gray-500); }
+.foot-links a:hover { color: var(--color-ink); }
+.foot-legal { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-300); margin-top: var(--s-6); text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<!-- 글로벌 헤더 -->
+<header class="gheader" role="navigation">
+  <div class="gheader-inner">
+    <a href="hero.html" class="wordmark">Spot<span class="dot">.</span></a>
+    <nav class="gnav">
+      <a href="find.html" class="on">공간 찾기</a>
+      <a href="towns.html">팝업타운</a>
+      <a href="list-space.html">내 공간 등록</a>
+      <a href="story.html">이야기</a>
+      <a href="guide.html">이용 안내</a>
+    </nav>
+    <div class="right">
+      <div class="lang-toggle"><span class="lang on">KO</span><span>/</span><span class="lang">EN</span></div>
+      <a class="login" href="#">로그인</a>
+      <button class="signup">회원가입</button>
+    </div>
+  </div>
+</header>
+
+<!-- 브레드크럼 -->
+<nav class="crumb" aria-label="브레드크럼">
+  <ol>
+    <li><a href="find.html">공간 찾기</a></li>
+    <li><a href="towns.html">성수</a></li>
+    <li>12평 1층 통유리 코너</li>
+  </ol>
+</nav>
+
+<main class="detail">
+
+  <!-- 매물 헤더 -->
+  <div class="detail-head">
+    <div>
+      <div style="display:flex; gap: var(--s-2); margin-bottom: var(--s-3);">
+        <span class="chip chip-accent">✓ 사진검증 완료</span>
+        <span class="chip chip-gray chip-mono">SPACE · S-2026-0518</span>
+      </div>
+      <h1>성수동 12평 1층 통유리 코너</h1>
+      <div class="detail-meta">
+        <span>서울 성동구 성수동2가</span>
+        <span class="dot">·</span>
+        <span>전용 12평 (39.6㎡)</span>
+        <span class="dot">·</span>
+        <span>1층 코너</span>
+        <span class="dot">·</span>
+        <span>★ 4.8 · 후기 24</span>
+      </div>
+    </div>
+    <div class="detail-actions">
+      <button class="icon-btn" aria-label="찜">♡</button>
+      <button class="icon-btn" aria-label="공유">↗</button>
+    </div>
+  </div>
+
+  <!-- 갤러리 -->
+  <div class="gallery">
+    <div class="g-cell main">
+      <span class="chip chip-accent chip-on-photo">메인</span>
+      <span class="label">외관 — 통유리 코너</span>
+    </div>
+    <div class="g-cell"><span class="label">내부 — 정면</span></div>
+    <div class="g-cell"><span class="label">내부 — 카운터</span></div>
+    <div class="g-cell"><span class="label">도면 PDF</span></div>
+    <div class="g-cell">
+      <span class="label">야간 외관</span>
+      <button class="more-btn">사진 12장 더 보기</button>
+    </div>
+  </div>
+
+  <!-- 2컬럼 본문 -->
+  <div class="layout">
+
+    <article>
+
+      <!-- 1. 공간 소개 -->
+      <section class="sec">
+        <h2>이 공간 이야기</h2>
+        <p class="body">성수동 카페·갤러리 골목 초입 코너 1층. 통유리 두 면이 보행 동선을 그대로 받아내는 매대 후보. 천장이 높고 기둥이 없어 디스플레이 자유도가 높습니다.</p>
+        <p class="body-sm" style="color: var(--color-gray-500);">최근 3개월 동안 패션 4건, F&amp;B 2건, 전시 1건이 운영됐고, 평균 일 방문 240명을 기록했습니다.</p>
+      </section>
+
+      <!-- 2. 시설 정보 -->
+      <section class="sec">
+        <h2>시설 정보</h2>
+        <div class="facts">
+          <div class="fact"><div class="k">면적</div><div class="v">12평 (39.6㎡)</div><div class="note">전용 면적</div></div>
+          <div class="fact"><div class="k">층수·구조</div><div class="v">1층 코너</div><div class="note">기둥 없음, 평면</div></div>
+          <div class="fact"><div class="k">천장고</div><div class="v">3.2m</div></div>
+          <div class="fact"><div class="k">전기 용량</div><div class="v">5kW</div><div class="note">증설 가능</div></div>
+          <div class="fact"><div class="k">화장실</div><div class="v">내부 1실</div></div>
+          <div class="fact"><div class="k">정화조·환기</div><div class="v">F&amp;B 협의 필요</div><div class="note">시식·시음 한정 가능</div></div>
+          <div class="fact"><div class="k">냉난방</div><div class="v">시스템 에어컨</div></div>
+          <div class="fact"><div class="k">WiFi·POS 자리</div><div class="v">기본 설치</div></div>
+          <div class="fact"><div class="k">유리 노출 면</div><div class="v">2면 (정·측면)</div><div class="note">간판·시트지 가능</div></div>
+        </div>
+      </section>
+
+      <!-- 3. 종합 서비스 -->
+      <section class="sec">
+        <h2>이용료에 포함된 종합 서비스</h2>
+        <div class="svc-intro">
+          Spot 서비스 이용료는 <strong>운영을 가능하게 만드는 모든 인프라</strong>를 묶은 가격입니다. 임대료는 건물주에게 별도로 정산됩니다.
+        </div>
+        <div class="svc">
+          <div class="svc-item"><span class="ic">1</span><div><div class="t">매물 검증·소유 확인</div><div class="d">등기·임대 권한 확인 완료된 매물만 노출</div></div></div>
+          <div class="svc-item"><span class="ic">2</span><div><div class="t">표준 시설 이용계약서</div><div class="d">변호사 검토 양식·자동 채움·전자서명</div></div></div>
+          <div class="svc-item"><span class="ic">3</span><div><div class="t">결제·정산·세금계산서</div><div class="d">PG 결제·자동 정산·전자세금계산서 발행</div></div></div>
+          <div class="svc-item"><span class="ic">4</span><div><div class="t">QR 방문자 측정</div><div class="d">시간대별 유입·재방문 자동 집계</div></div></div>
+          <div class="svc-item"><span class="ic">5</span><div><div class="t">매출·운영 대시보드</div><div class="d">일별 매출 입력·자동 리포트·동종 벤치마크</div></div></div>
+          <div class="svc-item"><span class="ic">6</span><div><div class="t">후기·평판 관리</div><div class="d">시민 후기 수집·답글·이후 매칭에 반영</div></div></div>
+          <div class="svc-item"><span class="ic">7</span><div><div class="t">분쟁 조율·법률 연계</div><div class="d">운영팀 1차 조율 + 외부 자문 연결</div></div></div>
+          <div class="svc-item"><span class="ic">8</span><div><div class="t">행사 배상책임 보험 안내</div><div class="d">일 단위 가입 옵션 연결</div></div></div>
+        </div>
+      </section>
+
+      <!-- 4. 이용 규칙·제약 -->
+      <section class="sec">
+        <h2>이용 규칙</h2>
+        <div class="rules">
+          <div class="rule"><div class="k">사용 목적</div><div class="v">팝업스토어 운영 (판매·홍보·체험 등). 그 외 용도는 사전 협의 필수.</div></div>
+          <div class="rule"><div class="k">사용 기간</div><div class="v">최소 1일 ~ 최대 30일. 31일 이상은 별도 협의.</div></div>
+          <div class="rule"><div class="k">운영 시간</div><div class="v">10:00 ~ 22:00. 야간 운영은 사전 협의.</div></div>
+          <div class="rule"><div class="k">설치·철수</div><div class="v">입주일 09:00 입장 / 종료일 22:00 철수 완료. 원상복구 의무.</div></div>
+          <div class="rule"><div class="k">F&amp;B 운영</div><div class="v">시식·시음은 가능. 본격 조리는 영업신고·시설 요건 충족 시 별도 협의.</div></div>
+          <div class="rule"><div class="k">취소·환불</div><div class="v">14일 전 100%, 7일 전 50%, 3일 전 0%. <a href="#" style="color: var(--color-accent-deep); text-decoration: underline;">전체 약관 보기</a></div></div>
+          <div class="rule"><div class="k">인허가 책임</div><div class="v">영업 활동에 필요한 사업자등록·인허가는 이용자(임차인) 책임.</div></div>
+        </div>
+      </section>
+
+      <!-- 5. 이전 운영 사례 -->
+      <section class="sec">
+        <h2>이 공간에서 열렸던 팝업</h2>
+        <div class="cases">
+          <div class="case">
+            <div class="when">2026 · 04 · 5일</div>
+            <div class="nm">로컬 브랜드 시그니처 위크</div>
+            <div class="cat">패션 · 액세서리</div>
+            <div class="nums">
+              <div class="num"><div class="n">1,420</div><div class="l">방문 수</div></div>
+              <div class="num"><div class="n">★ 4.9</div><div class="l">평점</div></div>
+            </div>
+          </div>
+          <div class="case">
+            <div class="when">2026 · 03 · 7일</div>
+            <div class="nm">홍차 시음 팝업</div>
+            <div class="cat">F&amp;B · 시음</div>
+            <div class="nums">
+              <div class="num"><div class="n">980</div><div class="l">방문 수</div></div>
+              <div class="num"><div class="n">★ 4.7</div><div class="l">평점</div></div>
+            </div>
+          </div>
+          <div class="case">
+            <div class="when">2026 · 02 · 3일</div>
+            <div class="nm">청년 작가 미니 전시</div>
+            <div class="cat">아트 · 전시</div>
+            <div class="nums">
+              <div class="num"><div class="n">540</div><div class="l">방문 수</div></div>
+              <div class="num"><div class="n">★ 4.6</div><div class="l">평점</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. 캘린더 -->
+      <section class="sec">
+        <h2>가능 일정</h2>
+        <div class="cal-head">
+          <div class="body-xs">원하는 기간을 선택하면 우측 가격이 자동 계산됩니다.</div>
+          <div class="cal-legend">
+            <span><span class="swatch" style="background:#fff; border:1px solid var(--color-gray-100);"></span>가능</span>
+            <span><span class="swatch" style="background:rgba(199,144,26,0.12); border:1px solid rgba(199,144,26,0.3);"></span>협의 중</span>
+            <span><span class="swatch" style="background:var(--color-gray-50);"></span>마감</span>
+          </div>
+        </div>
+        <div class="cal">
+          <div class="cal-nav">
+            <button class="icon-btn" aria-label="이전 달">←</button>
+            <div class="month">2026년 6월</div>
+            <button class="icon-btn" aria-label="다음 달">→</button>
+          </div>
+          <div class="cal-grid">
+            <div class="cal-dow">월</div><div class="cal-dow">화</div><div class="cal-dow">수</div><div class="cal-dow">목</div><div class="cal-dow">금</div><div class="cal-dow">토</div><div class="cal-dow">일</div>
+
+            <div class="cal-day empty"></div>
+            <div class="cal-day empty"></div>
+            <div class="cal-day empty"></div>
+            <div class="cal-day empty"></div>
+            <div class="cal-day closed">1</div>
+            <div class="cal-day closed">2</div>
+            <div class="cal-day closed">3</div>
+
+            <div class="cal-day avail">4</div>
+            <div class="cal-day avail">5</div>
+            <div class="cal-day avail">6</div>
+            <div class="cal-day avail">7</div>
+            <div class="cal-day avail">8</div>
+            <div class="cal-day avail">9</div>
+            <div class="cal-day avail">10</div>
+
+            <div class="cal-day nego">11</div>
+            <div class="cal-day nego">12</div>
+            <div class="cal-day avail">13</div>
+            <div class="cal-day avail">14</div>
+            <div class="cal-day avail">15</div>
+            <div class="cal-day avail">16</div>
+            <div class="cal-day avail">17</div>
+
+            <div class="cal-day avail">18</div>
+            <div class="cal-day avail">19</div>
+            <div class="cal-day avail">20</div>
+            <div class="cal-day closed">21</div>
+            <div class="cal-day closed">22</div>
+            <div class="cal-day closed">23</div>
+            <div class="cal-day closed">24</div>
+
+            <div class="cal-day avail">25</div>
+            <div class="cal-day avail">26</div>
+            <div class="cal-day avail">27</div>
+            <div class="cal-day avail">28</div>
+            <div class="cal-day avail">29</div>
+            <div class="cal-day avail">30</div>
+            <div class="cal-day empty"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. 임대인 정보 -->
+      <section class="sec">
+        <h2>이 공간을 내놓은 분</h2>
+        <div class="host">
+          <div class="ava">박</div>
+          <div class="info">
+            <div class="nm">박 사장님 <span class="chip chip-accent">✓ 본인·소유 인증</span></div>
+            <div class="desc">성수동에서 18년째 1층 상가를 운영합니다. 팝업은 처음 시도.</div>
+            <div class="stats">
+              <span>응답률 96%</span>
+              <span>평균 응답 4시간</span>
+              <span>매칭 12건</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. 후기 -->
+      <section class="sec">
+        <h2>지난 임차인 후기</h2>
+        <div class="reviews">
+          <div class="rev">
+            <div class="rev-stars">★★★★★</div>
+            <div class="rev-txt">"통유리 코너라 보행 유입이 정말 좋았습니다. 임대인분도 일정 조율이 유연하셔서 운영이 편했어요."</div>
+            <div class="rev-by">2026 / 04 · 로컬 브랜드 K</div>
+          </div>
+          <div class="rev">
+            <div class="rev-stars">★★★★★</div>
+            <div class="rev-txt">"평일 낮 유입이 의외로 많았어요. F&amp;B 시음 운영했는데 정화조 협의도 깔끔하게 됐습니다."</div>
+            <div class="rev-by">2026 / 03 · 홍차 브랜드 T</div>
+          </div>
+        </div>
+      </section>
+
+    </article>
+
+    <!-- 우측 sticky 가격 박스 -->
+    <aside class="aside">
+      <div class="price-card">
+        <div class="price-eyebrow">SPOT 서비스 이용료</div>
+        <div class="price-big">
+          <span class="v" id="px-per-day">80,000</span>
+          <span class="u">원 / 일</span>
+        </div>
+        <div class="price-sub">건물주에게 지급할 <strong>임대료(일 50,000원)</strong>는 별도 정산됩니다. 결제 화면에서 함께 처리.</div>
+
+        <div class="price-sep"></div>
+
+        <div class="range-row">
+          <div class="range-cell">
+            <div class="l">시작일</div>
+            <div class="d">06.04 (목)</div>
+          </div>
+          <div class="range-cell">
+            <div class="l">종료일</div>
+            <div class="d">06.10 (수)</div>
+          </div>
+        </div>
+
+        <div class="calc">
+          <div class="row"><span>이용료 80,000원 × 7일</span><span>560,000원</span></div>
+          <div class="row"><span>임대료(건물주) 50,000원 × 7일</span><span>350,000원</span></div>
+          <div class="row total"><span>합계</span><span>910,000원</span></div>
+        </div>
+
+        <a href="space-request.html" class="cta">임차 요청 보내기</a>
+        <div class="aside-note">요청 단계에서는 결제되지 않습니다.<br/>임대인 수락 → 계약·서명 → 결제 순서입니다.</div>
+      </div>
+    </aside>
+
+  </div>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="foot-top">
+      <span class="foot-wordmark">Spot<span class="dot">.</span></span>
+      <span class="mono-xs" style="color: var(--color-gray-500);">POPUP SPACE · 시설 이용 서비스</span>
+    </div>
+    <div class="foot-links">
+      <a href="guide.html#std">표준 시설 이용계약서</a>
+      <a href="guide.html#faq">FAQ</a>
+      <a href="guide.html#tos">이용약관</a>
+      <a href="guide.html#privacy">개인정보</a>
+      <a href="guide.html#biz">사업자정보</a>
+    </div>
+    <div class="foot-legal">© 2026 SPOT · 건물주 임대료와 Spot 서비스 이용료는 분리 정산됩니다</div>
+  </div>
+</footer>
+
+</body>
+</html>

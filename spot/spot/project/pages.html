@@ -1,0 +1,364 @@
+<!-- Spot — Pages catalog (dev only) -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spot — pages catalog</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --color-ink: #0A0A0A;
+  --color-paper: #F4EFE6;
+  --color-paper-pure: #FFFFFF;
+  --color-accent: #FF5A1F;
+  --color-accent-deep: #D8410F;
+  --color-gray-100: #E8E4DD;
+  --color-gray-300: #BDB7AD;
+  --color-gray-500: #7A736A;
+  --color-gray-700: #3F3A33;
+  --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-md: 8px; --r-lg: 16px; --r-pill: 9999px;
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+body { margin: 0; font-family: var(--font-sans); color: var(--color-ink); background: var(--color-paper); letter-spacing: -0.005em; word-break: keep-all; }
+a { color: inherit; text-decoration: none; }
+
+.wrap { max-width: 1280px; margin: 0 auto; padding: var(--s-12); }
+
+header.top { display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: var(--s-10); border-bottom: 1px solid var(--color-gray-100); margin-bottom: var(--s-10); flex-wrap: wrap; gap: var(--s-6); }
+header.top .left .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-3); display: inline-flex; align-items: center; gap: var(--s-2); }
+header.top .left .eyebrow::before { content: ""; width: 32px; height: 1px; background: currentColor; }
+header.top h1 { margin: 0; font-size: 48px; font-weight: 900; letter-spacing: -0.025em; line-height: 1; }
+header.top h1 .dot { color: var(--color-accent); }
+header.top .sub { margin: var(--s-5) 0 0; max-width: 640px; font-size: 16px; line-height: 1.55; color: var(--color-gray-700); }
+header.top .meta { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--color-gray-500); text-transform: uppercase; text-align: right; line-height: 1.7; }
+header.top .meta strong { color: var(--color-ink); }
+
+.tabs { display: inline-flex; background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-pill); padding: 4px; gap: 2px; margin-bottom: var(--s-10); }
+.tabs button { background: transparent; border: none; padding: 8px 18px; border-radius: var(--r-pill); font-size: 14px; font-weight: 500; cursor: pointer; color: var(--color-gray-500); font-family: inherit; }
+.tabs button.on { background: var(--color-ink); color: #fff; }
+
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); }
+.card { background: var(--color-paper-pure); border-radius: var(--r-lg); border: 1px solid var(--color-gray-100); overflow: hidden; transition: transform 200ms var(--ease-out-soft), box-shadow 200ms; display: flex; flex-direction: column; }
+.card:hover { transform: translateY(-3px); box-shadow: 0 4px 16px rgba(10,10,10,0.06); }
+
+.preview-wrap {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--color-gray-100);
+  border-bottom: 1px solid var(--color-gray-100);
+}
+.preview-wrap iframe {
+  width: 1280px; height: 800px;
+  border: 0;
+  transform: scale(0.35);
+  transform-origin: top left;
+  position: absolute; top: 0; left: 0;
+  pointer-events: none;
+}
+.preview-wrap .badge {
+  position: absolute; top: var(--s-3); left: var(--s-3);
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.08em; color: var(--color-gray-500);
+  background: rgba(255,255,255,0.92); padding: 4px 8px; border-radius: 4px;
+  text-transform: uppercase;
+}
+.preview-wrap .lang-chip {
+  position: absolute; top: var(--s-3); right: var(--s-3);
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-ink);
+  background: rgba(255,255,255,0.92); padding: 4px 8px; border-radius: var(--r-pill);
+  text-transform: uppercase;
+}
+.preview-wrap .lang-chip.en { background: var(--color-ink); color: #fff; }
+
+.card .body { padding: var(--s-5) var(--s-5) var(--s-6); display: flex; flex-direction: column; gap: var(--s-2); }
+.card .num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-accent-deep); text-transform: uppercase; }
+.card h3 { margin: 0; font-size: 19px; font-weight: 800; letter-spacing: -0.015em; line-height: 1.25; }
+.card p { margin: 2px 0 var(--s-4); font-size: 14px; line-height: 1.55; color: var(--color-gray-500); }
+.card .actions { display: flex; gap: var(--s-2); margin-top: auto; }
+.card .actions a {
+  flex: 1; text-align: center;
+  padding: 10px 12px; border-radius: var(--r-md);
+  font-size: 13px; font-weight: 600;
+  border: 1px solid var(--color-gray-100);
+  transition: all 120ms;
+}
+.card .actions a.primary { background: var(--color-ink); color: #fff; border-color: var(--color-ink); }
+.card .actions a.primary:hover { background: var(--color-accent); border-color: var(--color-accent); }
+.card .actions a.ghost:hover { border-color: var(--color-ink); }
+.card.hidden { display: none; }
+
+footer.foot { margin-top: var(--s-16); padding-top: var(--s-8); border-top: 1px solid var(--color-gray-100); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-300); text-transform: uppercase; display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--s-4); }
+
+@media (max-width: 980px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) {
+  .wrap { padding: var(--s-8); }
+  .grid { grid-template-columns: 1fr; }
+  header.top h1 { font-size: 36px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="left">
+      <div class="eyebrow">SPOT · PAGES CATALOG · DEV ONLY</div>
+      <h1>Spot<span class="dot">.</span> 페이지 카탈로그</h1>
+      <p class="sub">11개 페이지(메인 + 5섹션 × 2언어)를 한 화면에서 비교·이동하세요. 썸네일은 실시간 iframe — 클릭하면 새 탭에서 열립니다.</p>
+    </div>
+    <div class="meta">
+      VERSION · <strong>v0.1</strong><br/>
+      UPDATED · <strong>2026-05-20</strong><br/>
+      PAGES · <strong>11</strong>
+    </div>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="on" data-filter="all">All · 11</button>
+    <button data-filter="ko">한국어 · 6</button>
+    <button data-filter="en">English · 5</button>
+  </div>
+
+  <div class="grid" id="grid">
+
+    <!-- HERO (KO only — 메인) -->
+    <article class="card" data-lang="ko">
+      <a href="hero.html" target="_blank" class="preview-wrap">
+        <span class="badge">NO. 00 · MAIN</span>
+        <span class="lang-chip">KO</span>
+        <iframe src="hero.html" loading="lazy" scrolling="no" aria-hidden="true"></iframe>
+      </a>
+      <div class="body">
+        <span class="num">NO. 00 · HERO · LANDING</span>
+        <h3>메인 (hero.html)</h3>
+        <p>오렌지 헤로 색면 + 1F 셔터 모션 + 팝업타운 4 + 최근 등록 3</p>
+        <div class="actions">
+          <a href="hero.html" target="_blank" class="primary">열기 →</a>
+          <a href="hero.html" target="_blank" class="ghost" rel="noopener noreferrer">새 탭</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 1. Find KO -->
+    <article class="card" data-lang="ko">
+      <a href="find.html" target="_blank" class="preview-wrap">
+        <span class="badge">NO. 01 · FIND</span>
+        <span class="lang-chip">KO</span>
+        <iframe src="find.html" loading="lazy" scrolling="no" aria-hidden="true"></iframe>
+      </a>
+      <div class="body">
+        <span class="num">NO. 01 · TENANT · SEARCH</span>
+        <h3>공간 찾기</h3>
+        <p>검색바 + 필터 칩 + 카드 9개(비대칭 wide) + 페이지네이션</p>
+        <div class="actions">
+          <a href="find.html" target="_blank" class="primary">열기 →</a>
+          <a href="find-en.html" target="_blank" class="ghost">EN</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 1. Find EN -->
+    <article class="card" data-lang="en">
+      <a href="find-en.html" target="_blank" class="preview-wrap">
+        <span class="badge">NO. 01 · FIND</span>
+        <span class="lang-chip en">EN</span>
+        <iframe src="find-en.html" loading="lazy" scrolling="no" aria-hidden="true"></iframe>
+      </a>
+      <div class="body">
+        <span class="num">NO. 01 · TENANT · SEARCH</span>
+        <h3>Find space</h3>
+        <p>Search bar + filter chips + 9 cards (1 wide editor's pick)</p>
+        <div class="actions">
+          <a href="find-en.html" target="_blank" class="primary">Open →</a>
+          <a href="find.html" target="_blank" class="ghost">KO</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 2. Towns KO -->
+    <article class="card" data-lang="ko">
+      <a href="towns.html" target="_blank" class="preview-wrap">
+        <span class="badge">NO. 02 · TOWNS</span>
+        <span class="lang-chip">KO</span>
+        <iframe src="towns.html" loading="lazy" scrolling="no" aria-hidden="true"></iframe>
+      </a>
+      <div class="body">
+        <span class="num">NO. 02 · POSTER · MAGAZINE</span>
+        <h3>팝업타운</h3>
+        <p>12컬럼 비대칭 그리드(성수 큰 카드) + Editor's Pick + 동네 제안 CTA</p>
+        <div class="actions">
+          <a href="towns.html" target="_blank" class="primary">열기 →</a>
+          <a href="towns-en.html" target="_blank" class="ghost">EN</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 2. Towns EN -->
+    <article class="card" data-lang="en">
+      <a href="towns-en.html" target="_blank" class="preview-wrap">
+        <span class="badge">NO. 02 · TOWNS</span>
+        <span class="lang-chip en">EN</span>
+        <iframe src="towns-en.html" loading="lazy" scrolling="no" aria-hidden="true"></iframe>
+      </a>
+      <div class="body">
+        <span class="num">NO. 02 · POSTER · MAGAZINE</span>
+        <h3>Popup towns</h3>
+        <p>Asymmetric 12-col grid + town of the month + suggest-a-town CTA</p>
+        <div class="actions">
+          <a href="towns-en.html" target="_blank" class="primary">Open →</a>
+          <a href="towns.html" target="_blank" class="ghost">KO</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3. List KO -->
+    <article class="card" data-lang="ko">
+      <a href="list-space.html" target="_blank" class="preview-wrap">
+        <span class="badge">NO. 03 · HOST</span>
+        <span class="lang-chip">KO</span>
+        <iframe src="list-space.html" loading="lazy" scrolling="no" aria-hidden="true"></iframe>
+      </a>
+      <div class="body">
+        <span class="num">NO. 03 · HOST · ONBOARD</span>
+        <h3>내 공간 등록</h3>
+        <p>5단계 등록(검정 색면) + 수수료 표 + 임대인 사례 3 + FAQ 5</p>
+        <div class="actions">
+          <a href="list-space.html" target="_blank" class="primary">열기 →</a>
+          <a href="list-space-en.html" target="_blank" class="ghost">EN</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3. List EN -->
+    <article class="card" data-lang="en">
+      <a href="list-space-en.html" target="_blank" class="preview-wrap">
+        <span class="badge">NO. 03 · HOST</span>
+        <span class="lang-chip en">EN</span>
+        <iframe src="list-space-en.html" loading="lazy" scrolling="no" aria-hidden="true"></iframe>
+      </a>
+      <div class="body">
+        <span class="num">NO. 03 · HOST · ONBOARD</span>
+        <h3>List your space</h3>
+        <p>5-step listing + fee table + 3 host stories + 5 FAQ</p>
+        <div class="actions">
+          <a href="list-space-en.html" target="_blank" class="primary">Open →</a>
+          <a href="list-space.html" target="_blank" class="ghost">KO</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 4. Story KO -->
+    <article class="card" data-lang="ko">
+      <a href="story.html" target="_blank" class="preview-wrap">
+        <span class="badge">NO. 04 · MANIFESTO</span>
+        <span class="lang-chip">KO</span>
+        <iframe src="story.html" loading="lazy" scrolling="no" aria-hidden="true"></iframe>
+      </a>
+      <div class="body">
+        <span class="num">NO. 04 · BRAND · MANIFESTO</span>
+        <h3>이야기</h3>
+        <p>검정 헤로 + 통계 + 안 만드는 것/만드는 것 2분할 + 3원칙 + 팀</p>
+        <div class="actions">
+          <a href="story.html" target="_blank" class="primary">열기 →</a>
+          <a href="story-en.html" target="_blank" class="ghost">EN</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 4. Story EN -->
+    <article class="card" data-lang="en">
+      <a href="story-en.html" target="_blank" class="preview-wrap">
+        <span class="badge">NO. 04 · MANIFESTO</span>
+        <span class="lang-chip en">EN</span>
+        <iframe src="story-en.html" loading="lazy" scrolling="no" aria-hidden="true"></iframe>
+      </a>
+      <div class="body">
+        <span class="num">NO. 04 · BRAND · MANIFESTO</span>
+        <h3>Story</h3>
+        <p>Dark hero + stats + don't/do build split + 3 principles + team</p>
+        <div class="actions">
+          <a href="story-en.html" target="_blank" class="primary">Open →</a>
+          <a href="story.html" target="_blank" class="ghost">KO</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 5. Guide KO -->
+    <article class="card" data-lang="ko">
+      <a href="guide.html" target="_blank" class="preview-wrap">
+        <span class="badge">NO. 05 · GUIDE</span>
+        <span class="lang-chip">KO</span>
+        <iframe src="guide.html" loading="lazy" scrolling="no" aria-hidden="true"></iframe>
+      </a>
+      <div class="body">
+        <span class="num">NO. 05 · POLICY · DOC</span>
+        <h3>이용 안내</h3>
+        <p>좌 sticky 인덱스 + 우 7섹션 본문(약관·수수료·환불·개인정보·운영·분쟁·표준계약서)</p>
+        <div class="actions">
+          <a href="guide.html" target="_blank" class="primary">열기 →</a>
+          <a href="guide-en.html" target="_blank" class="ghost">EN</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- 5. Guide EN -->
+    <article class="card" data-lang="en">
+      <a href="guide-en.html" target="_blank" class="preview-wrap">
+        <span class="badge">NO. 05 · GUIDE</span>
+        <span class="lang-chip en">EN</span>
+        <iframe src="guide-en.html" loading="lazy" scrolling="no" aria-hidden="true"></iframe>
+      </a>
+      <div class="body">
+        <span class="num">NO. 05 · POLICY · DOC</span>
+        <h3>Guide</h3>
+        <p>Sticky index + 7 sections (terms · fees · refund · privacy · ops · disputes · contract)</p>
+        <div class="actions">
+          <a href="guide-en.html" target="_blank" class="primary">Open →</a>
+          <a href="guide.html" target="_blank" class="ghost">KO</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <footer class="foot">
+    <span>© 2026 SPOT · MATCHING ONLY</span>
+    <span>DEV CATALOG · pages.html</span>
+  </footer>
+</div>
+
+<script>
+  (function(){
+    var tabs = document.querySelectorAll('.tabs button');
+    var cards = document.querySelectorAll('#grid .card');
+    tabs.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        tabs.forEach(function(b){ b.classList.remove('on'); });
+        btn.classList.add('on');
+        var f = btn.getAttribute('data-filter');
+        cards.forEach(function(c){
+          var lang = c.getAttribute('data-lang');
+          if (f === 'all' || f === lang) c.classList.remove('hidden');
+          else c.classList.add('hidden');
+        });
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

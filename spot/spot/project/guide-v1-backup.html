@@ -1,0 +1,464 @@
+<!-- Spot — 이용 안내 (Guide / Policy) v0.1 -->
+<!-- 톤: 문서 톤. 좌 sticky 인덱스 + 우 본문. 약관·정책·수수료. -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>Spot — 이용 안내</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --color-ink: #0A0A0A;
+  --color-paper: #F4EFE6;
+  --color-paper-pure: #FFFFFF;
+  --color-accent: #FF5A1F;
+  --color-accent-deep: #D8410F;
+  --color-accent-soft: #FFE7DC;
+  --color-gray-50: #F7F5F1;
+  --color-gray-100: #E8E4DD;
+  --color-gray-300: #BDB7AD;
+  --color-gray-500: #7A736A;
+  --color-gray-700: #3F3A33;
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-md: 8px; --r-lg: 16px; --r-xl: 24px; --r-pill: 9999px;
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --container: 1200px;
+  --header-h: 92px;
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html, body { margin: 0; padding: 0; min-width: 1280px; scroll-behavior: smooth; }
+body { font-family: var(--font-sans); color: var(--color-ink); background: var(--color-paper-pure); letter-spacing: -0.01em; word-break: keep-all; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+@media (max-width: 1023px) { html { zoom: 0.78; } }
+
+.mono-sm { font-family: var(--font-mono); font-size: 12px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.mono-xs { font-family: var(--font-mono); font-size: 11px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* ─── header pill ─── */
+.site-header-wrap { background: var(--color-paper); padding: var(--s-6) 0 0; }
+.site-header { position: relative; width: calc(var(--container) - 0px); max-width: calc(100% - 48px); margin: 0 auto; height: 60px; padding: 6px 8px 6px 28px; display: flex; align-items: center; gap: var(--s-6); background: var(--color-paper-pure); border-radius: var(--r-pill); }
+.site-header .wordmark { font-weight: 800; font-size: 20px; letter-spacing: -0.035em; color: var(--color-ink); padding-right: var(--s-3); border-right: 1px solid var(--color-gray-100); margin-right: var(--s-3); }
+.site-header .wordmark .dot { color: var(--color-accent); }
+.site-header nav { display: flex; gap: var(--s-6); }
+.site-header nav a { font-size: 14px; font-weight: 500; color: var(--color-ink); padding: 6px 2px; position: relative; transition: color 120ms; }
+.site-header nav a.active { color: var(--color-accent-deep); }
+.site-header nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 2px; height: 1px; background: currentColor; transition: right 200ms var(--ease-out-soft); }
+.site-header nav a:hover::after, .site-header nav a.active::after { right: 0; }
+.site-header .right { margin-left: auto; display: flex; align-items: center; gap: var(--s-5); }
+.lang-toggle { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: var(--color-gray-300); display: inline-flex; align-items: center; gap: 6px; }
+.lang-toggle .lang { padding: 2px 2px; }
+.lang-toggle .lang.on { color: var(--color-ink); font-weight: 700; }
+.lang-toggle .sep { color: var(--color-gray-300); }
+.site-header .login { font-size: 14px; font-weight: 500; padding: 6px 2px; }
+.site-header .signup { background: var(--color-ink); color: var(--color-paper-pure); border: none; padding: 10px 20px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; }
+
+/* ─── page head ─── */
+.container { max-width: var(--container); margin: 0 auto; padding: 0 var(--s-12); }
+.page-head { background: var(--color-paper); padding: var(--s-12) 0 var(--s-16); }
+.page-head .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-5); display: inline-flex; align-items: center; gap: var(--s-2); }
+.page-head .eyebrow::before { content: ""; width: 32px; height: 1px; background: currentColor; }
+.page-head h1 { margin: 0; font-size: 80px; font-weight: 900; line-height: 0.96; letter-spacing: -0.03em; }
+.page-head h1 .quiet { color: var(--color-gray-500); font-weight: 700; }
+.page-head .sub { margin: var(--s-6) 0 0; max-width: 620px; font-size: 19px; line-height: 1.6; color: var(--color-gray-700); }
+.page-head .meta-row { margin-top: var(--s-8); display: flex; gap: var(--s-8); padding-top: var(--s-6); border-top: 1px solid var(--color-gray-100); }
+.page-head .meta { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--color-gray-500); text-transform: uppercase; }
+.page-head .meta strong { color: var(--color-ink); font-weight: 700; }
+
+/* ─── main grid: left sticky index + right body ─── */
+.doc-wrap { background: var(--color-paper-pure); padding: var(--s-16) 0 var(--s-16); }
+.doc-grid { display: grid; grid-template-columns: 280px 1fr; gap: var(--s-16); align-items: start; }
+
+/* Left index */
+.index { position: sticky; top: var(--s-6); }
+.index .label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-5); display: block; }
+.index ol { list-style: none; margin: 0; padding: 0; counter-reset: idx; }
+.index li { counter-increment: idx; }
+.index a {
+  display: flex; gap: var(--s-3); align-items: baseline;
+  padding: var(--s-3) 0;
+  border-top: 1px solid var(--color-gray-100);
+  font-size: 15px; font-weight: 500;
+  color: var(--color-gray-500);
+  transition: color 160ms, padding-left 160ms;
+}
+.index a:hover { color: var(--color-ink); padding-left: 4px; }
+.index a::before {
+  content: counter(idx, decimal-leading-zero) "/";
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 0.06em; color: var(--color-accent);
+  font-weight: 500;
+}
+.index a.active { color: var(--color-ink); padding-left: 4px; }
+.index li:last-child a { border-bottom: 1px solid var(--color-gray-100); }
+.index .download {
+  margin-top: var(--s-8); padding: var(--s-5); background: var(--color-paper); border-radius: var(--r-lg);
+  font-size: 14px; line-height: 1.5; color: var(--color-gray-700);
+}
+.index .download strong { font-weight: 700; color: var(--color-ink); display: block; margin-bottom: 4px; }
+.index .download a.dl { color: var(--color-accent-deep); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; margin-top: var(--s-3); display: inline-block; font-size: 13px; }
+.index .download a.dl:hover { color: var(--color-accent); }
+
+/* Right body */
+.doc-body { max-width: 760px; padding-right: var(--s-8); }
+.doc-section { padding: var(--s-12) 0; border-top: 1px solid var(--color-gray-100); }
+.doc-section:first-child { padding-top: 0; border-top: none; }
+.doc-section .secno { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; color: var(--color-accent-deep); text-transform: uppercase; margin-bottom: var(--s-4); display: inline-flex; align-items: center; gap: var(--s-2); }
+.doc-section .secno::before { content: ""; width: 24px; height: 1px; background: currentColor; }
+.doc-section h2 { margin: 0 0 var(--s-6); font-size: 40px; font-weight: 900; line-height: 1.05; letter-spacing: -0.025em; }
+.doc-section h3 { margin: var(--s-10) 0 var(--s-3); font-size: 21px; font-weight: 700; line-height: 1.3; letter-spacing: -0.015em; }
+.doc-section p { margin: 0 0 var(--s-4); font-size: 17px; line-height: 1.7; color: var(--color-gray-700); }
+.doc-section ul, .doc-section ol { margin: 0 0 var(--s-5); padding-left: 22px; font-size: 17px; line-height: 1.7; color: var(--color-gray-700); }
+.doc-section li { margin-bottom: var(--s-2); }
+.doc-section li::marker { color: var(--color-accent); font-weight: 700; }
+
+/* fee table */
+.fee-table { width: 100%; border-collapse: collapse; margin: var(--s-6) 0; }
+.fee-table th, .fee-table td { text-align: left; padding: var(--s-4) var(--s-3); border-bottom: 1px solid var(--color-gray-100); font-size: 16px; line-height: 1.5; }
+.fee-table th { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-500); text-transform: uppercase; font-weight: 500; }
+.fee-table td.amount { font-family: var(--font-mono); font-weight: 500; }
+.fee-table td.amount.zero { color: var(--color-accent-deep); font-weight: 700; }
+.fee-table tr:hover td { background: var(--color-paper); }
+
+/* callout */
+.callout { background: var(--color-paper); border-left: 3px solid var(--color-accent); padding: var(--s-5) var(--s-6); border-radius: 0 var(--r-md) var(--r-md) 0; margin: var(--s-6) 0; }
+.callout p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--color-gray-700); }
+.callout p strong { color: var(--color-ink); }
+.callout .tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--color-accent-deep); text-transform: uppercase; font-weight: 700; margin-bottom: var(--s-2); display: block; }
+
+/* download row */
+.dl-row { display: flex; gap: var(--s-3); margin: var(--s-6) 0; flex-wrap: wrap; }
+.dl-row a { display: inline-flex; align-items: center; gap: var(--s-2); padding: 12px 18px; border: 1px solid var(--color-gray-100); border-radius: var(--r-md); font-size: 14px; font-weight: 500; transition: all 120ms; }
+.dl-row a:hover { border-color: var(--color-ink); transform: translateY(-1px); }
+.dl-row a .icon { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-accent-deep); padding: 2px 6px; background: var(--color-accent-soft); border-radius: 4px; }
+
+/* contact card */
+.contact-card { margin-top: var(--s-12); background: var(--color-ink); color: #fff; padding: var(--s-10); border-radius: var(--r-xl); display: flex; justify-content: space-between; align-items: center; gap: var(--s-8); }
+.contact-card .top { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; opacity: 0.6; text-transform: uppercase; margin-bottom: var(--s-2); }
+.contact-card h3 { margin: 0; font-size: 28px; font-weight: 800; line-height: 1.2; letter-spacing: -0.02em; color: #fff; }
+.contact-card p { margin: var(--s-3) 0 0; font-size: 15px; line-height: 1.55; opacity: 0.7; }
+.contact-card .ch { background: var(--color-accent); color: #fff; padding: 14px 22px; border-radius: var(--r-md); font-size: 15px; font-weight: 700; display: inline-flex; align-items: center; gap: var(--s-2); }
+.contact-card .ch:hover { background: var(--color-accent-deep); }
+
+/* footer */
+footer.foot { background: var(--color-paper); padding: var(--s-12) 0; border-top: 1px solid var(--color-gray-100); }
+.foot-top { display: flex; align-items: baseline; gap: var(--s-4); margin-bottom: var(--s-6); }
+.foot-wordmark { font-weight: 800; font-size: 24px; letter-spacing: -0.035em; }
+.foot-wordmark .dot { color: var(--color-accent); }
+.foot-links { display: flex; flex-wrap: wrap; gap: var(--s-8); }
+.foot-links a { font-size: 15px; color: var(--color-gray-500); transition: color 120ms; }
+.foot-links a:hover { color: var(--color-ink); }
+.foot-legal { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-300); margin-top: var(--s-6); text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<!-- ────── HEADER ────── -->
+<div class="site-header-wrap">
+  <header class="site-header" role="navigation">
+    <a href="hero.html" class="wordmark">Spot<span class="dot">.</span></a>
+    <nav>
+      <a href="find.html">공간 찾기</a>
+      <a href="towns.html">팝업타운</a>
+      <a href="list-space.html">내 공간 등록</a>
+      <a href="story.html">이야기</a>
+      <a href="guide.html" class="active">이용 안내</a>
+    </nav>
+    <div class="right">
+      <div class="lang-toggle">
+        <span class="lang on">KO</span>
+        <span class="sep">/</span>
+        <a href="guide-en.html"><span class="lang">EN</span></a>
+      </div>
+      <a href="#login" class="login">로그인</a>
+      <button class="signup" type="button">회원가입</button>
+    </div>
+  </header>
+</div>
+
+<!-- ────── PAGE HEAD ────── -->
+<section class="page-head">
+  <div class="container">
+    <div class="eyebrow">USAGE GUIDE · TERMS · POLICIES</div>
+    <h1>이용 안내<span class="quiet">.</span></h1>
+    <p class="sub">Spot은 결제 · 계약 · 채팅에 관여하지 않습니다. 매칭까지만 제공하는 우리의 약속을, 한 페이지에 모았습니다.</p>
+    <div class="meta-row">
+      <div class="meta">VERSION · <strong>v1.0</strong></div>
+      <div class="meta">LAST UPDATED · <strong>2026-05-19</strong></div>
+      <div class="meta">EFFECTIVE · <strong>2026-06-01</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ────── DOC ────── -->
+<section class="doc-wrap">
+  <div class="container">
+    <div class="doc-grid">
+
+      <!-- LEFT INDEX -->
+      <aside class="index">
+        <span class="label">INDEX · NO. 01—07</span>
+        <ol>
+          <li><a href="#tos" class="active">이용약관</a></li>
+          <li><a href="#fees">수수료 · 결제</a></li>
+          <li><a href="#refund">취소 · 환불</a></li>
+          <li><a href="#privacy">개인정보 처리</a></li>
+          <li><a href="#operation">운영 정책</a></li>
+          <li><a href="#dispute">분쟁 안내</a></li>
+          <li><a href="#std">표준계약서</a></li>
+        </ol>
+        <div class="download">
+          <strong>전체 다운로드</strong>
+          한 페이지에 정리한 PDF로 받아보세요.
+          <a href="#" class="dl">↓ usage-guide-v1.0.pdf</a>
+        </div>
+      </aside>
+
+      <!-- RIGHT BODY -->
+      <article class="doc-body">
+
+        <!-- 1. 이용약관 -->
+        <section class="doc-section" id="tos">
+          <div class="secno">SECTION · 01 / TERMS OF SERVICE</div>
+          <h2>이용약관.</h2>
+          <p>Spot은 비어 있는 1층 상가와 단기 임차를 원하는 브랜드를 잇는 정보 매칭 서비스입니다. 본 약관은 회원 · 임대인 · 임차인이 Spot을 이용할 때 적용됩니다.</p>
+
+          <h3>1.1 서비스의 범위</h3>
+          <p>Spot이 제공하는 것은 매물의 등록 · 검색 · 문의 · 수락 · 연락처 공개까지입니다. 결제 · 계약 · 채팅 · 분쟁 중재는 제공하지 않으며, 수락 이후의 거래는 임대인과 임차인 사이에서 직접 진행됩니다.</p>
+
+          <h3>1.2 회원 자격</h3>
+          <ul>
+            <li>만 19세 이상의 자연인 또는 사업자</li>
+            <li>본인 명의의 휴대전화 인증 완료</li>
+            <li>임대인은 매물 소유 또는 적법한 임대 권한 보유</li>
+          </ul>
+
+          <h3>1.3 금지 행위</h3>
+          <ul>
+            <li>허위 매물 등록 (실재하지 않는 공간, 다른 공간 사진 도용)</li>
+            <li>중복 계정 생성 · 매크로 사용 · 검색 결과 조작</li>
+            <li>매칭 외부 결제 우회 유도 (수수료 회피 목적)</li>
+            <li>법령 위반 업종 운영 (무허가 음식점 · 도박 · 성인업소 등)</li>
+          </ul>
+
+          <h3>1.4 약관 변경</h3>
+          <p>본 약관은 시행일 7일 전 공지를 통해 변경할 수 있습니다. 회원이 변경된 약관에 동의하지 않을 경우 회원 탈퇴할 수 있습니다.</p>
+        </section>
+
+        <!-- 2. 수수료 -->
+        <section class="doc-section" id="fees">
+          <div class="secno">SECTION · 02 / FEES & PAYMENT</div>
+          <h2>수수료 · 결제.</h2>
+          <p>Spot은 등록 · 노출 · 검색 · 검증에 별도 비용을 청구하지 않습니다. 매칭이 성사된 경우에 한해 정해진 비율의 매칭 수수료가 부과됩니다.</p>
+
+          <table class="fee-table">
+            <thead>
+              <tr><th>항목</th><th>비용</th><th>비고</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>회원 가입 · 등록</td><td class="amount zero">0원</td><td>매물 무제한 등록 가능</td></tr>
+              <tr><td>월 구독료</td><td class="amount zero">0원</td><td>월정액 없음</td></tr>
+              <tr><td>사진검증 (운영팀 심사)</td><td class="amount zero">0원</td><td>2~3 영업일 소요</td></tr>
+              <tr><td>방문검증 (현장 확인)</td><td class="amount zero">0원</td><td>운영팀 직접 방문, Spot 부담</td></tr>
+              <tr><td>매칭 수수료</td><td class="amount">총 거래금의 7%</td><td>임차인 수락 · 계약 성사 시</td></tr>
+              <tr><td>매칭 외부 결제</td><td class="amount">두 분 합의</td><td>Spot 관여 없음</td></tr>
+            </tbody>
+          </table>
+
+          <h3>2.1 매칭 수수료의 정의</h3>
+          <p>"매칭 수수료"는 임대인이 임차인의 문의를 수락하고, 두 분이 계약을 체결해 거래가 성사된 경우 임대인에게 청구되는 금액입니다. 두 분의 자율적인 합의로 임차인과 분담할 수 있습니다.</p>
+
+          <h3>2.2 청구 시점</h3>
+          <p>임대인은 수락 후 7일 이내에 매칭 성사 여부를 Spot에 보고합니다. 보고를 받은 다음 달 1일에 수수료가 청구됩니다. 카드 자동 결제 또는 계좌이체 중 선택할 수 있습니다.</p>
+
+          <div class="callout">
+            <span class="tag">⚠ 우회 금지</span>
+            <p>매칭 후 Spot 외부에서 거래를 진행하면서 수수료를 회피하는 행위는 약관 §1.3에 따라 계정 정지 사유입니다. 매칭이 성사되지 않은 경우(거절 · 무응답 · 합의 불발)에는 수수료가 청구되지 않습니다.</p>
+          </div>
+        </section>
+
+        <!-- 3. 취소·환불 -->
+        <section class="doc-section" id="refund">
+          <div class="secno">SECTION · 03 / CANCELLATION & REFUND</div>
+          <h2>취소 · 환불.</h2>
+          <p>Spot은 임차료 · 보증금 등을 직접 보관하지 않습니다. 취소 · 환불은 임대인과 임차인이 사전에 합의한 정책에 따릅니다. 표준계약서 §4가 권장 정책을 제시합니다.</p>
+
+          <h3>3.1 권장 환불 정책 (표준계약서 §4)</h3>
+          <ul>
+            <li>이용 시작 14일 전까지 — 전액 환불</li>
+            <li>이용 시작 7일 전까지 — 50% 환불</li>
+            <li>이용 시작 3일 전까지 — 30% 환불</li>
+            <li>이용 시작 2일 전 ~ 당일 — 환불 없음</li>
+          </ul>
+
+          <h3>3.2 임대인 귀책 사유로 인한 취소</h3>
+          <p>임대인의 사유(매물 상태 불량 · 임의 계약 해지 등)로 임차인이 이용하지 못한 경우, 임대인은 전액 환불 및 임차인이 직접 입은 손실에 대한 책임을 부담합니다. Spot은 이미 청구된 매칭 수수료를 환급합니다.</p>
+
+          <h3>3.3 천재지변 · 행정 명령</h3>
+          <p>천재지변 · 정부 행정 명령 등 양 당사자의 귀책 사유가 아닌 경우, 두 분의 합의 또는 표준계약서 §5의 기준에 따라 처리됩니다.</p>
+        </section>
+
+        <!-- 4. 개인정보 -->
+        <section class="doc-section" id="privacy">
+          <div class="secno">SECTION · 04 / PRIVACY POLICY</div>
+          <h2>개인정보 처리방침.</h2>
+          <p>Spot은 개인정보 보호법 및 정보통신망법을 준수합니다. 수집되는 개인정보의 항목 · 보유 기간 · 제3자 제공 여부는 다음과 같습니다.</p>
+
+          <h3>4.1 수집 항목</h3>
+          <ul>
+            <li><strong>필수</strong> — 이름, 휴대전화 번호, 이메일</li>
+            <li><strong>임대인 추가</strong> — 매물 주소(정확), 사업자 등록 번호(선택)</li>
+            <li><strong>임차인 추가</strong> — 관심 지역, 보낸 문의 내역</li>
+            <li><strong>자동 수집</strong> — 접속 IP, 쿠키, 기기 정보</li>
+          </ul>
+
+          <h3>4.2 보유 기간</h3>
+          <p>회원 탈퇴 시 즉시 파기. 다만 관련 법령에 따라 보존이 필요한 경우(전자상거래법 — 5년) 별도 분리 보관 후 파기합니다.</p>
+
+          <h3>4.3 제3자 제공</h3>
+          <p>임차인이 임대인의 문의를 수락한 시점에 한해, 임차인의 연락처가 임대인에게 1회 공개됩니다. 수락 전에는 공개되지 않습니다. 그 외의 제3자 제공은 없습니다.</p>
+
+          <h3>4.4 처리 위탁</h3>
+          <ul>
+            <li>본인 인증 — NICE평가정보</li>
+            <li>알림톡 발송 — 카카오 (NHN Cloud)</li>
+            <li>인프라 — AWS Seoul Region</li>
+          </ul>
+        </section>
+
+        <!-- 5. 운영 정책 -->
+        <section class="doc-section" id="operation">
+          <div class="secno">SECTION · 05 / OPERATION POLICY</div>
+          <h2>운영 정책.</h2>
+
+          <h3>5.1 매물 검증 절차</h3>
+          <p>등록된 매물은 운영팀의 검토 후 노출됩니다. 사진의 진위 · 주소의 실재 · 업종 적법성을 2~3 영업일 안에 확인합니다. 검증을 통과하면 "사진검증 ✓" 배지가, 직접 방문 확인까지 거치면 "방문검증 ✓✓" 배지가 부여됩니다.</p>
+
+          <h3>5.2 응답 의무</h3>
+          <p>임대인은 받은 문의에 7일 이내에 응답하는 것을 권장합니다. 무응답 비율이 50%를 초과하면 검색 노출 순위가 자동 하향됩니다. 휴면 처리는 30일 무응답 기준입니다.</p>
+
+          <h3>5.3 신고 · 운영자 개입</h3>
+          <p>허위 매물 · 사기 의심 · 약관 위반 신고는 카카오톡 채널 @spot.kr 또는 hello@spot.kr 로 접수합니다. 운영팀은 영업일 내 검토 후 경고 · 노출 정지 · 계정 정지 중 하나로 대응합니다.</p>
+
+          <h3>5.4 알림톡</h3>
+          <p>새 문의 · 수락 · 거절 · 만료는 카카오 알림톡으로 즉시 발송됩니다. 알림톡 수신은 회원 가입 시 동의되며, 마이페이지에서 항목별 끄기가 가능합니다.</p>
+        </section>
+
+        <!-- 6. 분쟁 안내 -->
+        <section class="doc-section" id="dispute">
+          <div class="secno">SECTION · 06 / DISPUTES</div>
+          <h2>분쟁 안내.</h2>
+          <p>Spot은 약관 §1.1에 따라 임대인과 임차인 사이의 분쟁에 직접 중재 · 판단하지 않습니다. 분쟁은 당사자 간 해결이 원칙입니다.</p>
+
+          <h3>6.1 분쟁 단계별 권고</h3>
+          <ol>
+            <li>먼저 두 분이 직접 대화 (카카오톡 · 전화 · 만남)</li>
+            <li>합의가 어려우면 표준계약서 §6 — 상호 협의</li>
+            <li>그래도 해결되지 않으면 — 한국공정거래조정원 · 대한상사중재원 등 외부 조정 기관 활용 권고</li>
+            <li>최종적으로 — 민사 소송 (관할 — 매물 소재지 지방법원)</li>
+          </ol>
+
+          <div class="callout">
+            <span class="tag">ⓘ Spot의 협조 범위</span>
+            <p>요청 시 매물 등록 시점의 사진 · 수정 이력 · 문의 · 수락 시점 등 <strong>객관적 사실 정보</strong>를 제공합니다. 누구의 잘잘못인지에 대한 판단은 하지 않습니다.</p>
+          </div>
+        </section>
+
+        <!-- 7. 표준계약서 -->
+        <section class="doc-section" id="std">
+          <div class="secno">SECTION · 07 / STANDARD CONTRACT</div>
+          <h2>표준계약서.</h2>
+          <p>Spot은 단기 임대용 표준계약서 PDF를 무료로 제공합니다. 두 분이 출력해 직접 서명 · 교환하시면 됩니다. Spot은 계약 내용의 작성 · 보관에 관여하지 않습니다.</p>
+
+          <h3>7.1 다운로드</h3>
+          <div class="dl-row">
+            <a href="#"><span class="icon">PDF</span>표준계약서 (단기 임대) · v1.0</a>
+            <a href="#"><span class="icon">PDF</span>특약 사항 별지 · v1.0</a>
+            <a href="#"><span class="icon">DOCX</span>편집 가능 버전 (한글)</a>
+          </div>
+
+          <h3>7.2 포함 조항 (요약)</h3>
+          <ul>
+            <li>임대 기간 · 시간 (시작 · 종료)</li>
+            <li>임대료 · 지급 방법 · 지급 시기</li>
+            <li>보증금 · 청소 비용 · 원상 복구</li>
+            <li>허용 · 금지 업종 및 행위</li>
+            <li>취소 · 환불 정책 (표준계약서 §4 기본 적용)</li>
+            <li>천재지변 등 불가항력 (§5)</li>
+            <li>분쟁 해결 (§6 — 상호 협의 후 외부 조정)</li>
+          </ul>
+
+          <h3>7.3 권장 사용 흐름</h3>
+          <ol>
+            <li>임대인이 PDF 다운로드 후 빈칸 작성 → 임차인에게 전달</li>
+            <li>두 분이 카카오톡으로 합의 → 양면 출력 · 서명 · 사진 교환</li>
+            <li>원본 한 부씩 보관</li>
+          </ol>
+        </section>
+
+        <!-- Contact card -->
+        <aside class="contact-card">
+          <div>
+            <div class="top">NEED HELP · 도움이 필요할 때</div>
+            <h3>운영팀에 직접 문의하세요.</h3>
+            <p>약관 · 정책 · 검증 · 신고 — 한 통 한 통 직접 읽고 영업일 내 답장합니다.</p>
+          </div>
+          <a href="#" class="ch">카카오톡 @spot.kr →</a>
+        </aside>
+
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ────── FOOTER ────── -->
+<footer class="foot">
+  <div class="container">
+    <div class="foot-top">
+      <span class="foot-wordmark">Spot<span class="dot">.</span></span>
+      <span class="mono-xs" style="color: var(--color-gray-500);">POPUP SPACE · SHORT TERM</span>
+    </div>
+    <div class="foot-links">
+      <a href="story.html">이야기</a>
+      <a href="guide.html">이용 안내</a>
+      <a href="guide.html#tos">이용약관</a>
+      <a href="guide.html#privacy">개인정보</a>
+      <a href="guide.html#biz">사업자정보</a>
+      <a href="guide.html#std">표준계약서</a>
+    </div>
+    <div class="foot-legal">© 2026 SPOT · MATCHING ONLY · 결제·계약은 외부에서 진행됩니다</div>
+  </div>
+</footer>
+
+<script>
+  // index active state on scroll
+  (function(){
+    var links = document.querySelectorAll('.index a[href^="#"]');
+    var sections = Array.from(links).map(function(a){
+      return { a: a, sec: document.querySelector(a.getAttribute('href')) };
+    }).filter(function(x){ return x.sec; });
+    function onScroll(){
+      var top = window.scrollY + 120;
+      var current = sections[0];
+      sections.forEach(function(x){
+        if (x.sec.offsetTop <= top) current = x;
+      });
+      links.forEach(function(a){ a.classList.remove('active'); });
+      if (current) current.a.classList.add('active');
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
+
+</body>
+</html>

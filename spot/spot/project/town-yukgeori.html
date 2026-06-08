@@ -1,0 +1,674 @@
+<!-- Spot — 팝업타운 상세 · 육거리 중앙상가 v0.1 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>Spot — 육거리 중앙상가 · POPUP TOWN NO.01</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --color-ink: #0A0A0A;
+  --color-paper: #F4EFE6;
+  --color-paper-pure: #FFFFFF;
+  --color-accent: #FF5A1F;
+  --color-accent-deep: #D8410F;
+  --color-accent-soft: #FFE7DC;
+  --color-gray-50: #F7F5F1;
+  --color-gray-100: #E8E4DD;
+  --color-gray-300: #BDB7AD;
+  --color-gray-500: #7A736A;
+  --color-gray-700: #3F3A33;
+
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px; --s-24: 96px;
+  --r-sm: 4px; --r-md: 8px; --r-lg: 16px; --r-xl: 24px; --r-pill: 9999px;
+
+  --font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  --container: 1200px;
+  --header-h: 60px;
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+html, body { margin: 0; padding: 0; min-width: 1280px; }
+body { font-family: var(--font-sans); color: var(--color-ink); background: var(--color-paper-pure); letter-spacing: -0.01em; word-break: keep-all; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+img { display: block; max-width: 100%; }
+
+@media (max-width: 1023px) { html { zoom: 0.78; } }
+
+.mono-sm { font-family: var(--font-mono); font-size: 12px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.mono-xs { font-family: var(--font-mono); font-size: 11px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.body { font-size: 17px; line-height: 1.7; font-weight: 400; }
+
+/* 글로벌 헤더 */
+.gheader { position: sticky; top: 0; z-index: 30; background: var(--color-paper-pure); border-bottom: 1px solid var(--color-gray-100); }
+.gheader-inner { max-width: 1200px; margin: 0 auto; height: var(--header-h); padding: 0 var(--s-12); display: flex; align-items: center; gap: var(--s-6); }
+.wordmark { font-weight: 800; font-size: 20px; letter-spacing: -0.035em; padding-right: var(--s-3); border-right: 1px solid var(--color-gray-100); margin-right: var(--s-3); }
+.wordmark .dot { color: var(--color-accent); }
+.gnav { display: flex; gap: var(--s-6); }
+.gnav a { font-size: 14px; font-weight: 500; padding: 6px 2px; }
+.gnav a.on { color: var(--color-accent-deep); }
+.gheader .right { margin-left: auto; display: flex; align-items: center; gap: var(--s-5); }
+.lang-toggle { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: var(--color-gray-300); display: inline-flex; gap: 6px; }
+.lang-toggle .lang.on { color: var(--color-ink); font-weight: 700; }
+.gheader .login { font-size: 14px; font-weight: 500; }
+.gheader .signup { background: var(--color-ink); color: var(--color-paper-pure); border: none; padding: 10px 20px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; }
+
+/* 브레드크럼 */
+.crumb { max-width: var(--container); margin: 0 auto; padding: var(--s-5) var(--s-12) 0; }
+.crumb ol { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--s-2); font-size: 13px; color: var(--color-gray-500); }
+.crumb li::after { content: " / "; margin: 0 var(--s-1); color: var(--color-gray-300); }
+.crumb li:last-child::after { content: ""; }
+.crumb a:hover { color: var(--color-ink); }
+
+/* ─── HERO — 풀폭 색면 + 거대 타이포 ─── */
+.hero {
+  background: var(--color-accent);
+  color: var(--color-paper-pure);
+  padding: var(--s-16) 0 var(--s-12);
+  position: relative;
+  overflow: hidden;
+}
+.hero-inner { max-width: var(--container); margin: 0 auto; padding: 0 var(--s-12); position: relative; }
+.hero-eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; opacity: 0.9; text-transform: uppercase; display: inline-flex; align-items: center; gap: var(--s-2); }
+.hero-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+.hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: rgba(255,255,255,0.18); border-radius: var(--r-pill); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; margin-top: var(--s-4); }
+.hero-badge::before { content: "●"; font-size: 8px; }
+.hero h1 { margin: var(--s-6) 0 var(--s-5); font-size: 140px; font-weight: 900; line-height: 0.9; letter-spacing: -0.035em; }
+.hero .lead { font-size: 22px; line-height: 1.5; max-width: 640px; opacity: 0.92; }
+.hero-meta { display: flex; gap: var(--s-12); margin-top: var(--s-12); padding-top: var(--s-6); border-top: 1px solid rgba(255,255,255,0.2); }
+.hero-meta .m .v { font-size: 36px; font-weight: 800; letter-spacing: -0.025em; display: block; }
+.hero-meta .m .l { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; margin-top: 4px; display: block; }
+.hero-index-big { position: absolute; right: var(--s-12); top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-size: 240px; font-weight: 500; line-height: 0.85; letter-spacing: -0.04em; color: rgba(255,255,255,0.08); text-align: right; pointer-events: none; }
+
+/* 섹션 공통 */
+.section { padding: var(--s-16) 0; max-width: var(--container); margin: 0 auto; padding-left: var(--s-12); padding-right: var(--s-12); }
+.section.fullwidth { max-width: none; padding-left: 0; padding-right: 0; }
+.section.paper { background: var(--color-paper); }
+.section.ink { background: var(--color-ink); color: var(--color-paper-pure); }
+.sec-head { display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: var(--s-8); gap: var(--s-6); }
+.sec-head .ey { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-2); }
+.sec-head h2 { margin: 0; font-size: 40px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; }
+.sec-head h2 .quiet { color: var(--color-accent); }
+.sec-head .more { font-size: 15px; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; flex-shrink: 0; }
+.sec-head .more:hover { color: var(--color-accent-deep); }
+
+/* ─── STORY — 편집 톤 ─── */
+.story-grid { display: grid; grid-template-columns: 280px 1fr 280px; gap: var(--s-10); align-items: start; }
+.story-side { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--color-gray-500); text-transform: uppercase; }
+.story-side .lab { margin-bottom: var(--s-3); }
+.story-side .by { color: var(--color-ink); font-weight: 700; }
+.story-side .meta { margin-top: var(--s-6); padding-top: var(--s-4); border-top: 1px solid var(--color-gray-100); display: block; }
+.story-body p { margin: 0 0 var(--s-5); }
+.story-body p:first-child::first-letter { font-family: var(--font-sans); font-size: 96px; font-weight: 900; float: left; line-height: 0.85; padding-right: var(--s-3); padding-top: 4px; color: var(--color-accent); letter-spacing: -0.03em; }
+.story-body blockquote { margin: var(--s-8) 0; padding: var(--s-6) 0 var(--s-6) var(--s-8); border-left: 4px solid var(--color-accent); font-size: 24px; font-weight: 700; line-height: 1.4; letter-spacing: -0.02em; color: var(--color-ink); }
+.story-pull { background: var(--color-paper); border-radius: var(--r-md); padding: var(--s-6); margin-top: var(--s-4); }
+.story-pull .who { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-500); text-transform: uppercase; }
+.story-pull .quote { font-size: 17px; line-height: 1.6; margin-top: var(--s-2); }
+
+/* ─── 데이터 4종 카드 ─── */
+.data-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-4); margin-top: var(--s-4); }
+.data-card { padding: var(--s-8); background: var(--color-paper); border-radius: var(--r-md); position: relative; overflow: hidden; }
+.data-card .lab { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-500); text-transform: uppercase; }
+.data-card .v { font-size: 48px; font-weight: 800; letter-spacing: -0.025em; margin-top: var(--s-2); line-height: 1; }
+.data-card .v .u { font-size: 18px; font-weight: 500; color: var(--color-gray-500); margin-left: 4px; }
+.data-card .d { font-size: 13px; color: var(--color-gray-500); margin-top: var(--s-3); line-height: 1.55; }
+.data-card.accent { background: var(--color-accent); color: var(--color-paper-pure); }
+.data-card.accent .lab, .data-card.accent .d { color: rgba(255,255,255,0.85); }
+.data-card.accent .v .u { color: rgba(255,255,255,0.7); }
+
+/* ─── 1F 거리 풍경 SVG ─── */
+.street-block { background: var(--color-paper); padding: var(--s-16) 0; }
+.street-svg { display: block; max-width: 1000px; margin: 0 auto; width: 100%; height: auto; }
+.shop-body { fill: var(--color-paper-pure); }
+.signboard { fill: var(--color-paper-pure); }
+.window-bg { fill: rgba(255, 255, 255, 0.82); }
+.street { fill: var(--color-ink); }
+.street-shadow { fill: var(--color-gray-300); opacity: 0.5; }
+.shutter { fill: var(--color-ink); transform: translateY(-80px); transition: transform 600ms var(--ease-out-soft); }
+.shutter.filled { transform: translateY(0); }
+.flag { fill: var(--color-accent); }
+.window-label { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.05em; text-transform: uppercase; fill: var(--color-gray-500); }
+.street-cap { text-align: center; margin-top: var(--s-6); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--color-gray-500); text-transform: uppercase; }
+.street-cap .accent-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--color-accent); margin: 0 8px; vertical-align: 1px; }
+
+/* ─── 매물 카드 그리드 ─── */
+.space-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); }
+.space-card { background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-lg); overflow: hidden; transition: transform 200ms var(--ease-out-soft), box-shadow 200ms; cursor: pointer; color: inherit; display: block; }
+.space-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(10,10,10,0.06); }
+.space-photo { aspect-ratio: 4 / 3; background: var(--color-gray-100); position: relative; padding: var(--s-4); display: flex; align-items: flex-end; background-image: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(189,183,173,0.25) 8px, rgba(189,183,173,0.25) 9px); }
+.space-photo .label { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); background: rgba(255,255,255,0.92); padding: 4px 8px; border-radius: 4px; letter-spacing: 0.08em; text-transform: uppercase; }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: var(--r-pill); font-size: 12px; font-weight: 500; line-height: 1; white-space: nowrap; }
+.chip-verified { background: var(--color-accent-soft); color: var(--color-accent-deep); }
+.chip-unverified { background: rgba(255,255,255,0.92); color: var(--color-gray-500); border: 1px solid var(--color-gray-100); }
+.chip-on-photo { position: absolute; top: var(--s-4); left: var(--s-4); }
+.space-body { padding: var(--s-5); }
+.space-meta { display: flex; gap: var(--s-2); align-items: center; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-2); }
+.space-title { font-size: 17px; font-weight: 700; line-height: 1.4; }
+.space-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: var(--s-2); font-size: 12px; color: var(--color-gray-500); }
+.space-price-row { margin-top: var(--s-4); display: flex; align-items: baseline; justify-content: space-between; padding-top: var(--s-3); border-top: 1px solid var(--color-gray-100); }
+.space-price .unit { font-size: 12px; color: var(--color-gray-500); margin-right: 4px; }
+.space-price .v { font-size: 20px; font-weight: 700; letter-spacing: -0.015em; }
+.space-price .u { font-size: 13px; color: var(--color-gray-500); margin-left: 2px; }
+.space-price-row .arr { color: var(--color-gray-500); font-size: 14px; transition: transform 200ms, color 200ms; }
+.space-card:hover .space-price-row .arr { transform: translateX(4px); color: var(--color-ink); }
+
+/* ─── 이전 운영 사례 ─── */
+.recent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-5); }
+.recent-card { padding: var(--s-6); background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-md); }
+.recent-card .when { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); letter-spacing: 0.08em; text-transform: uppercase; }
+.recent-card .nm { font-size: 18px; font-weight: 700; margin-top: var(--s-2); line-height: 1.35; }
+.recent-card .cat { font-size: 12px; color: var(--color-gray-500); margin-top: 2px; }
+.recent-card .desc { font-size: 14px; color: var(--color-gray-700); line-height: 1.55; margin-top: var(--s-3); padding-top: var(--s-3); border-top: 1px solid var(--color-gray-100); }
+.recent-card .stats { display: flex; gap: var(--s-5); margin-top: var(--s-4); }
+.recent-card .s .n { font-size: 18px; font-weight: 700; }
+.recent-card .s .l { font-size: 11px; color: var(--color-gray-500); margin-top: 2px; font-family: var(--font-mono); letter-spacing: 0.05em; text-transform: uppercase; }
+
+/* ─── 시즌 컬렉션 CTA ─── */
+.season { background: var(--color-ink); color: var(--color-paper-pure); border-radius: var(--r-xl); padding: var(--s-12); display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-10); align-items: center; margin-top: var(--s-8); }
+.season .ey { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; color: var(--color-accent); text-transform: uppercase; font-weight: 700; }
+.season h2 { margin: var(--s-3) 0 var(--s-4); font-size: 44px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
+.season p { margin: 0; font-size: 16px; line-height: 1.65; color: var(--color-gray-300); }
+.season-side { display: flex; flex-direction: column; gap: var(--s-3); }
+.season-side .it { padding: var(--s-4) var(--s-5); background: rgba(255,255,255,0.06); border-radius: var(--r-md); }
+.season-side .it .n { font-family: var(--font-mono); font-size: 11px; color: var(--color-accent); letter-spacing: 0.08em; font-weight: 700; }
+.season-side .it .t { font-size: 15px; font-weight: 700; margin-top: 4px; }
+.season-side .it .d { font-size: 12px; color: var(--color-gray-300); margin-top: 4px; line-height: 1.5; }
+.season .cta { margin-top: var(--s-6); background: var(--color-paper-pure); color: var(--color-ink); border: none; padding: 14px 26px; border-radius: var(--r-md); font-size: 15px; font-weight: 700; display: inline-flex; align-items: center; gap: var(--s-2); width: fit-content; }
+
+/* ─── 등록 권유 ─── */
+.host-cta { background: var(--color-accent); color: #fff; border-radius: var(--r-xl); padding: var(--s-12); display: flex; justify-content: space-between; align-items: flex-end; gap: var(--s-12); }
+.host-cta h2 { margin: 0; font-size: 40px; font-weight: 900; letter-spacing: -0.025em; line-height: 1.05; max-width: 580px; }
+.host-cta p { margin: var(--s-4) 0 0; font-size: 16px; line-height: 1.55; opacity: 0.9; max-width: 520px; }
+.host-cta .btn { background: var(--color-ink); color: #fff; border: none; padding: 16px 28px; border-radius: var(--r-md); font-size: 15px; font-weight: 700; display: inline-flex; gap: var(--s-2); align-items: center; }
+
+/* footer */
+footer.foot { background: var(--color-paper); padding: var(--s-12) 0; border-top: 1px solid var(--color-gray-100); margin-top: var(--s-16); }
+.foot-inner { max-width: var(--container); margin: 0 auto; padding: 0 var(--s-12); }
+.foot-top { display: flex; align-items: baseline; gap: var(--s-4); margin-bottom: var(--s-6); }
+.foot-wordmark { font-weight: 800; font-size: 24px; letter-spacing: -0.035em; }
+.foot-wordmark .dot { color: var(--color-accent); }
+.foot-links { display: flex; flex-wrap: wrap; gap: var(--s-8); }
+.foot-links a { font-size: 15px; color: var(--color-gray-500); }
+.foot-links a:hover { color: var(--color-ink); }
+.foot-legal { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-300); margin-top: var(--s-6); text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<header class="gheader">
+  <div class="gheader-inner">
+    <a href="hero.html" class="wordmark">Spot<span class="dot">.</span></a>
+    <nav class="gnav">
+      <a href="find.html">공간 찾기</a>
+      <a href="towns.html" class="on">팝업타운</a>
+      <a href="list-space.html">내 공간 등록</a>
+      <a href="story.html">이야기</a>
+      <a href="guide.html">이용 안내</a>
+    </nav>
+    <div class="right">
+      <div class="lang-toggle"><span class="lang on">KO</span><span>/</span><span class="lang">EN</span></div>
+      <a class="login" href="#">로그인</a>
+      <button class="signup">회원가입</button>
+    </div>
+  </div>
+</header>
+
+<nav class="crumb">
+  <ol>
+    <li><a href="towns.html">팝업타운</a></li>
+    <li>육거리 중앙상가 · NO.01</li>
+  </ol>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-index-big" aria-hidden="true">01</div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">YUKGEORI · POHANG · POPUP TOWN</div>
+    <div class="hero-badge">2026 MAIN TOWN · 가을 파일럿</div>
+    <h1>육거리<br/>중앙상가</h1>
+    <p class="lead">한때 가장 붐비던 거리. 지금은 1층 가게 60여 곳 중 18곳이 비어 있습니다. 다시 사람을 들이려는 첫 번째 시도가 여기서 시작됐어요.</p>
+    <div class="hero-meta">
+      <div class="m"><span class="v">18</span><span class="l">매물 수</span></div>
+      <div class="m"><span class="v">8만원</span><span class="l">평균 이용료 / 일</span></div>
+      <div class="m"><span class="v">2.4일</span><span class="l">평균 응답 시간</span></div>
+      <div class="m"><span class="v">7개</span><span class="l">최근 90일 운영 팝업</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 1. STORY -->
+<section class="section">
+  <div class="sec-head">
+    <div>
+      <div class="ey">SPOT EDITORIAL · NO.01</div>
+      <h2>붐비던 거리의 다음 챕터<span class="quiet">.</span></h2>
+    </div>
+    <div class="story-side" style="flex-direction: column; display: flex; align-items: flex-end;">
+      <span>2026 / 05 ISSUE</span>
+      <span class="by" style="margin-top: 6px;">에디터 · 김유진</span>
+    </div>
+  </div>
+
+  <div class="story-grid">
+    <div class="story-side">
+      <div class="lab">SECTION</div>
+      <div>역사 · 풍경 · 가능성</div>
+      <div class="meta">위치<br/><strong style="color: var(--color-ink);">경상북도 포항시 북구 중앙로 · 죽도시장 인근</strong></div>
+      <div class="meta">파일럿 기간<br/><strong style="color: var(--color-ink);">2026.09 — 12</strong></div>
+      <div class="meta">파트너<br/><strong style="color: var(--color-ink);">포항시 · 중앙상가 번영회</strong></div>
+    </div>
+
+    <article class="story-body body">
+      <p>육거리는 포항이라는 도시의 심장이었다. 1980~90년대, 영일만의 노동자들이 퇴근길에 들렀던 가게가 줄지어 늘어선 거리. 1층 통유리에는 옷가게의 마네킹, 다방의 빨간 천막, 양품점의 셔터 그림이 있었다. 그 시절의 사진을 들춰보면, 거리는 늘 가득 차 있었다.</p>
+
+      <p>2020년대 들어 동네는 천천히 멈춰갔다. 신시가지로 인구가 빠져나가고, 60여 곳 중 18곳에 셔터가 내려갔다. 비어 있는 가게는 거리에 그림자를 만들고, 그림자는 다시 손님을 줄였다. 비어 있는 가게가 비어 있는 가게를 만드는 익숙한 순환이었다.</p>
+
+      <blockquote>"불 꺼진 가게가 늘면, 옆 가게도 어두워져요. 가게 하나 켜지면, 옆 가게도 다시 환해지고."</blockquote>
+
+      <p>포항시와 중앙상가 번영회는 새로운 방법을 시도해 보기로 했다. 한 곳을 길게 계약해 들이는 것 대신, <strong>1일부터 한 달까지의 짧은 자리</strong>를 내놓고 팝업을 들이는 방식. 통째 임대가 어려운 공실 18곳을 다 같이 꺼내어, 잠깐의 가게로 채우는 실험.</p>
+
+      <p>Spot은 이 실험의 인프라가 된다. 사장님들이 가게를 등록하면, 청년 창작자와 로컬 브랜드들이 일 단위로 빌려 자기 가게처럼 운영한다. 사장님은 비어 있는 동안 일 5만 원의 임대료를 받고, 임차인은 통째 임대 부담 없이 도시의 한복판에서 사업을 테스트한다.</p>
+
+      <div class="story-pull">
+        <div class="who">박○○ · 18년차 사장</div>
+        <div class="quote">"제 가게가 비어 있는 동안 다른 사장님 가게가 들어와 사람들을 들이는 거. 처음엔 어색했는데 지금은 좋아요. 거리가 다시 시끄러워졌거든."</div>
+      </div>
+
+      <p>2026년 가을, 육거리 중앙상가는 첫 한 시즌을 보낸다. 어떤 가게가 들어와서 어떤 손님을 만나는지, 그래서 거리가 어떻게 달라지는지 — Spot 데이터로 같이 지켜볼 예정이다.</p>
+    </article>
+
+    <div class="story-side">
+      <div class="lab">DEAL ROOM</div>
+      <div>일 단위 정액 대관</div>
+      <div class="meta">평균 임대료<br/><strong style="color: var(--color-ink);">40,000 — 70,000원/일</strong></div>
+      <div class="meta">평균 이용 기간<br/><strong style="color: var(--color-ink);">7~14일</strong></div>
+      <div class="meta">서비스 이용료<br/><strong style="color: var(--color-ink);">80,000원/일</strong> (Spot)</div>
+      <div class="meta">권장 카테고리<br/><strong style="color: var(--color-ink);">패션·F&amp;B 시음·아트</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. DATA -->
+<section class="section paper" style="max-width: none; padding-left: 0; padding-right: 0;">
+  <div style="max-width: var(--container); margin: 0 auto; padding: 0 var(--s-12);">
+    <div class="sec-head">
+      <div>
+        <div class="ey">BY THE NUMBERS · LAST 90 DAYS</div>
+        <h2>육거리, 숫자로 보기<span class="quiet">.</span></h2>
+      </div>
+      <span class="mono-sm" style="color: var(--color-gray-500);">UPDATED · 2026.05.28</span>
+    </div>
+
+    <div class="data-grid">
+      <div class="data-card accent">
+        <div class="lab">총 매물</div>
+        <div class="v">18<span class="u">곳</span></div>
+        <div class="d">통유리 1층 8곳, 골목 1층 7곳, 옛 다방 자리 3곳.</div>
+      </div>
+      <div class="data-card">
+        <div class="lab">가동률 (이용 일수)</div>
+        <div class="v">62<span class="u">%</span></div>
+        <div class="d">최근 90일 기준. 인근 일반 상가 평균 38%.</div>
+      </div>
+      <div class="data-card">
+        <div class="lab">평균 임대료</div>
+        <div class="v">5만<span class="u">원/일</span></div>
+        <div class="d">건물주가 받는 시설 사용료 (Spot 수수료 별도).</div>
+      </div>
+      <div class="data-card">
+        <div class="lab">평균 일 방문</div>
+        <div class="v">240<span class="u">명</span></div>
+        <div class="d">QR 체크인 + 매장 입퇴장 기준.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. STREET — 1F 거리 풍경 SVG -->
+<section class="street-block">
+  <div style="max-width: var(--container); margin: 0 auto; padding: 0 var(--s-12);">
+    <div class="sec-head">
+      <div>
+        <div class="ey">STREET VIEW · NO.01</div>
+        <h2>지금 육거리 풍경<span class="quiet">.</span></h2>
+      </div>
+      <span class="mono-sm" style="color: var(--color-gray-500);">실시간 — 5초마다 갱신</span>
+    </div>
+
+    <svg class="street-svg" viewBox="0 0 1000 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <clipPath id="w0"><rect x="40"  y="80" width="80" height="100"/></clipPath>
+        <clipPath id="w1"><rect x="150" y="80" width="80" height="100"/></clipPath>
+        <clipPath id="w2"><rect x="260" y="80" width="80" height="100"/></clipPath>
+        <clipPath id="w3"><rect x="370" y="80" width="80" height="100"/></clipPath>
+        <clipPath id="w4"><rect x="480" y="80" width="80" height="100"/></clipPath>
+        <clipPath id="w5"><rect x="590" y="80" width="80" height="100"/></clipPath>
+        <clipPath id="w6"><rect x="700" y="80" width="80" height="100"/></clipPath>
+        <clipPath id="w7"><rect x="810" y="80" width="80" height="100"/></clipPath>
+      </defs>
+
+      <!-- street line -->
+      <rect class="street" x="20" y="190" width="960" height="4"/>
+      <rect class="street-shadow" x="20" y="196" width="960" height="2"/>
+
+      <!-- 8 shops -->
+      <!-- 0 -->
+      <rect class="signboard" x="40"  y="58" width="80" height="3"/>
+      <text x="80"  y="72" text-anchor="middle" class="window-label">PATCH KNIT</text>
+      <rect class="shop-body"  x="30"  y="70" width="100" height="120"/>
+      <rect class="window-bg"  x="40"  y="80" width="80" height="100"/>
+      <g clip-path="url(#w0)"><rect class="shutter" data-slot="0" x="40" y="80" width="80" height="100"/></g>
+      <rect class="flag" x="30" y="65" width="6" height="14"/>
+
+      <!-- 1 -->
+      <rect class="signboard" x="150" y="58" width="80" height="3"/>
+      <text x="190" y="72" text-anchor="middle" class="window-label">VACANT</text>
+      <rect class="shop-body" x="140" y="70" width="100" height="120"/>
+      <rect class="window-bg" x="150" y="80" width="80" height="100"/>
+      <g clip-path="url(#w1)"><rect class="shutter" data-slot="1" x="150" y="80" width="80" height="100"/></g>
+
+      <!-- 2 -->
+      <rect class="signboard" x="260" y="58" width="80" height="3"/>
+      <text x="300" y="72" text-anchor="middle" class="window-label">CHA SHOP</text>
+      <rect class="shop-body" x="250" y="70" width="100" height="120"/>
+      <rect class="window-bg" x="260" y="80" width="80" height="100"/>
+      <g clip-path="url(#w2)"><rect class="shutter" data-slot="2" x="260" y="80" width="80" height="100"/></g>
+      <rect class="flag" x="250" y="65" width="6" height="14"/>
+
+      <!-- 3 -->
+      <rect class="signboard" x="370" y="58" width="80" height="3"/>
+      <text x="410" y="72" text-anchor="middle" class="window-label">VACANT</text>
+      <rect class="shop-body" x="360" y="70" width="100" height="120"/>
+      <rect class="window-bg" x="370" y="80" width="80" height="100"/>
+      <g clip-path="url(#w3)"><rect class="shutter" data-slot="3" x="370" y="80" width="80" height="100"/></g>
+
+      <!-- 4 -->
+      <rect class="signboard" x="480" y="58" width="80" height="3"/>
+      <text x="520" y="72" text-anchor="middle" class="window-label">ART POPUP</text>
+      <rect class="shop-body" x="470" y="70" width="100" height="120"/>
+      <rect class="window-bg" x="480" y="80" width="80" height="100"/>
+      <g clip-path="url(#w4)"><rect class="shutter" data-slot="4" x="480" y="80" width="80" height="100"/></g>
+      <rect class="flag" x="470" y="65" width="6" height="14"/>
+
+      <!-- 5 -->
+      <rect class="signboard" x="590" y="58" width="80" height="3"/>
+      <text x="630" y="72" text-anchor="middle" class="window-label">VACANT</text>
+      <rect class="shop-body" x="580" y="70" width="100" height="120"/>
+      <rect class="window-bg" x="590" y="80" width="80" height="100"/>
+      <g clip-path="url(#w5)"><rect class="shutter" data-slot="5" x="590" y="80" width="80" height="100"/></g>
+
+      <!-- 6 -->
+      <rect class="signboard" x="700" y="58" width="80" height="3"/>
+      <text x="740" y="72" text-anchor="middle" class="window-label">BRAND K</text>
+      <rect class="shop-body" x="690" y="70" width="100" height="120"/>
+      <rect class="window-bg" x="700" y="80" width="80" height="100"/>
+      <g clip-path="url(#w6)"><rect class="shutter" data-slot="6" x="700" y="80" width="80" height="100"/></g>
+      <rect class="flag" x="690" y="65" width="6" height="14"/>
+
+      <!-- 7 -->
+      <rect class="signboard" x="810" y="58" width="80" height="3"/>
+      <text x="850" y="72" text-anchor="middle" class="window-label">VACANT</text>
+      <rect class="shop-body" x="800" y="70" width="100" height="120"/>
+      <rect class="window-bg" x="810" y="80" width="80" height="100"/>
+      <g clip-path="url(#w7)"><rect class="shutter" data-slot="7" x="810" y="80" width="80" height="100"/></g>
+    </svg>
+
+    <div class="street-cap">
+      <span class="accent-dot"></span>현재 4곳 운영 중<span class="accent-dot"></span>4곳 임차 가능
+    </div>
+  </div>
+</section>
+
+<!-- 4. SPACES (이 타운의 매물) -->
+<section class="section">
+  <div class="sec-head">
+    <div>
+      <div class="ey">SPACES · YUKGEORI · 18 LISTINGS</div>
+      <h2>이 타운의 매물<span class="quiet">.</span></h2>
+    </div>
+    <a class="more" href="find.html?town=yukgeori">전체 18개 보기 →</a>
+  </div>
+
+  <div class="space-grid">
+    <a href="space-detail.html" class="space-card">
+      <div class="space-photo">
+        <span class="chip chip-verified chip-on-photo">✓ 사진검증</span>
+        <span class="label">외관 — 통유리 코너</span>
+      </div>
+      <div class="space-body">
+        <div class="space-meta"><span>NO. 0518</span><span>·</span><span>육거리 · 12평</span></div>
+        <div class="space-title">중앙상가 12평 1층 통유리 코너</div>
+        <div class="space-tags">코너 · 통유리 · 2면 노출</div>
+        <div class="space-price-row">
+          <span class="space-price"><span class="unit">이용료</span><span class="v">8만<span class="u">/일</span></span></span>
+          <span class="arr">→</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="space-detail.html" class="space-card">
+      <div class="space-photo">
+        <span class="chip chip-verified chip-on-photo">✓ 사진검증</span>
+        <span class="label">외관 — 골목 입구</span>
+      </div>
+      <div class="space-body">
+        <div class="space-meta"><span>NO. 0519</span><span>·</span><span>육거리 · 8평</span></div>
+        <div class="space-title">중앙상가 8평 골목 입구 1층</div>
+        <div class="space-tags">단독 입구 · 야간 운영 가능</div>
+        <div class="space-price-row">
+          <span class="space-price"><span class="unit">이용료</span><span class="v">6만<span class="u">/일</span></span></span>
+          <span class="arr">→</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="space-detail.html" class="space-card">
+      <div class="space-photo">
+        <span class="chip chip-unverified chip-on-photo">검증 진행 중</span>
+        <span class="label">외관 — 옛 다방 자리</span>
+      </div>
+      <div class="space-body">
+        <div class="space-meta"><span>NO. 0520</span><span>·</span><span>육거리 · 15평</span></div>
+        <div class="space-title">중앙상가 15평 옛 다방 자리</div>
+        <div class="space-tags">레트로 인테리어 잔존 · F&amp;B 시음 가능</div>
+        <div class="space-price-row">
+          <span class="space-price"><span class="unit">이용료</span><span class="v">7만<span class="u">/일</span></span></span>
+          <span class="arr">→</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="space-detail.html" class="space-card">
+      <div class="space-photo">
+        <span class="chip chip-verified chip-on-photo">✓ 사진검증</span>
+        <span class="label">외관 — 양면 도로 코너</span>
+      </div>
+      <div class="space-body">
+        <div class="space-meta"><span>NO. 0521</span><span>·</span><span>육거리 · 10평</span></div>
+        <div class="space-title">중앙상가 10평 양면 도로 코너</div>
+        <div class="space-tags">2면 통유리 · 디스플레이 자유도</div>
+        <div class="space-price-row">
+          <span class="space-price"><span class="unit">이용료</span><span class="v">9만<span class="u">/일</span></span></span>
+          <span class="arr">→</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="space-detail.html" class="space-card">
+      <div class="space-photo">
+        <span class="chip chip-verified chip-on-photo">✓ 사진검증</span>
+        <span class="label">외관 — 골목 안 단독 1층</span>
+      </div>
+      <div class="space-body">
+        <div class="space-meta"><span>NO. 0522</span><span>·</span><span>육거리 · 6평</span></div>
+        <div class="space-title">중앙상가 6평 골목 안 단독</div>
+        <div class="space-tags">소형 · 1인 부스 · 한적한 골목</div>
+        <div class="space-price-row">
+          <span class="space-price"><span class="unit">이용료</span><span class="v">4만<span class="u">/일</span></span></span>
+          <span class="arr">→</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="space-detail.html" class="space-card">
+      <div class="space-photo">
+        <span class="chip chip-verified chip-on-photo">✓ 사진검증</span>
+        <span class="label">외관 — 중앙로 변</span>
+      </div>
+      <div class="space-body">
+        <div class="space-meta"><span>NO. 0523</span><span>·</span><span>육거리 · 20평</span></div>
+        <div class="space-title">중앙상가 20평 중앙로 변</div>
+        <div class="space-tags">대형 · 매대 6~8개 가능 · 갤러리 적합</div>
+        <div class="space-price-row">
+          <span class="space-price"><span class="unit">이용료</span><span class="v">12만<span class="u">/일</span></span></span>
+          <span class="arr">→</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- 5. RECENT POPUPS -->
+<section class="section paper" style="max-width: none; padding-left: 0; padding-right: 0;">
+  <div style="max-width: var(--container); margin: 0 auto; padding: 0 var(--s-12);">
+    <div class="sec-head">
+      <div>
+        <div class="ey">RECENT POPUPS · LAST 90 DAYS</div>
+        <h2>육거리에서 열렸던 팝업<span class="quiet">.</span></h2>
+      </div>
+      <a class="more" href="story.html">이야기 더 보기 →</a>
+    </div>
+
+    <div class="recent-grid">
+      <article class="recent-card">
+        <div class="when">2026 · 04 · 5일</div>
+        <div class="nm">로컬 브랜드 K · 자수 패치 마켓</div>
+        <div class="cat">패션 · 액세서리</div>
+        <p class="desc">통유리 두 면을 활용한 디스플레이 매대 4개. 인스타 1.4만 팔로워의 첫 오프라인 팝업. 평일 낮 유입이 의외로 강했다.</p>
+        <div class="stats">
+          <div class="s"><div class="n">1,420</div><div class="l">방문 수</div></div>
+          <div class="s"><div class="n">★ 4.9</div><div class="l">평점</div></div>
+        </div>
+      </article>
+      <article class="recent-card">
+        <div class="when">2026 · 03 · 7일</div>
+        <div class="nm">홍차 시음 팝업 · T</div>
+        <div class="cat">F&amp;B · 시음</div>
+        <p class="desc">옛 다방 자리에 그대로 들어가 시음대 4개. 정화조 협의가 깔끔했고 단골이 많이 생긴 케이스. 재방문 의향 비율이 높았다.</p>
+        <div class="stats">
+          <div class="s"><div class="n">980</div><div class="l">방문 수</div></div>
+          <div class="s"><div class="n">★ 4.7</div><div class="l">평점</div></div>
+        </div>
+      </article>
+      <article class="recent-card">
+        <div class="when">2026 · 02 · 3일</div>
+        <div class="nm">청년 작가 5인 미니 전시</div>
+        <div class="cat">아트 · 전시</div>
+        <p class="desc">대학교 졸업전시 연계 미니 갤러리. 평일 저녁 작가와의 대화 4회. 주말 가족 단위 방문이 많았다.</p>
+        <div class="stats">
+          <div class="s"><div class="n">540</div><div class="l">방문 수</div></div>
+          <div class="s"><div class="n">★ 4.6</div><div class="l">평점</div></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 6. SEASON COLLECTION -->
+<section class="section">
+  <div class="sec-head">
+    <div>
+      <div class="ey">SEASON COLLECTION · 2026 가을</div>
+      <h2>다시, 육거리<span class="quiet">.</span></h2>
+    </div>
+    <span class="mono-sm" style="color: var(--color-gray-500);">PHASE 2 · 큐레이션</span>
+  </div>
+
+  <div class="season">
+    <div>
+      <span class="ey">UPCOMING · 2026 가을 · 큐레이션</span>
+      <h2>다시,<br/>육거리.</h2>
+      <p>2026년 가을, Spot이 직접 기획하는 시즌 컬렉션 팝업. 사업자등록이 없는 1인 창작자·청년 작가도 참가자 형태로 함께 들어옵니다. 한 자리에 여러 가게가 모이는 공동 운영.</p>
+      <a href="guide.html#curation" class="cta">큐레이션 알림 신청 →</a>
+    </div>
+    <div class="season-side">
+      <div class="it"><div class="n">PHASE 2 · 01</div><div class="t">청년 작가 5인 마켓</div><div class="d">대학·졸업전시 연계. 사업자등록 없이 참가 가능.</div></div>
+      <div class="it"><div class="n">PHASE 2 · 02</div><div class="t">포항 로컬 푸드 위크</div><div class="d">지역 식품 브랜드 6곳 공동 운영, 시음 중심.</div></div>
+      <div class="it"><div class="n">PHASE 2 · 03</div><div class="t">옛 거리·옛 가게 사진전</div><div class="d">1980년대 육거리 거리 사진 아카이브 + 지금.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. HOST CTA -->
+<section class="section">
+  <div class="host-cta">
+    <div>
+      <span class="mono-sm" style="opacity: 0.85;">FOR HOSTS · 사장님께</span>
+      <h2>육거리에 비어 있는<br/>1층이 있으신가요?</h2>
+      <p>중앙상가 안 공실을 Spot에 등록하시면, 임차인 모집부터 계약·정산까지 도와드립니다. 사장님은 일 단위로 임대료만 받으면 됩니다.</p>
+    </div>
+    <a href="space-register.html" class="btn">매물 등록 시작 <span style="display:inline-block; transition: transform 200ms;">→</span></a>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="foot-top">
+      <span class="foot-wordmark">Spot<span class="dot">.</span></span>
+      <span class="mono-xs" style="color: var(--color-gray-500);">POPUP SPACE · 시설 이용 서비스</span>
+    </div>
+    <div class="foot-links">
+      <a href="story.html">이야기</a>
+      <a href="guide.html">이용 안내</a>
+      <a href="guide.html#tos">이용약관</a>
+      <a href="guide.html#privacy">개인정보</a>
+      <a href="guide.html#std">표준 시설 이용계약서</a>
+    </div>
+    <div class="foot-legal">© 2026 SPOT · 건물주 임대료와 Spot 서비스 이용료는 분리 정산됩니다</div>
+  </div>
+</footer>
+
+<script>
+// 거리 풍경 셔터 토글 — 비어 있음 / 차 있음 시퀀스
+(function() {
+  var slots = document.querySelectorAll('.shutter');
+  if (!slots.length) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    [0, 2, 4, 6].forEach(function(i) { slots[i].classList.add('filled'); });
+    return;
+  }
+  // 비어있는 곳: VACANT 표시된 1,3,5,7. 차 있는 곳: 0,2,4,6
+  var states = [
+    [0, 2, 4, 6],
+    [2, 4, 6, 7],
+    [0, 4, 6, 7],
+    [0, 2, 6, 7],
+    [0, 2, 4, 7]
+  ];
+  var idx = 0;
+  function apply() {
+    var set = states[idx];
+    slots.forEach(function(s, i) {
+      s.classList.toggle('filled', set.indexOf(i) !== -1);
+    });
+    idx = (idx + 1) % states.length;
+  }
+  apply();
+  setInterval(apply, 1500);
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!-- Spot — 임차 요청 보내기 (Space Request) v0.1 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>Spot — 임차 요청 · 성수동 12평 1층 통유리 코너</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --color-ink: #0A0A0A;
+  --color-paper: #F4EFE6;
+  --color-paper-pure: #FFFFFF;
+  --color-accent: #FF5A1F;
+  --color-accent-deep: #D8410F;
+  --color-accent-soft: #FFE7DC;
+  --color-gray-50: #F7F5F1;
+  --color-gray-100: #E8E4DD;
+  --color-gray-300: #BDB7AD;
+  --color-gray-500: #7A736A;
+  --color-gray-700: #3F3A33;
+  --color-warning: #C7901A;
+
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 16px;
+  --r-pill: 9999px;
+
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --container: 1100px;
+  --header-h: 60px;
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+html, body { margin: 0; padding: 0; min-width: 1280px; }
+body { font-family: var(--font-sans); color: var(--color-ink); background: var(--color-gray-50); letter-spacing: -0.01em; word-break: keep-all; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+
+@media (max-width: 1023px) { html { zoom: 0.78; } }
+
+.mono-sm { font-family: var(--font-mono); font-size: 12px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.mono-xs { font-family: var(--font-mono); font-size: 11px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* 헤더 — space-detail.html과 동일 */
+.gheader { position: sticky; top: 0; z-index: 30; background: var(--color-paper-pure); border-bottom: 1px solid var(--color-gray-100); }
+.gheader-inner { max-width: 1200px; margin: 0 auto; height: var(--header-h); padding: 0 var(--s-12); display: flex; align-items: center; gap: var(--s-6); }
+.wordmark { font-weight: 800; font-size: 20px; letter-spacing: -0.035em; color: var(--color-ink); padding-right: var(--s-3); border-right: 1px solid var(--color-gray-100); margin-right: var(--s-3); }
+.wordmark .dot { color: var(--color-accent); }
+.gnav { display: flex; gap: var(--s-6); }
+.gnav a { font-size: 14px; font-weight: 500; color: var(--color-ink); padding: 6px 2px; }
+.gnav a.on { color: var(--color-accent-deep); }
+.gheader .right { margin-left: auto; display: flex; align-items: center; gap: var(--s-5); }
+.lang-toggle { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: var(--color-gray-300); display: inline-flex; align-items: center; gap: 6px; }
+.lang-toggle .lang.on { color: var(--color-ink); font-weight: 700; }
+.gheader .login { font-size: 14px; font-weight: 500; }
+.gheader .signup { background: var(--color-ink); color: var(--color-paper-pure); border: none; padding: 10px 20px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; }
+
+/* 진행 단계 */
+.stepper { background: var(--color-paper-pure); border-bottom: 1px solid var(--color-gray-100); }
+.stepper-inner { max-width: var(--container); margin: 0 auto; padding: var(--s-5) var(--s-12); display: flex; align-items: center; justify-content: space-between; }
+.step { display: flex; align-items: center; gap: var(--s-3); flex: 1; }
+.step .n { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 12px; font-weight: 700; background: var(--color-gray-100); color: var(--color-gray-500); }
+.step.on .n { background: var(--color-ink); color: var(--color-paper-pure); }
+.step.done .n { background: var(--color-accent); color: var(--color-paper-pure); }
+.step .l { font-size: 13px; font-weight: 500; color: var(--color-gray-500); }
+.step.on .l, .step.done .l { color: var(--color-ink); }
+.step-bar { flex: 0 1 32px; height: 1px; background: var(--color-gray-100); margin: 0 var(--s-2); }
+
+/* 본문 */
+main { max-width: var(--container); margin: 0 auto; padding: var(--s-10) var(--s-12) var(--s-16); }
+.title-row h1 { margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.025em; }
+.title-row .sub { font-size: 15px; color: var(--color-gray-500); margin-top: var(--s-2); }
+
+.layout { display: grid; grid-template-columns: 1fr 360px; gap: var(--s-10); margin-top: var(--s-8); align-items: start; }
+
+/* 카드 */
+.card { background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-lg); padding: var(--s-8); }
+.card + .card { margin-top: var(--s-5); }
+.card h2 { margin: 0 0 var(--s-5); font-size: 20px; font-weight: 700; letter-spacing: -0.015em; }
+.card .sub { font-size: 14px; color: var(--color-gray-500); margin-top: -8px; margin-bottom: var(--s-5); }
+
+/* 폼 */
+.field { margin-top: var(--s-5); }
+.field:first-of-type { margin-top: 0; }
+.field label { display: block; font-size: 13px; font-weight: 700; margin-bottom: var(--s-2); }
+.field .hint { font-size: 12px; color: var(--color-gray-500); margin-top: 6px; }
+.input, .select, .textarea {
+  width: 100%; padding: 12px 14px;
+  border: 1px solid var(--color-gray-100); background: var(--color-paper-pure);
+  border-radius: var(--r-md); font-size: 15px; font-family: inherit; color: var(--color-ink);
+  transition: border-color 120ms;
+}
+.input:focus, .select:focus, .textarea:focus { outline: none; border-color: var(--color-ink); }
+.textarea { min-height: 120px; resize: vertical; line-height: 1.5; }
+
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); }
+
+/* 기간 선택 */
+.daterange { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); margin-top: var(--s-2); }
+.date-cell { padding: var(--s-4) var(--s-5); border: 1px solid var(--color-gray-100); border-radius: var(--r-md); cursor: pointer; }
+.date-cell .l { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); letter-spacing: 0.08em; text-transform: uppercase; }
+.date-cell .d { font-size: 17px; font-weight: 700; margin-top: 6px; }
+.date-cell .dn { font-size: 13px; color: var(--color-gray-500); margin-top: 2px; }
+.date-cell:hover { border-color: var(--color-ink); }
+.date-summary { margin-top: var(--s-3); font-size: 13px; color: var(--color-gray-500); }
+.date-summary strong { color: var(--color-ink); font-weight: 700; }
+
+/* 카테고리 칩 선택 */
+.chips { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-2); }
+.chip-btn {
+  padding: 8px 16px; border-radius: var(--r-pill); border: 1px solid var(--color-gray-100);
+  background: var(--color-paper-pure); color: var(--color-gray-700);
+  font-size: 13px; font-weight: 500; cursor: pointer; transition: all 120ms;
+}
+.chip-btn:hover { border-color: var(--color-ink); }
+.chip-btn.on { background: var(--color-ink); color: var(--color-paper-pure); border-color: var(--color-ink); }
+
+/* 파일 업로드 */
+.upload {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--s-4) var(--s-5);
+  border: 1.5px dashed var(--color-gray-100);
+  border-radius: var(--r-md); background: var(--color-gray-50);
+}
+.upload .l { font-size: 14px; }
+.upload .l .nm { font-weight: 700; }
+.upload .l .sz { font-size: 12px; color: var(--color-gray-500); margin-top: 2px; }
+.upload .a { font-size: 13px; color: var(--color-accent-deep); font-weight: 700; }
+
+/* 체크박스 */
+.check { display: flex; gap: var(--s-3); align-items: flex-start; padding: var(--s-3) 0; cursor: pointer; }
+.check input { margin: 4px 0 0; transform: scale(1.2); accent-color: var(--color-accent); }
+.check .t { font-size: 14px; }
+.check .t .req { color: var(--color-accent-deep); margin-left: 4px; }
+.check a { color: var(--color-gray-500); text-decoration: underline; }
+
+/* 우측 sticky */
+.aside { position: sticky; top: calc(var(--header-h) + 24px); }
+.summary { background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-lg); padding: var(--s-6); }
+.sum-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); letter-spacing: 0.08em; text-transform: uppercase; }
+.mini-card { display: flex; gap: var(--s-3); align-items: center; margin-top: var(--s-3); }
+.mini-photo { width: 64px; height: 64px; border-radius: var(--r-md); background: var(--color-gray-100); background-image: repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(189,183,173,0.25) 6px, rgba(189,183,173,0.25) 7px); flex-shrink: 0; }
+.mini-info .nm { font-size: 14px; font-weight: 700; line-height: 1.35; }
+.mini-info .me { font-size: 12px; color: var(--color-gray-500); margin-top: 2px; }
+.sep { height: 1px; background: var(--color-gray-100); margin: var(--s-5) 0; }
+.calc { font-size: 13px; }
+.calc .row { display: flex; justify-content: space-between; padding: 6px 0; color: var(--color-gray-700); }
+.calc .row.muted { color: var(--color-gray-500); }
+.calc .row.total { border-top: 1px solid var(--color-gray-100); padding-top: var(--s-3); margin-top: var(--s-2); font-size: 16px; font-weight: 700; color: var(--color-ink); }
+.note { background: var(--color-accent-soft); border-radius: var(--r-md); padding: var(--s-3) var(--s-4); font-size: 12px; color: var(--color-accent-deep); margin-top: var(--s-4); line-height: 1.5; }
+.cta { display: block; width: 100%; background: var(--color-accent); color: #fff; border: none; border-radius: var(--r-md); height: 52px; font-size: 16px; font-weight: 700; margin-top: var(--s-5); text-align: center; line-height: 52px; }
+.cta:hover { background: var(--color-accent-deep); }
+.cta:disabled { background: var(--color-gray-100); color: var(--color-gray-300); cursor: not-allowed; }
+.aside-foot { font-size: 12px; color: var(--color-gray-500); text-align: center; margin-top: var(--s-3); line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<header class="gheader">
+  <div class="gheader-inner">
+    <a href="hero.html" class="wordmark">Spot<span class="dot">.</span></a>
+    <nav class="gnav">
+      <a href="find.html" class="on">공간 찾기</a>
+      <a href="towns.html">팝업타운</a>
+      <a href="list-space.html">내 공간 등록</a>
+      <a href="story.html">이야기</a>
+      <a href="guide.html">이용 안내</a>
+    </nav>
+    <div class="right">
+      <div class="lang-toggle"><span class="lang on">KO</span><span>/</span><span class="lang">EN</span></div>
+      <a class="login" href="#">로그인</a>
+      <button class="signup">회원가입</button>
+    </div>
+  </div>
+</header>
+
+<!-- 진행 단계 -->
+<div class="stepper">
+  <div class="stepper-inner">
+    <div class="step on"><span class="n">1</span><span class="l">요청 보내기</span></div>
+    <div class="step-bar"></div>
+    <div class="step"><span class="n">2</span><span class="l">임대인 검토·수락</span></div>
+    <div class="step-bar"></div>
+    <div class="step"><span class="n">3</span><span class="l">계약·서명</span></div>
+    <div class="step-bar"></div>
+    <div class="step"><span class="n">4</span><span class="l">결제 · 입주</span></div>
+  </div>
+</div>
+
+<main>
+
+  <div class="title-row">
+    <h1>임차 요청 보내기</h1>
+    <p class="sub">기간과 운영 계획을 적어 임대인에게 보내세요. 이 단계에서는 결제되지 않습니다.</p>
+  </div>
+
+  <form class="layout" onsubmit="event.preventDefault(); window.location='contract-review.html';">
+
+    <div>
+
+      <!-- 카드 1: 사용 기간 -->
+      <section class="card">
+        <h2>1 · 사용 기간</h2>
+        <p class="sub">이용 기간 일 단위로 선택. 종료일 22:00 철수 완료 기준입니다.</p>
+
+        <div class="field">
+          <label>희망 기간</label>
+          <div class="daterange">
+            <div class="date-cell">
+              <div class="l">시작일</div>
+              <div class="d">2026.06.04</div>
+              <div class="dn">목요일 · 09:00 입장</div>
+            </div>
+            <div class="date-cell">
+              <div class="l">종료일</div>
+              <div class="d">2026.06.10</div>
+              <div class="dn">수요일 · 22:00 철수</div>
+            </div>
+          </div>
+          <div class="date-summary">총 <strong>7일</strong>. 매물 캘린더 기준 전 일정 가능 상태입니다.</div>
+        </div>
+
+        <div class="field">
+          <label>운영 시간</label>
+          <select class="select">
+            <option>10:00 ~ 20:00 (기본)</option>
+            <option>11:00 ~ 21:00</option>
+            <option>12:00 ~ 22:00 (야간 협의)</option>
+            <option>맞춤 시간 — 메모에 적습니다</option>
+          </select>
+          <div class="hint">매물 기본 운영시간은 10:00~22:00이며, 그 범위 안에서 자유 설정.</div>
+        </div>
+      </section>
+
+      <!-- 카드 2: 운영 계획 -->
+      <section class="card">
+        <h2>2 · 운영 계획</h2>
+        <p class="sub">임대인이 이 정보를 보고 수락 여부를 결정합니다.</p>
+
+        <div class="field">
+          <label>카테고리</label>
+          <div class="chips">
+            <button type="button" class="chip-btn on">패션 · 잡화</button>
+            <button type="button" class="chip-btn">F&amp;B · 시음</button>
+            <button type="button" class="chip-btn">아트 · 전시</button>
+            <button type="button" class="chip-btn">뷰티</button>
+            <button type="button" class="chip-btn">라이프스타일</button>
+            <button type="button" class="chip-btn">기타</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>브랜드·사업 소개</label>
+          <textarea class="textarea" placeholder="브랜드 이름, 주요 상품·메뉴, 인스타·웹 링크를 적어주세요.">로컬 브랜드 'K'. 자수 패치·니트 액세서리 4종 라인업. 인스타 팔로워 1.4만. 첫 오프라인 팝업이며 통유리 코너에 디스플레이 매대 4개를 배치할 계획입니다.</textarea>
+        </div>
+
+        <div class="field">
+          <label>예상 일 매출 (선택)</label>
+          <input class="input" type="text" placeholder="예: 120만원" value="120만원" />
+          <div class="hint">매출 예측은 임대인이 매칭 검토에 참고합니다. 의무 아님.</div>
+        </div>
+
+        <div class="field">
+          <label>특별 요청 사항</label>
+          <textarea class="textarea" placeholder="간판 시트지·전기 증설·청소·집기 등 사전 협의가 필요한 내용을 적어주세요.">통유리 시트지 1면 사용 가능 여부 확인 부탁드립니다. 부착·철거는 직접 진행합니다.</textarea>
+        </div>
+      </section>
+
+      <!-- 카드 3: 신원·서류 -->
+      <section class="card">
+        <h2>3 · 신원·서류</h2>
+        <p class="sub">계약 단계 이전에 임대인이 안심하고 수락할 수 있도록 미리 첨부.</p>
+
+        <div class="field">
+          <label>사업자 등록증 *</label>
+          <div class="upload">
+            <div class="l">
+              <div class="nm">brand-K-사업자등록증.pdf</div>
+              <div class="sz">204 KB · 업로드 완료</div>
+            </div>
+            <a href="#" class="a">변경</a>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>포트폴리오 (선택)</label>
+          <div class="upload" style="border-style: dashed; cursor: pointer;">
+            <div class="l">
+              <div class="nm">파일을 끌어다 놓거나 클릭</div>
+              <div class="sz">PDF · ZIP · 이미지, 50MB 까지</div>
+            </div>
+            <a href="#" class="a">파일 선택</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 카드 4: 동의 -->
+      <section class="card">
+        <h2>4 · 확인 사항</h2>
+
+        <label class="check">
+          <input type="checkbox" checked />
+          <span class="t">표준 시설 이용계약서 양식을 미리 확인했습니다.<a href="guide.html#std"> 양식 보기</a><span class="req">필수</span></span>
+        </label>
+        <label class="check">
+          <input type="checkbox" checked />
+          <span class="t">취소·환불 규정(14일 전 100% / 7일 전 50% / 3일 전 0%)을 확인했습니다.<span class="req">필수</span></span>
+        </label>
+        <label class="check">
+          <input type="checkbox" checked />
+          <span class="t">영업에 필요한 사업자등록·인허가는 이용자(임차인) 책임임을 이해합니다.<span class="req">필수</span></span>
+        </label>
+        <label class="check">
+          <input type="checkbox" />
+          <span class="t">Spot 새 매물·이벤트 알림 수신에 동의합니다. (선택)</span>
+        </label>
+      </section>
+
+    </div>
+
+    <!-- 우측 sticky 요약 -->
+    <aside class="aside">
+      <div class="summary">
+        <div class="sum-eyebrow">요청 매물</div>
+        <div class="mini-card">
+          <div class="mini-photo"></div>
+          <div class="mini-info">
+            <div class="nm">성수동 12평 1층 통유리 코너</div>
+            <div class="me">서울 성동구 · 1층 코너 · 12평</div>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="calc">
+          <div class="row"><span>기간</span><span><strong>7일</strong> (06.04 ~ 06.10)</span></div>
+          <div class="row"><span>이용료 80,000원 × 7일</span><span>560,000원</span></div>
+          <div class="row muted"><span>임대료(건물주) 50,000원 × 7일</span><span>350,000원</span></div>
+          <div class="row total"><span>예상 합계</span><span>910,000원</span></div>
+        </div>
+
+        <div class="note">
+          이 단계에서는 결제되지 않습니다. <strong>임대인 수락 후 계약·서명 → 결제</strong> 순서.
+        </div>
+
+        <button type="submit" class="cta">요청 보내기</button>
+        <div class="aside-foot">평균 응답 4시간. 24시간 미응답 시 자동 알림.</div>
+      </div>
+    </aside>
+
+  </form>
+
+</main>
+
+<script>
+// 카테고리 칩 다중 선택 (간단)
+document.querySelectorAll('.chip-btn').forEach(b => {
+  b.addEventListener('click', () => b.classList.toggle('on'));
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!-- Spot — Story / Manifesto (EN) v0.1 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>Spot — Story</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --color-ink: #0A0A0A; --color-paper: #F4EFE6; --color-paper-pure: #FFFFFF;
+  --color-accent: #FF5A1F; --color-accent-deep: #D8410F; --color-accent-soft: #FFE7DC;
+  --color-gray-100: #E8E4DD; --color-gray-300: #BDB7AD; --color-gray-500: #7A736A; --color-gray-700: #3F3A33;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px; --s-24: 96px; --s-32: 128px;
+  --r-md: 8px; --r-lg: 16px; --r-xl: 24px; --r-pill: 9999px;
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --container: 1200px;
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html, body { margin: 0; padding: 0; min-width: 1280px; }
+body { font-family: var(--font-sans); color: var(--color-ink); background: var(--color-paper); letter-spacing: -0.005em; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+@media (max-width: 1023px) { html { zoom: 0.78; } }
+
+.mono-sm { font-family: var(--font-mono); font-size: 12px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.mono-xs { font-family: var(--font-mono); font-size: 11px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+
+.hero-header { position: absolute; top: var(--s-6); left: 50%; transform: translateX(-50%); width: calc(var(--container) - 0px); max-width: calc(100% - 48px); height: 60px; padding: 6px 8px 6px 28px; display: flex; align-items: center; gap: var(--s-6); background: var(--color-paper-pure); border-radius: var(--r-pill); z-index: 20; }
+.hero-header .wordmark { font-weight: 800; font-size: 20px; letter-spacing: -0.035em; color: var(--color-ink); padding-right: var(--s-3); border-right: 1px solid var(--color-gray-100); margin-right: var(--s-3); }
+.hero-header .wordmark .dot { color: var(--color-accent); }
+.hero-header nav { display: flex; gap: var(--s-6); }
+.hero-header nav a { font-size: 14px; font-weight: 500; color: var(--color-ink); padding: 6px 2px; position: relative; }
+.hero-header nav a.active { color: var(--color-accent-deep); }
+.hero-header nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 2px; height: 1px; background: currentColor; transition: right 200ms var(--ease-out-soft); }
+.hero-header nav a:hover::after, .hero-header nav a.active::after { right: 0; }
+.hero-header .right { margin-left: auto; display: flex; align-items: center; gap: var(--s-5); }
+.lang-toggle { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--color-gray-300); display: inline-flex; align-items: center; gap: 6px; }
+.lang-toggle .lang.on { color: var(--color-ink); font-weight: 700; }
+.lang-toggle .sep { color: var(--color-gray-300); }
+.hero-header .login { font-size: 14px; font-weight: 500; padding: 6px 2px; }
+.hero-header .signup { background: var(--color-ink); color: var(--color-paper-pure); border: none; padding: 10px 20px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; }
+
+.hero { position: relative; min-height: 760px; height: 95vh; background: var(--color-ink); color: var(--color-paper); overflow: hidden; }
+.hero-inner { position: relative; max-width: var(--container); margin: 0 auto; height: 100%; padding: 0 var(--s-12); }
+.hero-text { position: absolute; left: var(--s-12); bottom: 130px; max-width: 1000px; z-index: 3; }
+.hero-eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; color: var(--color-paper); margin-bottom: var(--s-8); display: inline-flex; align-items: center; gap: var(--s-2); }
+.hero-eyebrow::before { content: ""; width: 32px; height: 1px; background: currentColor; }
+.hero-h1 { margin: 0; font-size: 116px; line-height: 0.94; font-weight: 900; letter-spacing: -0.03em; color: var(--color-paper); }
+.hero-h1 .accent { color: var(--color-accent); }
+.hero-h1 .quiet { opacity: 0.5; }
+.hero-sub { margin: var(--s-10) 0 0; max-width: 620px; font-size: 19px; line-height: 1.6; color: rgba(244,239,230,0.7); }
+.hero-no { position: absolute; right: var(--s-12); top: 120px; font-family: var(--font-mono); font-size: 14px; letter-spacing: 0.15em; color: var(--color-accent); text-transform: uppercase; z-index: 3; }
+.hero-edition { position: absolute; right: var(--s-12); top: 156px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.5); text-transform: uppercase; z-index: 3; }
+.hero-edit { position: absolute; right: var(--s-12); bottom: 130px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; color: var(--color-paper); opacity: 0.85; text-align: right; display: flex; align-items: center; gap: var(--s-2); z-index: 3; text-transform: uppercase; }
+.hero-edit::after { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); }
+
+@keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.anim-1 { animation: rise 800ms var(--ease-out-soft) both; }
+.anim-2 { animation: rise 800ms var(--ease-out-soft) 120ms both; }
+.anim-3 { animation: rise 800ms var(--ease-out-soft) 240ms both; }
+.anim-4 { animation: rise 800ms var(--ease-out-soft) 360ms both; }
+@media (prefers-reduced-motion: reduce) { .anim-1, .anim-2, .anim-3, .anim-4 { animation: none; opacity: 1; transform: none; } }
+
+.container { max-width: var(--container); margin: 0 auto; padding: 0 var(--s-12); }
+.section { padding: var(--s-24) 0; }
+.section.paper { background: var(--color-paper); }
+.section.paper-pure { background: var(--color-paper-pure); }
+
+.problem-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: var(--s-16); align-items: start; }
+.problem .eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em; color: var(--color-accent-deep); text-transform: uppercase; margin-bottom: var(--s-6); display: inline-flex; align-items: center; gap: var(--s-2); }
+.problem .eyebrow::before { content: ""; width: 32px; height: 1px; background: currentColor; }
+.problem h2 { margin: 0; font-size: 64px; font-weight: 900; line-height: 0.98; letter-spacing: -0.025em; }
+.problem h2 .accent { color: var(--color-accent); }
+.problem .body p { margin: 0 0 var(--s-6); font-size: 20px; line-height: 1.6; color: var(--color-gray-700); }
+.problem .stats { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-8); margin-top: var(--s-10); padding-top: var(--s-8); border-top: 1px solid var(--color-gray-100); }
+.problem .stats .stat .num { font-size: 60px; font-weight: 900; letter-spacing: -0.025em; line-height: 1; display: block; }
+.problem .stats .stat .num .small { font-size: 26px; vertical-align: 6px; margin-left: 4px; opacity: 0.6; }
+.problem .stats .stat .lab { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--color-gray-500); text-transform: uppercase; margin-top: var(--s-3); display: block; }
+.problem .stats .src { grid-column: 1 / -1; font-size: 13px; color: var(--color-gray-500); margin-top: var(--s-3); font-style: italic; }
+
+.split { display: grid; grid-template-columns: 1fr 1fr; min-height: 640px; }
+.split-cell { padding: var(--s-16); display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-10); }
+.split .left { background: var(--color-ink); color: #fff; }
+.split .right { background: var(--color-accent); color: #fff; }
+.split .label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; opacity: 0.85; text-transform: uppercase; display: inline-flex; align-items: center; gap: var(--s-2); }
+.split .label::before { content: ""; width: 24px; height: 1px; background: currentColor; }
+.split h2 { margin: 0; font-size: 52px; font-weight: 900; line-height: 0.98; letter-spacing: -0.025em; }
+.split .strike { text-decoration: line-through; text-decoration-thickness: 3px; text-decoration-color: var(--color-accent); opacity: 0.9; }
+.split ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--s-4); }
+.split li { font-size: 21px; font-weight: 500; line-height: 1.4; padding-left: 28px; position: relative; }
+.split .left li::before { content: "✕"; position: absolute; left: 0; color: var(--color-accent); font-weight: 700; }
+.split .right li::before { content: "○"; position: absolute; left: 0; opacity: 0.7; font-weight: 700; }
+.split .foot { font-size: 16px; line-height: 1.55; opacity: 0.8; }
+.split .right .foot { opacity: 0.92; }
+
+.quote { background: var(--color-paper-pure); }
+.quote-inner { max-width: 1080px; margin: 0 auto; padding: var(--s-24) var(--s-12); text-align: left; }
+.quote .mark { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em; color: var(--color-accent-deep); text-transform: uppercase; margin-bottom: var(--s-8); display: inline-flex; align-items: center; gap: var(--s-2); }
+.quote .mark::before { content: ""; width: 32px; height: 1px; background: currentColor; }
+.quote blockquote { margin: 0; font-size: 56px; font-weight: 800; line-height: 1.12; letter-spacing: -0.02em; color: var(--color-ink); }
+.quote blockquote .accent { color: var(--color-accent); }
+.quote cite { display: block; font-style: normal; font-size: 15px; color: var(--color-gray-500); margin-top: var(--s-10); font-family: var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; }
+
+.principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); }
+.principle { padding: var(--s-10) var(--s-8); border-radius: var(--r-xl); min-height: 360px; display: flex; flex-direction: column; gap: var(--s-6); transition: transform 200ms var(--ease-out-soft); }
+.principle:hover { transform: translateY(-3px); }
+.principle .no { font-family: var(--font-mono); font-size: 60px; font-weight: 500; line-height: 1; letter-spacing: -0.02em; opacity: 0.85; }
+.principle h3 { margin: 0; font-size: 28px; font-weight: 900; line-height: 1.1; letter-spacing: -0.018em; }
+.principle p { margin: auto 0 0; font-size: 15px; line-height: 1.6; opacity: 0.85; max-width: 280px; }
+.principle.p1 { background: var(--color-accent); color: #fff; }
+.principle.p2 { background: var(--color-paper); color: var(--color-ink); border: 1px solid var(--color-gray-100); }
+.principle.p3 { background: var(--color-ink); color: #fff; }
+
+.team-section { background: var(--color-paper); }
+.team-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: var(--s-16); align-items: start; }
+.team .eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-5); display: inline-flex; align-items: center; gap: var(--s-2); }
+.team .eyebrow::before { content: ""; width: 32px; height: 1px; background: currentColor; }
+.team h2 { margin: 0; font-size: 52px; font-weight: 900; line-height: 0.98; letter-spacing: -0.025em; }
+.team .body p { margin: 0 0 var(--s-5); font-size: 18px; line-height: 1.65; color: var(--color-gray-700); }
+.team .body p:last-child { margin-bottom: 0; }
+.team .sig { margin-top: var(--s-10); font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.1em; color: var(--color-gray-500); text-transform: uppercase; }
+
+.split-cta { background: var(--color-paper-pure); padding: var(--s-24) 0; }
+.split-cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-6); }
+.cta-card { border-radius: var(--r-xl); padding: var(--s-12); min-height: 360px; display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-8); transition: transform 200ms var(--ease-out-soft); }
+.cta-card:hover { transform: translateY(-3px); }
+.cta-card .label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+.cta-card h3 { margin: 0; font-size: 44px; font-weight: 900; line-height: 0.98; letter-spacing: -0.025em; }
+.cta-card p { margin: var(--s-4) 0 0; font-size: 16px; line-height: 1.55; opacity: 0.85; }
+.cta-card .arrow-big { font-family: var(--font-mono); font-size: 32px; align-self: flex-end; }
+.cta-card.tenant { background: var(--color-accent); color: #fff; }
+.cta-card.host { background: var(--color-ink); color: #fff; }
+
+footer.foot { background: var(--color-paper); padding: var(--s-12) 0; border-top: 1px solid var(--color-gray-100); }
+.foot-top { display: flex; align-items: baseline; gap: var(--s-4); margin-bottom: var(--s-6); }
+.foot-wordmark { font-weight: 800; font-size: 24px; letter-spacing: -0.035em; }
+.foot-wordmark .dot { color: var(--color-accent); }
+.foot-links { display: flex; flex-wrap: wrap; gap: var(--s-8); }
+.foot-links a { font-size: 15px; color: var(--color-gray-500); }
+.foot-links a:hover { color: var(--color-ink); }
+.foot-legal { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-300); margin-top: var(--s-6); text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <header class="hero-header" role="navigation">
+    <a href="hero.html" class="wordmark">Spot<span class="dot">.</span></a>
+    <nav>
+      <a href="find-en.html">Find space</a>
+      <a href="towns-en.html">Popup towns</a>
+      <a href="list-space-en.html">List your space</a>
+      <a href="story-en.html" class="active">Story</a>
+      <a href="guide-en.html">Guide</a>
+    </nav>
+    <div class="right">
+      <div class="lang-toggle">
+        <a href="story.html"><span class="lang">KO</span></a>
+        <span class="sep">/</span>
+        <span class="lang on">EN</span>
+      </div>
+      <a href="#login" class="login">Log in</a>
+      <button class="signup" type="button">Sign up</button>
+    </div>
+  </header>
+
+  <div class="hero-inner">
+    <div class="hero-no anim-1">MANIFESTO · NO. 01</div>
+    <div class="hero-edition anim-2">EDITION · 2026 / 05</div>
+
+    <div class="hero-text">
+      <div class="hero-eyebrow anim-1">SPOT · WHAT WE BELIEVE</div>
+      <h1 class="hero-h1 anim-2">A short stay<br/>can <span class="accent">last</span><span class="quiet">.</span></h1>
+      <p class="hero-sub anim-3">Not every lease should be a year long. Spot is the lightest possible way to bridge an empty ground floor with someone who only needs to be there a little while.</p>
+    </div>
+
+    <div class="hero-edit anim-4">SPOT EDITORIAL · MANIFESTO</div>
+  </div>
+</section>
+
+<section class="section paper problem">
+  <div class="container">
+    <div class="problem-grid">
+      <div>
+        <div class="eyebrow">CHAPTER · 01</div>
+        <h2>The city is half-empty,<br/><span class="accent">yet</span> hard to drop into.</h2>
+      </div>
+
+      <div class="body">
+        <p>Ground-floor vacancy in Seoul is 9.5%. In some districts, 14.7%. A storefront sits dark for three, sometimes six months. While it does, the alley loses a little of its pulse.</p>
+        <p>Meanwhile, an Instagram-born brand is looking for its first physical popup. A year-long lease is too much. A KakaoTalk reply from a landlord never comes. The spaces exist; the people exist. The meeting is what's missing.</p>
+
+        <div class="stats">
+          <div class="stat"><span class="num">9.5<span class="small">%</span></span><span class="lab">Seoul 1F vacancy rate</span></div>
+          <div class="stat"><span class="num">3.6<span class="small">mo</span></span><span class="lab">Avg vacancy duration</span></div>
+          <div class="stat"><span class="num">73<span class="small">%</span></span><span class="lab">"1-year lease too much" — indie brand survey, n=204</span></div>
+          <div class="stat"><span class="num">14<span class="small">days</span></span><span class="lab">Avg popup run length</span></div>
+          <div class="src">* Source notes in PRD §1.1 market data appendix. Numbers are mock for the design round.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="split">
+  <div class="split-cell left">
+    <div>
+      <span class="label">CHAPTER · 02 / A</span>
+      <h2 style="margin-top: var(--s-4);"><span class="strike">What we</span><br/>don't build.</h2>
+    </div>
+    <ul>
+      <li>Payments · escrow · PG</li>
+      <li>E-contracts · signatures</li>
+      <li>In-app chat · messaging</li>
+      <li>Dispute mediation</li>
+      <li>Holding deposits</li>
+    </ul>
+    <p class="foot">Legal weight sits with the two parties. We ship a standard contract template, but the deal itself happens between you. Matching alone is hard enough.</p>
+  </div>
+
+  <div class="split-cell right">
+    <div>
+      <span class="label">CHAPTER · 02 / B</span>
+      <h2 style="margin-top: var(--s-4);">What we<br/>do build.</h2>
+    </div>
+    <ul>
+      <li>Search — by town, date, budget</li>
+      <li>Listing — 5 photos, one-line intro</li>
+      <li>Requests — tenant → host, 1:1</li>
+      <li>Accept — only then do contacts open</li>
+      <li>Verification — photo and on-site</li>
+    </ul>
+    <p class="foot">Two strangers meeting safely. After that, we trust your judgment to take it from there.</p>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="quote-inner">
+    <div class="mark">CHAPTER · 03 / QUOTE</div>
+    <blockquote>"You don't need to commit for a year<br/>to start somewhere.<br/><span class="accent">Short stays keep the neighborhood awake.</span>"</blockquote>
+    <cite>— Spot Founding Note · 2026.05</cite>
+  </div>
+</section>
+
+<section class="section paper">
+  <div class="container">
+    <div style="margin-bottom: var(--s-10);">
+      <div style="font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-3); display: inline-flex; align-items: center; gap: var(--s-2);">
+        <span style="width: 32px; height: 1px; background: currentColor; display: inline-block;"></span>
+        CHAPTER · 04 · THREE PRINCIPLES
+      </div>
+      <h2 style="margin: 0; font-size: 52px; font-weight: 900; line-height: 0.98; letter-spacing: -0.025em;">Three questions we keep asking.</h2>
+    </div>
+
+    <div class="principles">
+      <article class="principle p1">
+        <span class="no">01/</span>
+        <h3>Stay light.<br/>Build less.</h3>
+        <p>If something needs two screens when one would do, we won't build it. A landlord on a phone should finish listing in under three minutes.</p>
+      </article>
+
+      <article class="principle p2">
+        <span class="no">02/</span>
+        <h3>The deal is yours.</h3>
+        <p>Once you're matched, we step back. We don't handle payments, contracts, or disputes. We get you to the meeting; the rest is yours.</p>
+      </article>
+
+      <article class="principle p3">
+        <span class="no">03/</span>
+        <h3>Read by town,<br/>not by listing.</h3>
+        <p>Ground floors live in neighborhoods. Seongsu's energy, Buam's quiet, Mangwon's value. We index the city town by town so listings make sense.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section team-section team">
+  <div class="container">
+    <div class="team-grid">
+      <div>
+        <div class="eyebrow">CHAPTER · 05 / THE TEAM</div>
+        <h2>Four people, Seoul.</h2>
+      </div>
+      <div class="body">
+        <p>Spot is a small team in Seoul: design, engineering, operations — four of us. We started in May 2026 in the first five towns: Seongsu, Yeonnam, Mangwon, Buam, Hannam.</p>
+        <p>We don't build payments, contracts, in-app chat, or dispute resolution. Instead we stay with one problem — getting an empty ground floor and a short stay together — and try to do that part well. Small, often revised, intentionally limited.</p>
+        <p>If you have thoughts, write to KakaoTalk <strong>@spot.kr</strong> or <strong>hello@spot.kr</strong>. Every message is read by a person.</p>
+        <div class="sig">— SPOT TEAM · SEOUL · 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="split-cta">
+  <div class="container">
+    <div class="split-cta-grid">
+      <a href="find-en.html" class="cta-card tenant">
+        <div>
+          <span class="label">FOR TENANTS · BRANDS</span>
+          <h3>Find a short<br/>stay.</h3>
+          <p>Start in Seongsu, Mangwon, Yeonnam. From a week to a month.</p>
+        </div>
+        <span class="arrow-big">→</span>
+      </a>
+
+      <a href="list-space-en.html" class="cta-card host">
+        <div>
+          <span class="label">FOR HOSTS · LANDLORDS</span>
+          <h3>Fill the<br/>gap weeks.</h3>
+          <p>3 minutes to list. Decline anytime. 7% only on match.</p>
+        </div>
+        <span class="arrow-big">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="container">
+    <div class="foot-top">
+      <span class="foot-wordmark">Spot<span class="dot">.</span></span>
+      <span class="mono-xs" style="color: var(--color-gray-500);">POPUP SPACE · SHORT TERM</span>
+    </div>
+    <div class="foot-links">
+      <a href="story-en.html">Story</a>
+      <a href="guide-en.html">Guide</a>
+      <a href="guide-en.html#tos">Terms</a>
+      <a href="guide-en.html#privacy">Privacy</a>
+      <a href="guide-en.html#biz">Business info</a>
+      <a href="guide-en.html#std">Standard contract</a>
+    </div>
+    <div class="foot-legal">© 2026 SPOT · MATCHING ONLY · PAYMENT & CONTRACT HAPPEN OFF-PLATFORM</div>
+  </div>
+</footer>
+</body>
+</html>

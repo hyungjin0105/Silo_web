@@ -1,0 +1,381 @@
+<!-- Spot — Find Space (EN) v0.1 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>Spot — Find Space</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --color-ink: #0A0A0A; --color-paper: #F4EFE6; --color-paper-pure: #FFFFFF;
+  --color-accent: #FF5A1F; --color-accent-deep: #D8410F; --color-accent-soft: #FFE7DC;
+  --color-gray-50: #F7F5F1; --color-gray-100: #E8E4DD; --color-gray-300: #BDB7AD;
+  --color-gray-500: #7A736A; --color-gray-700: #3F3A33; --color-warning: #C7901A;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+  --r-sm: 4px; --r-md: 8px; --r-lg: 16px; --r-pill: 9999px;
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --container: 1200px;
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html, body { margin: 0; padding: 0; min-width: 1280px; }
+body { font-family: var(--font-sans); color: var(--color-ink); background: var(--color-paper); letter-spacing: -0.005em; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+@media (max-width: 1023px) { html { zoom: 0.78; } }
+
+.mono-sm { font-family: var(--font-mono); font-size: 12px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.mono-xs { font-family: var(--font-mono); font-size: 11px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+
+.site-header-wrap { background: var(--color-paper); padding: var(--s-6) 0 0; }
+.site-header { position: relative; width: calc(var(--container) - 0px); max-width: calc(100% - 48px); margin: 0 auto; height: 60px; padding: 6px 8px 6px 28px; display: flex; align-items: center; gap: var(--s-6); background: var(--color-paper-pure); border-radius: var(--r-pill); }
+.site-header .wordmark { font-weight: 800; font-size: 20px; letter-spacing: -0.035em; color: var(--color-ink); padding-right: var(--s-3); border-right: 1px solid var(--color-gray-100); margin-right: var(--s-3); }
+.site-header .wordmark .dot { color: var(--color-accent); }
+.site-header nav { display: flex; gap: var(--s-6); }
+.site-header nav a { font-size: 14px; font-weight: 500; padding: 6px 2px; position: relative; transition: color 120ms; }
+.site-header nav a.active { color: var(--color-accent-deep); }
+.site-header nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 2px; height: 1px; background: currentColor; transition: right 200ms var(--ease-out-soft); }
+.site-header nav a:hover::after, .site-header nav a.active::after { right: 0; }
+.site-header .right { margin-left: auto; display: flex; align-items: center; gap: var(--s-5); }
+.lang-toggle { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: var(--color-gray-300); display: inline-flex; align-items: center; gap: 6px; }
+.lang-toggle .lang { padding: 2px 2px; }
+.lang-toggle .lang.on { color: var(--color-ink); font-weight: 700; }
+.lang-toggle .sep { color: var(--color-gray-300); }
+.site-header .login { font-size: 14px; font-weight: 500; padding: 6px 2px; }
+.site-header .signup { background: var(--color-ink); color: var(--color-paper-pure); border: none; padding: 10px 20px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; }
+
+.container { max-width: var(--container); margin: 0 auto; padding: 0 var(--s-12); }
+.page-head { background: var(--color-paper); padding: var(--s-12) 0 var(--s-10); }
+.page-head .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-3); display: inline-flex; align-items: center; gap: var(--s-2); }
+.page-head .eyebrow::before { content: ""; width: 24px; height: 1px; background: currentColor; }
+.page-head h1 { margin: 0; font-size: 64px; font-weight: 900; line-height: 1.0; letter-spacing: -0.025em; }
+.page-head h1 .quiet { color: var(--color-gray-500); font-weight: 700; }
+.page-head .sub { margin: var(--s-5) 0 0; max-width: 620px; font-size: 17px; line-height: 1.55; color: var(--color-gray-500); }
+
+.search-bar { margin-top: var(--s-10); background: var(--color-paper-pure); border-radius: var(--r-lg); border: 1px solid var(--color-gray-100); display: grid; grid-template-columns: 2fr 1.4fr 1.4fr 1fr auto; align-items: stretch; overflow: hidden; }
+.search-field { padding: var(--s-5) var(--s-6); border-right: 1px solid var(--color-gray-100); display: flex; flex-direction: column; gap: 4px; cursor: text; transition: background 120ms; }
+.search-field:hover { background: var(--color-gray-50); }
+.search-field:last-of-type { border-right: none; }
+.search-field .label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-500); text-transform: uppercase; }
+.search-field input { border: none; background: transparent; font-family: inherit; font-size: 17px; font-weight: 500; color: var(--color-ink); padding: 0; outline: none; width: 100%; }
+.search-field input::placeholder { color: var(--color-gray-300); }
+.search-submit { background: var(--color-accent); color: #fff; border: none; padding: 0 var(--s-10); font-size: 16px; font-weight: 700; display: inline-flex; align-items: center; gap: var(--s-2); transition: background 160ms; }
+.search-submit:hover { background: var(--color-accent-deep); }
+.search-submit .arrow { transition: transform 200ms; }
+.search-submit:hover .arrow { transform: translateX(4px); }
+
+.filter-row { background: var(--color-paper); padding: var(--s-6) 0; border-bottom: 1px solid var(--color-gray-100); }
+.filter-row .inner { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; }
+.fchip { display: inline-flex; align-items: center; gap: var(--s-2); padding: 8px var(--s-4); background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-pill); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 120ms; }
+.fchip:hover { border-color: var(--color-ink); }
+.fchip.on { background: var(--color-ink); color: #fff; border-color: var(--color-ink); }
+.fchip .caret { font-size: 10px; opacity: 0.6; }
+.filter-row .spacer { flex: 1; }
+.sort { display: inline-flex; align-items: center; gap: var(--s-2); font-size: 14px; font-weight: 500; cursor: pointer; padding: 8px var(--s-3); border-radius: var(--r-md); }
+.sort:hover { background: var(--color-gray-50); }
+.sort .label { color: var(--color-gray-500); }
+
+.results-head { padding: var(--s-10) 0 var(--s-6); display: flex; align-items: baseline; justify-content: space-between; }
+.results-head .count { font-size: 22px; font-weight: 700; }
+.results-head .count .num { color: var(--color-accent-deep); }
+.results-head .meta { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--color-gray-500); text-transform: uppercase; }
+.view-toggle { display: inline-flex; background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-pill); padding: 4px; gap: 2px; }
+.view-toggle button { background: transparent; border: none; padding: 6px var(--s-4); border-radius: var(--r-pill); font-size: 13px; font-weight: 500; cursor: pointer; color: var(--color-gray-500); }
+.view-toggle button.on { background: var(--color-ink); color: #fff; }
+
+.section.results { background: var(--color-paper); padding-bottom: var(--s-16); }
+.spaces { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); }
+.space-card { background: var(--color-paper-pure); border-radius: var(--r-lg); border: 1px solid var(--color-gray-100); overflow: hidden; transition: transform 200ms var(--ease-out-soft), box-shadow 200ms; display: flex; flex-direction: column; }
+.space-card:hover { transform: translateY(-2px); box-shadow: 0 1px 2px rgba(10,10,10,0.06); }
+.space-photo { aspect-ratio: 4 / 3; background: var(--color-gray-100); position: relative; display: flex; align-items: flex-end; padding: var(--s-4); background-image: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(189,183,173,0.25) 8px, rgba(189,183,173,0.25) 9px); }
+.space-photo .label { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); background: rgba(255,255,255,0.85); padding: 4px 8px; border-radius: 4px; letter-spacing: 0.08em; text-transform: uppercase; }
+.heart { position: absolute; top: var(--s-4); right: var(--s-4); width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.92); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 120ms; color: var(--color-gray-500); }
+.heart:hover { transform: scale(1.08); }
+.heart.on { color: var(--color-accent); }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: var(--r-pill); font-size: 12px; font-weight: 500; line-height: 1; white-space: nowrap; }
+.chip-verified { background: var(--color-accent-soft); color: var(--color-accent-deep); }
+.chip-verified-strong { background: var(--color-accent); color: #fff; }
+.chip-unverified { background: rgba(255,255,255,0.92); color: var(--color-gray-500); border: 1px solid var(--color-gray-100); }
+.chip-negotiable { background: var(--color-accent-soft); color: var(--color-accent-deep); }
+.chip-pending { background: var(--color-paper); color: var(--color-warning); border: 1px solid var(--color-gray-100); }
+.chip-on-photo { position: absolute; top: var(--s-4); left: var(--s-4); }
+.space-body { padding: var(--s-4) var(--s-5) var(--s-5); display: flex; flex-direction: column; gap: var(--s-2); }
+.space-meta-row { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-500); text-transform: uppercase; display: flex; align-items: center; gap: var(--s-2); }
+.space-meta-row .dot { opacity: 0.5; }
+.space-title { font-size: 17px; font-weight: 700; line-height: 1.4; margin-top: 2px; }
+.space-tag-row { display: flex; gap: 4px; flex-wrap: wrap; }
+.space-tag-row .tag { font-size: 12px; color: var(--color-gray-500); }
+.space-tag-row .tag::before { content: "#"; margin-right: 1px; opacity: 0.5; }
+.space-price-row { margin-top: auto; padding-top: var(--s-3); display: flex; align-items: baseline; gap: var(--s-2); flex-wrap: wrap; }
+.space-price { font-size: 19px; font-weight: 700; letter-spacing: -0.015em; }
+.space-price .unit { font-size: 13px; color: var(--color-gray-500); font-weight: 500; margin-right: 4px; }
+
+.space-card.wide { grid-column: span 2; flex-direction: row; }
+.space-card.wide .space-photo { aspect-ratio: auto; width: 50%; flex-shrink: 0; }
+.space-card.wide .space-body { flex: 1; padding: var(--s-6); }
+.space-card.wide .space-title { font-size: 22px; line-height: 1.3; }
+.space-card.wide .description { font-size: 15px; line-height: 1.55; color: var(--color-gray-700); margin-top: var(--s-2); }
+
+.pagination { display: flex; justify-content: center; gap: var(--s-2); margin-top: var(--s-16); }
+.pagination a { min-width: 40px; height: 40px; border-radius: var(--r-md); display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; color: var(--color-gray-500); transition: all 120ms; }
+.pagination a:hover { background: var(--color-paper-pure); color: var(--color-ink); }
+.pagination a.on { background: var(--color-ink); color: #fff; }
+.pagination .prev, .pagination .next { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; padding: 0 var(--s-4); }
+
+footer.foot { background: var(--color-paper); padding: var(--s-12) 0; border-top: 1px solid var(--color-gray-100); }
+.foot-top { display: flex; align-items: baseline; gap: var(--s-4); margin-bottom: var(--s-6); }
+.foot-wordmark { font-weight: 800; font-size: 24px; letter-spacing: -0.035em; }
+.foot-wordmark .dot { color: var(--color-accent); }
+.foot-links { display: flex; flex-wrap: wrap; gap: var(--s-8); }
+.foot-links a { font-size: 15px; color: var(--color-gray-500); transition: color 120ms; }
+.foot-links a:hover { color: var(--color-ink); }
+.foot-legal { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-300); margin-top: var(--s-6); text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<div class="site-header-wrap">
+  <header class="site-header" role="navigation">
+    <a href="hero.html" class="wordmark">Spot<span class="dot">.</span></a>
+    <nav>
+      <a href="find-en.html" class="active">Find space</a>
+      <a href="towns-en.html">Popup towns</a>
+      <a href="list-space-en.html">List your space</a>
+      <a href="story-en.html">Story</a>
+      <a href="guide-en.html">Guide</a>
+    </nav>
+    <div class="right">
+      <div class="lang-toggle">
+        <a href="find.html"><span class="lang">KO</span></a>
+        <span class="sep">/</span>
+        <span class="lang on">EN</span>
+      </div>
+      <a href="#login" class="login">Log in</a>
+      <button class="signup" type="button">Sign up</button>
+    </div>
+  </header>
+</div>
+
+<section class="page-head">
+  <div class="container">
+    <div class="eyebrow">FIND SPACE · POPUP · SHORT TERM</div>
+    <h1>Find a space<span class="quiet">.</span></h1>
+    <p class="sub">Search empty ground-floor shops by town and date. Send a request to the host — once it's accepted, you'll be connected over KakaoTalk.</p>
+
+    <div class="search-bar">
+      <label class="search-field">
+        <span class="label">Town</span>
+        <input type="text" placeholder="Seongsu · Mangwon · Yeonnam" value="Seongsu" />
+      </label>
+      <label class="search-field">
+        <span class="label">Start date</span>
+        <input type="text" placeholder="2026-11-01" />
+      </label>
+      <label class="search-field">
+        <span class="label">Duration</span>
+        <input type="text" placeholder="1 week" value="1 week" />
+      </label>
+      <label class="search-field">
+        <span class="label">Budget / wk</span>
+        <input type="text" placeholder="₩1—5M" />
+      </label>
+      <button class="search-submit" type="button">Search <span class="arrow">→</span></button>
+    </div>
+  </div>
+</section>
+
+<div class="filter-row">
+  <div class="container inner">
+    <button class="fchip on">Verified only <span class="caret">▾</span></button>
+    <button class="fchip">Floor area <span class="caret">▾</span></button>
+    <button class="fchip">Use type <span class="caret">▾</span></button>
+    <button class="fchip">Restroom · water <span class="caret">▾</span></button>
+    <button class="fchip">Available now <span class="caret">▾</span></button>
+    <div class="spacer"></div>
+    <div class="sort"><span class="label">Sort ·</span><span>Recently listed</span><span class="caret">▾</span></div>
+    <div class="view-toggle"><button class="on">List</button><button>Map</button></div>
+  </div>
+</div>
+
+<section class="section results">
+  <div class="container">
+    <div class="results-head">
+      <div><div class="count"><span class="num">27</span> spaces</div></div>
+      <div class="meta">SHOWING 1—9 OF 27 · SEONGSU</div>
+    </div>
+
+    <div class="spaces">
+
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-verified chip-on-photo">✓ Photo verified</span>
+          <span class="heart on">♥</span>
+          <span class="label">Exterior</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row"><span>NO. 1042</span><span class="dot">·</span><span>Seongsu · 12 pyeong</span></div>
+          <div class="space-title">Seongsu — corner 1F with glass walls</div>
+          <div class="space-tag-row"><span class="tag">glass</span><span class="tag">corner</span><span class="tag">cafe-style</span></div>
+          <div class="space-price-row"><span class="space-price"><span class="unit">/ wk</span>₩2.5M</span><span class="chip chip-negotiable">Negotiable</span></div>
+        </div>
+      </article>
+
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-verified-strong chip-on-photo">✓✓ Site visited</span>
+          <span class="heart">♡</span>
+          <span class="label">Interior</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row"><span>NO. 0987</span><span class="dot">·</span><span>Seongsu 2-ga · 18 pyeong</span></div>
+          <div class="space-title">5-min walk to Seoul Forest — full 1F</div>
+          <div class="space-tag-row"><span class="tag">spacious</span><span class="tag">exhibition</span><span class="tag">parking</span></div>
+          <div class="space-price-row"><span class="space-price"><span class="unit">/ wk</span>₩3.8M</span></div>
+        </div>
+      </article>
+
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-unverified chip-on-photo">Unverified</span>
+          <span class="heart">♡</span>
+          <span class="label">Exterior</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row"><span>NO. 1088</span><span class="dot">·</span><span>Seongsu 1-ga · 8 pyeong</span></div>
+          <div class="space-title">6-min walk from Seongsu Stn · alley shop</div>
+          <div class="space-tag-row"><span class="tag">compact</span><span class="tag">cafe-style</span></div>
+          <div class="space-price-row"><span class="space-price"><span class="unit">/ wk</span>₩1.4M</span><span class="chip chip-negotiable">Negotiable</span></div>
+        </div>
+      </article>
+
+      <article class="space-card wide">
+        <div class="space-photo">
+          <span class="chip chip-verified-strong chip-on-photo">✓✓ Site visited</span>
+          <span class="heart">♡</span>
+          <span class="label">EDITORIAL · PICK</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row"><span>EDITORIAL PICK</span><span class="dot">·</span><span>NO. 0921</span></div>
+          <div class="space-title">End of café row — 15 pyeong corner</div>
+          <p class="description">3-min walk from Seongsu Stn (Line 2). Sitting at the end of the café row, this corner space has glass walls on two sides — great for storefront display. Monthly rentals are also negotiable.</p>
+          <div class="space-tag-row"><span class="tag">editors-pick</span><span class="tag">corner</span><span class="tag">glass</span><span class="tag">15-pyeong</span></div>
+          <div class="space-price-row"><span class="space-price"><span class="unit">/ wk</span>₩3.2M</span><span class="chip chip-negotiable">Monthly OK</span></div>
+        </div>
+      </article>
+
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-verified chip-on-photo">✓ Photo verified</span>
+          <span class="heart">♡</span>
+          <span class="label">Interior</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row"><span>NO. 1051</span><span class="dot">·</span><span>Seongsu 1-ga · 10 pyeong</span></div>
+          <div class="space-title">Red brick facade · standalone 1F</div>
+          <div class="space-tag-row"><span class="tag">brick</span><span class="tag">retail</span></div>
+          <div class="space-price-row"><span class="space-price"><span class="unit">/ wk</span>₩2.0M</span></div>
+        </div>
+      </article>
+
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-pending chip-on-photo">⌛ Pending review</span>
+          <span class="heart">♡</span>
+          <span class="label">Exterior</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row"><span>NO. 1102</span><span class="dot">·</span><span>Seongsu 2-ga · 22 pyeong</span></div>
+          <div class="space-title">Seongsu crossroad — full 1F + small yard</div>
+          <div class="space-tag-row"><span class="tag">large</span><span class="tag">yard</span><span class="tag">exhibition</span></div>
+          <div class="space-price-row"><span class="space-price"><span class="unit">/ wk</span>₩5.2M</span><span class="chip chip-negotiable">Negotiable</span></div>
+        </div>
+      </article>
+
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-verified chip-on-photo">✓ Photo verified</span>
+          <span class="heart">♡</span>
+          <span class="label">Exterior</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row"><span>NO. 1019</span><span class="dot">·</span><span>Seongsu 1-ga · 6 pyeong</span></div>
+          <div class="space-title">Tiny popup-only 1F next to a café</div>
+          <div class="space-tag-row"><span class="tag">tiny</span><span class="tag">3-day-OK</span></div>
+          <div class="space-price-row"><span class="space-price"><span class="unit">/ wk</span>₩950K</span><span class="chip chip-negotiable">Negotiable</span></div>
+        </div>
+      </article>
+
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-verified chip-on-photo">✓ Photo verified</span>
+          <span class="heart">♡</span>
+          <span class="label">Interior</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row"><span>NO. 0998</span><span class="dot">·</span><span>Seongsu 2-ga · 14 pyeong</span></div>
+          <div class="space-title">Roof access · 1.5-story layout</div>
+          <div class="space-tag-row"><span class="tag">rooftop</span><span class="tag">photo-shoot</span></div>
+          <div class="space-price-row"><span class="space-price"><span class="unit">/ wk</span>₩2.9M</span></div>
+        </div>
+      </article>
+
+      <article class="space-card">
+        <div class="space-photo">
+          <span class="chip chip-unverified chip-on-photo">Unverified</span>
+          <span class="heart">♡</span>
+          <span class="label">Exterior</span>
+        </div>
+        <div class="space-body">
+          <div class="space-meta-row"><span>NO. 1115</span><span class="dot">·</span><span>Seongsu 1-ga · 9 pyeong</span></div>
+          <div class="space-title">Brand-new 1F · white box space</div>
+          <div class="space-tag-row"><span class="tag">new-build</span><span class="tag">white-box</span></div>
+          <div class="space-price-row"><span class="space-price"><span class="unit">/ wk</span>₩1.8M</span><span class="chip chip-negotiable">Negotiable</span></div>
+        </div>
+      </article>
+
+    </div>
+
+    <nav class="pagination" aria-label="Pages">
+      <a href="#" class="prev">← PREV</a>
+      <a href="#" class="on">1</a><a href="#">2</a><a href="#">3</a><a href="#">…</a><a href="#">9</a>
+      <a href="#" class="next">NEXT →</a>
+    </nav>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="container">
+    <div class="foot-top">
+      <span class="foot-wordmark">Spot<span class="dot">.</span></span>
+      <span class="mono-xs" style="color: var(--color-gray-500);">POPUP SPACE · SHORT TERM</span>
+    </div>
+    <div class="foot-links">
+      <a href="story-en.html">Story</a>
+      <a href="guide-en.html">Guide</a>
+      <a href="guide-en.html#tos">Terms</a>
+      <a href="guide-en.html#privacy">Privacy</a>
+      <a href="guide-en.html#biz">Business info</a>
+      <a href="guide-en.html#std">Standard contract</a>
+    </div>
+    <div class="foot-legal">© 2026 SPOT · MATCHING ONLY · PAYMENT & CONTRACT HAPPEN OFF-PLATFORM</div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var hearts = document.querySelectorAll('.heart');
+    hearts.forEach(function(h){ h.addEventListener('click', function(){ h.classList.toggle('on'); h.textContent = h.classList.contains('on') ? '♥' : '♡'; }); });
+    var fchips = document.querySelectorAll('.fchip');
+    fchips.forEach(function(c){ c.addEventListener('click', function(){ c.classList.toggle('on'); }); });
+  })();
+</script>
+</body>
+</html>

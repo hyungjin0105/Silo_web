@@ -1,0 +1,389 @@
+<!-- Spot — 결제 (Payment) v0.1 -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>Spot — 결제 · 시설 이용계약 C-2026-0528-K07</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --color-ink: #0A0A0A;
+  --color-paper: #F4EFE6;
+  --color-paper-pure: #FFFFFF;
+  --color-accent: #FF5A1F;
+  --color-accent-deep: #D8410F;
+  --color-accent-soft: #FFE7DC;
+  --color-gray-50: #F7F5F1;
+  --color-gray-100: #E8E4DD;
+  --color-gray-300: #BDB7AD;
+  --color-gray-500: #7A736A;
+  --color-gray-700: #3F3A33;
+  --color-success: #1F8C5B;
+
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+  --r-sm: 4px; --r-md: 8px; --r-lg: 16px; --r-pill: 9999px;
+
+  --font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  --header-h: 60px;
+}
+
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+html, body { margin: 0; padding: 0; min-width: 1280px; }
+body { font-family: var(--font-sans); color: var(--color-ink); background: var(--color-gray-50); letter-spacing: -0.01em; word-break: keep-all; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+input { font-family: inherit; }
+
+@media (max-width: 1023px) { html { zoom: 0.78; } }
+
+.mono-sm { font-family: var(--font-mono); font-size: 12px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.mono-xs { font-family: var(--font-mono); font-size: 11px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* 헤더 공통 */
+.gheader { position: sticky; top: 0; z-index: 30; background: var(--color-paper-pure); border-bottom: 1px solid var(--color-gray-100); }
+.gheader-inner { max-width: 1200px; margin: 0 auto; height: var(--header-h); padding: 0 var(--s-12); display: flex; align-items: center; gap: var(--s-6); }
+.wordmark { font-weight: 800; font-size: 20px; letter-spacing: -0.035em; padding-right: var(--s-3); border-right: 1px solid var(--color-gray-100); margin-right: var(--s-3); }
+.wordmark .dot { color: var(--color-accent); }
+.gnav { display: flex; gap: var(--s-6); }
+.gnav a { font-size: 14px; font-weight: 500; padding: 6px 2px; }
+.gnav a.on { color: var(--color-accent-deep); }
+.gheader .right { margin-left: auto; display: flex; align-items: center; gap: var(--s-5); }
+.lang-toggle { font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: var(--color-gray-300); display: inline-flex; gap: 6px; }
+.lang-toggle .lang.on { color: var(--color-ink); font-weight: 700; }
+.gheader .signup { background: var(--color-ink); color: var(--color-paper-pure); border: none; padding: 10px 20px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; }
+
+/* 진행 단계 4/4 */
+.stepper { background: var(--color-paper-pure); border-bottom: 1px solid var(--color-gray-100); }
+.stepper-inner { max-width: 1100px; margin: 0 auto; padding: var(--s-5) var(--s-12); display: flex; align-items: center; }
+.step { display: flex; align-items: center; gap: var(--s-3); flex: 1; }
+.step .n { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 12px; font-weight: 700; background: var(--color-gray-100); color: var(--color-gray-500); }
+.step.on .n { background: var(--color-ink); color: var(--color-paper-pure); }
+.step.done .n { background: var(--color-accent); color: var(--color-paper-pure); }
+.step .l { font-size: 13px; font-weight: 500; color: var(--color-gray-500); }
+.step.on .l, .step.done .l { color: var(--color-ink); }
+.step-bar { flex: 0 1 32px; height: 1px; background: var(--color-gray-100); margin: 0 var(--s-2); }
+.step-bar.done { background: var(--color-accent); }
+
+main { max-width: 1200px; margin: 0 auto; padding: var(--s-10) var(--s-12) var(--s-16); }
+.title-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: var(--s-6); }
+.title-row h1 { margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.025em; }
+.title-row .sub { font-size: 14px; color: var(--color-gray-500); margin-top: var(--s-2); }
+.title-row .right-info { font-family: var(--font-mono); font-size: 12px; color: var(--color-gray-500); letter-spacing: 0.08em; text-transform: uppercase; }
+
+.layout { display: grid; grid-template-columns: 1fr 380px; gap: var(--s-8); align-items: start; }
+
+/* 카드 */
+.card { background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-lg); padding: var(--s-8); }
+.card + .card { margin-top: var(--s-5); }
+.card h2 { margin: 0 0 var(--s-2); font-size: 20px; font-weight: 700; letter-spacing: -0.015em; }
+.card .sub { font-size: 14px; color: var(--color-gray-500); margin-bottom: var(--s-5); }
+
+/* 결제 항목 두 줄 분리 — 가장 핵심 */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-5); margin-top: var(--s-2); }
+.split-cell { padding: var(--s-6); border-radius: var(--r-md); position: relative; }
+.split-cell.rent { background: var(--color-paper); border: 1px solid var(--color-gray-100); }
+.split-cell.svc { background: var(--color-accent-soft); border: 1px solid rgba(216,65,15,0.15); }
+.split-cell .tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+.split-cell.rent .tag { color: var(--color-gray-500); }
+.split-cell.svc .tag { color: var(--color-accent-deep); font-weight: 700; }
+.split-cell .nm { font-size: 16px; font-weight: 700; margin-top: 6px; }
+.split-cell .to { font-size: 12px; color: var(--color-gray-500); margin-top: 4px; }
+.split-cell .calc { font-family: var(--font-mono); font-size: 12px; color: var(--color-gray-500); margin-top: var(--s-4); letter-spacing: 0.04em; }
+.split-cell .am { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin-top: 4px; }
+.split-cell.rent .am { color: var(--color-ink); }
+.split-cell.svc .am { color: var(--color-accent-deep); }
+.split-cell .note { font-size: 11px; color: var(--color-gray-500); margin-top: var(--s-3); line-height: 1.5; }
+
+.deposit-row { display: flex; align-items: center; gap: var(--s-3); margin-top: var(--s-5); padding: var(--s-4) var(--s-5); background: var(--color-gray-50); border-radius: var(--r-md); }
+.deposit-row .tag { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); letter-spacing: 0.08em; text-transform: uppercase; }
+.deposit-row .nm { font-size: 14px; font-weight: 700; margin-top: 2px; }
+.deposit-row .note { font-size: 12px; color: var(--color-gray-500); margin-top: 2px; }
+.deposit-row .am { margin-left: auto; font-size: 18px; font-weight: 700; }
+
+/* 결제수단 */
+.methods { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-3); margin-top: var(--s-3); }
+.method { padding: var(--s-5) var(--s-4); border: 1.5px solid var(--color-gray-100); border-radius: var(--r-md); text-align: center; cursor: pointer; transition: all 120ms; }
+.method.on { border-color: var(--color-ink); background: var(--color-paper-pure); }
+.method .ico { font-size: 24px; color: var(--color-gray-500); }
+.method.on .ico { color: var(--color-ink); }
+.method .nm { font-size: 13px; font-weight: 700; margin-top: 6px; }
+.method .desc { font-size: 11px; color: var(--color-gray-500); margin-top: 2px; }
+
+/* 카드 입력 */
+.card-form { margin-top: var(--s-5); display: grid; grid-template-columns: 1fr; gap: var(--s-4); }
+.field label { display: block; font-size: 13px; font-weight: 700; margin-bottom: var(--s-2); }
+.input { width: 100%; padding: 12px 14px; border: 1px solid var(--color-gray-100); border-radius: var(--r-md); font-size: 15px; color: var(--color-ink); }
+.input:focus { outline: none; border-color: var(--color-ink); }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); }
+.row3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: var(--s-4); }
+
+/* 세금계산서 발행 */
+.tax-form { margin-top: var(--s-5); }
+.tax-form .row2 { margin-top: var(--s-3); }
+.tax-form .hint { font-size: 12px; color: var(--color-gray-500); margin-top: var(--s-3); }
+
+/* 약관 */
+.check { display: flex; gap: var(--s-3); align-items: flex-start; padding: var(--s-3) 0; cursor: pointer; }
+.check input { margin: 4px 0 0; transform: scale(1.2); accent-color: var(--color-accent); }
+.check .t { font-size: 14px; }
+.check .t .req { color: var(--color-accent-deep); margin-left: 4px; }
+.check a { color: var(--color-gray-500); text-decoration: underline; }
+.check-all { padding: var(--s-3) 0; border-bottom: 1px solid var(--color-gray-100); margin-bottom: var(--s-2); }
+.check-all .t { font-weight: 700; }
+
+/* 우측 sticky 결제 요약 */
+.aside { position: sticky; top: calc(var(--header-h) + 24px); }
+.summary { background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-lg); padding: var(--s-6); }
+.sum-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--color-gray-500); letter-spacing: 0.08em; text-transform: uppercase; }
+.mini-card { display: flex; gap: var(--s-3); align-items: center; margin-top: var(--s-3); }
+.mini-photo { width: 56px; height: 56px; border-radius: var(--r-md); background: var(--color-gray-100); background-image: repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(189,183,173,0.25) 6px, rgba(189,183,173,0.25) 7px); flex-shrink: 0; }
+.mini-info .nm { font-size: 14px; font-weight: 700; line-height: 1.35; }
+.mini-info .me { font-size: 12px; color: var(--color-gray-500); margin-top: 2px; }
+.sep { height: 1px; background: var(--color-gray-100); margin: var(--s-5) 0; }
+.calc { font-size: 13px; }
+.calc .row { display: flex; justify-content: space-between; padding: 6px 0; color: var(--color-gray-700); }
+.calc .row.muted { color: var(--color-gray-500); }
+.calc .row.h { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-500); text-transform: uppercase; padding-bottom: 4px; padding-top: var(--s-3); }
+.calc .row.total { border-top: 2px solid var(--color-ink); padding-top: var(--s-3); margin-top: var(--s-2); font-size: 18px; font-weight: 800; color: var(--color-ink); }
+.bigcta { display: block; width: 100%; background: var(--color-accent); color: #fff; border: none; border-radius: var(--r-md); height: 56px; font-size: 17px; font-weight: 700; margin-top: var(--s-5); text-align: center; line-height: 56px; }
+.bigcta:hover { background: var(--color-accent-deep); }
+.aside-foot { font-size: 12px; color: var(--color-gray-500); text-align: center; margin-top: var(--s-3); line-height: 1.5; }
+.safety { display: flex; gap: var(--s-2); align-items: center; padding: var(--s-3); background: var(--color-gray-50); border-radius: var(--r-sm); margin-top: var(--s-4); }
+.safety .ic { color: var(--color-success); font-weight: 700; }
+.safety .t { font-size: 12px; color: var(--color-gray-700); }
+</style>
+</head>
+<body>
+
+<header class="gheader">
+  <div class="gheader-inner">
+    <a href="hero.html" class="wordmark">Spot<span class="dot">.</span></a>
+    <nav class="gnav">
+      <a href="find.html" class="on">공간 찾기</a>
+      <a href="towns.html">팝업타운</a>
+      <a href="list-space.html">내 공간 등록</a>
+      <a href="story.html">이야기</a>
+      <a href="guide.html">이용 안내</a>
+    </nav>
+    <div class="right">
+      <div class="lang-toggle"><span class="lang on">KO</span><span>/</span><span class="lang">EN</span></div>
+      <a class="login" href="#">로그인</a>
+      <button class="signup">회원가입</button>
+    </div>
+  </div>
+</header>
+
+<div class="stepper">
+  <div class="stepper-inner">
+    <div class="step done"><span class="n">✓</span><span class="l">요청 보내기</span></div>
+    <div class="step-bar done"></div>
+    <div class="step done"><span class="n">✓</span><span class="l">임대인 수락</span></div>
+    <div class="step-bar done"></div>
+    <div class="step done"><span class="n">✓</span><span class="l">계약·서명</span></div>
+    <div class="step-bar done"></div>
+    <div class="step on"><span class="n">4</span><span class="l">결제 · 입주</span></div>
+  </div>
+</div>
+
+<main>
+
+  <div class="title-row">
+    <div>
+      <h1>결제</h1>
+      <div class="sub">시설 사용료(건물주)와 Spot 서비스 이용료는 분리 정산됩니다. 한 번의 결제로 양 항목이 자동 분리되어 처리됩니다.</div>
+    </div>
+    <div class="right-info">계약 번호 · C-2026-0528-K07</div>
+  </div>
+
+  <form class="layout" onsubmit="event.preventDefault(); window.location='payment-complete.html';">
+
+    <div>
+
+      <!-- 결제 항목 분리 -->
+      <section class="card">
+        <h2>1 · 결제 항목</h2>
+        <p class="sub">두 항목이 분리되어 표시됩니다. 각각의 영수증·세금계산서가 별도로 발행됩니다.</p>
+
+        <div class="split">
+          <div class="split-cell rent">
+            <div class="tag">① 시설 사용료</div>
+            <div class="nm">건물주 · 박○○에게 지급</div>
+            <div class="to">시설을 7일간 사용하는 대가 (임대료)</div>
+            <div class="calc">50,000원 × 7일</div>
+            <div class="am">350,000원</div>
+            <div class="note">건물주가 직접 발행하는 영수증을 받습니다.</div>
+          </div>
+          <div class="split-cell svc">
+            <div class="tag">② Spot 서비스 이용료</div>
+            <div class="nm">㈜Spot에 지급</div>
+            <div class="to">매칭·계약·결제·데이터·후기·분쟁 등 종합 인프라</div>
+            <div class="calc">80,000원 × 7일</div>
+            <div class="am">560,000원</div>
+            <div class="note">Spot이 전자세금계산서를 발행합니다.</div>
+          </div>
+        </div>
+
+        <div class="deposit-row">
+          <div>
+            <div class="tag">보증금</div>
+            <div class="nm">예치 후 종료 3영업일 내 환급</div>
+            <div class="note">시설 파손·원상복구 미흡 시 차감 후 잔액 환급</div>
+          </div>
+          <div class="am">100,000원</div>
+        </div>
+      </section>
+
+      <!-- 결제수단 -->
+      <section class="card">
+        <h2>2 · 결제수단</h2>
+        <p class="sub">선택한 수단으로 양 항목과 보증금이 한 번에 결제됩니다.</p>
+
+        <div class="methods">
+          <div class="method on" data-m="card"><div class="ico">▭</div><div class="nm">신용·체크카드</div><div class="desc">국내 카드 전부</div></div>
+          <div class="method" data-m="bank"><div class="ico">⇄</div><div class="nm">계좌이체</div><div class="desc">실시간</div></div>
+          <div class="method" data-m="vacc"><div class="ico">▥</div><div class="nm">가상계좌</div><div class="desc">24시간 입금</div></div>
+          <div class="method" data-m="kakao"><div class="ico">⌬</div><div class="nm">간편결제</div><div class="desc">카카오·네이버·토스</div></div>
+        </div>
+
+        <div class="card-form">
+          <div class="field">
+            <label>카드 번호</label>
+            <input class="input" type="text" value="4242 4242 4242 4242" maxlength="19" />
+          </div>
+          <div class="row3">
+            <div class="field"><label>유효 기간</label><input class="input" type="text" value="12 / 28" maxlength="7" /></div>
+            <div class="field"><label>CVC</label><input class="input" type="text" value="123" maxlength="4" /></div>
+            <div class="field"><label>할부</label>
+              <select class="input">
+                <option>일시불</option>
+                <option>2개월</option>
+                <option>3개월</option>
+                <option>6개월</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="safety">
+          <span class="ic">●</span>
+          <span class="t">시연 환경입니다. 실제 결제는 발생하지 않으며, 카드 정보도 저장되지 않습니다.</span>
+        </div>
+      </section>
+
+      <!-- 세금계산서 발행 정보 -->
+      <section class="card">
+        <h2>3 · 세금계산서 발행 정보</h2>
+        <p class="sub">Spot 서비스 이용료(②)에 대한 전자세금계산서가 입주일에 자동 발행됩니다.</p>
+
+        <div class="tax-form">
+          <div class="row2">
+            <div class="field"><label>상호 (사업자명)</label><input class="input" type="text" value="㈜브랜드K" /></div>
+            <div class="field"><label>사업자등록번호</label><input class="input" type="text" value="123-45-67890" /></div>
+          </div>
+          <div class="row2" style="margin-top: var(--s-4);">
+            <div class="field"><label>대표자</label><input class="input" type="text" value="김○○" /></div>
+            <div class="field"><label>업태 · 종목</label><input class="input" type="text" value="도소매 · 의류잡화" /></div>
+          </div>
+          <div class="row2" style="margin-top: var(--s-4);">
+            <div class="field"><label>사업장 주소</label><input class="input" type="text" value="서울 마포구 ○○동 ○○-○○" /></div>
+            <div class="field"><label>이메일 (세금계산서 수신)</label><input class="input" type="email" value="hello@brand-k.kr" /></div>
+          </div>
+          <div class="hint">시설 사용료(①)에 대한 영수증은 건물주가 직접 발행하며 입주일에 이메일로 전달됩니다.</div>
+        </div>
+      </section>
+
+      <!-- 약관 동의 -->
+      <section class="card">
+        <h2>4 · 동의</h2>
+
+        <label class="check check-all">
+          <input type="checkbox" checked id="agree-all" />
+          <span class="t">아래 항목 전체 동의</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" checked />
+          <span class="t">계약 내용을 모두 확인했으며, 결제 진행에 동의합니다.<span class="req">필수</span></span>
+        </label>
+        <label class="check">
+          <input type="checkbox" checked />
+          <span class="t">취소·환불 규정(14일 전 100% / 7일 전 50% / 3일 전 0%)을 이해합니다.<span class="req">필수</span></span>
+        </label>
+        <label class="check">
+          <input type="checkbox" checked />
+          <span class="t"><a href="#">결제대행(PG) 이용약관</a>에 동의합니다.<span class="req">필수</span></span>
+        </label>
+        <label class="check">
+          <input type="checkbox" checked />
+          <span class="t"><a href="#">개인정보 제3자 제공</a> (건물주·세무대리·PG사) 에 동의합니다.<span class="req">필수</span></span>
+        </label>
+        <label class="check">
+          <input type="checkbox" />
+          <span class="t">행사 배상책임보험 가입을 함께 진행합니다 (일 12,000원, 선택)</span>
+        </label>
+      </section>
+
+    </div>
+
+    <!-- 우측 결제 요약 -->
+    <aside class="aside">
+      <div class="summary">
+        <div class="sum-eyebrow">결제 요약</div>
+        <div class="mini-card">
+          <div class="mini-photo"></div>
+          <div class="mini-info">
+            <div class="nm">성수동 12평 1층 통유리 코너</div>
+            <div class="me">06.04 (목) ~ 06.10 (수) · 7일</div>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="calc">
+          <div class="row h"><span>① 건물주 정산</span><span></span></div>
+          <div class="row"><span>시설 사용료</span><span>350,000원</span></div>
+
+          <div class="row h"><span>② Spot 정산</span><span></span></div>
+          <div class="row"><span>서비스 이용료</span><span>560,000원</span></div>
+
+          <div class="row h"><span>③ 예치</span><span></span></div>
+          <div class="row muted"><span>보증금 (환급)</span><span>100,000원</span></div>
+
+          <div class="row total"><span>총 결제 금액</span><span>1,010,000원</span></div>
+        </div>
+
+        <button type="submit" class="bigcta">1,010,000원 결제하기</button>
+        <div class="aside-foot">결제 완료 즉시 입주 자격이 생기고, <br/>임차인 오너 대시보드가 활성화됩니다.</div>
+
+      </div>
+    </aside>
+
+  </form>
+
+</main>
+
+<script>
+// 결제수단 선택
+document.querySelectorAll('.method').forEach(m => {
+  m.addEventListener('click', () => {
+    document.querySelectorAll('.method').forEach(x => x.classList.remove('on'));
+    m.classList.add('on');
+  });
+});
+// 약관 전체 동의
+document.getElementById('agree-all').addEventListener('change', e => {
+  document.querySelectorAll('.check input').forEach(c => { if (c !== e.target) c.checked = e.target.checked; });
+});
+</script>
+
+</body>
+</html>

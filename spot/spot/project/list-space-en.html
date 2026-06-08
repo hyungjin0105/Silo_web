@@ -1,0 +1,436 @@
+<!-- Spot — List your space (EN) v0.1 -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>Spot — List your space</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --color-ink: #0A0A0A; --color-paper: #F4EFE6; --color-paper-pure: #FFFFFF;
+  --color-accent: #FF5A1F; --color-accent-deep: #D8410F; --color-accent-soft: #FFE7DC;
+  --color-gray-50: #F7F5F1; --color-gray-100: #E8E4DD; --color-gray-300: #BDB7AD;
+  --color-gray-500: #7A736A; --color-gray-700: #3F3A33; --color-success: #1F8A4C;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px; --s-24: 96px;
+  --r-md: 8px; --r-lg: 16px; --r-xl: 24px; --r-pill: 9999px;
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --container: 1200px;
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html, body { margin: 0; padding: 0; min-width: 1280px; }
+body { font-family: var(--font-sans); color: var(--color-ink); background: var(--color-paper); letter-spacing: -0.005em; font-size: 17px; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+@media (max-width: 1023px) { html { zoom: 0.78; } }
+
+.mono-sm { font-family: var(--font-mono); font-size: 12px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.mono-xs { font-family: var(--font-mono); font-size: 11px; line-height: 1.3; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+
+.site-header-wrap { background: var(--color-paper); padding: var(--s-6) 0 0; }
+.site-header { position: relative; width: calc(var(--container) - 0px); max-width: calc(100% - 48px); margin: 0 auto; height: 60px; padding: 6px 8px 6px 28px; display: flex; align-items: center; gap: var(--s-6); background: var(--color-paper-pure); border-radius: var(--r-pill); }
+.site-header .wordmark { font-weight: 800; font-size: 20px; letter-spacing: -0.035em; padding-right: var(--s-3); border-right: 1px solid var(--color-gray-100); margin-right: var(--s-3); }
+.site-header .wordmark .dot { color: var(--color-accent); }
+.site-header nav { display: flex; gap: var(--s-6); }
+.site-header nav a { font-size: 14px; font-weight: 500; padding: 6px 2px; position: relative; }
+.site-header nav a.active { color: var(--color-accent-deep); }
+.site-header nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 2px; height: 1px; background: currentColor; transition: right 200ms var(--ease-out-soft); }
+.site-header nav a:hover::after, .site-header nav a.active::after { right: 0; }
+.site-header .right { margin-left: auto; display: flex; align-items: center; gap: var(--s-5); }
+.lang-toggle { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--color-gray-300); display: inline-flex; align-items: center; gap: 6px; }
+.lang-toggle .lang.on { color: var(--color-ink); font-weight: 700; }
+.lang-toggle .sep { color: var(--color-gray-300); }
+.site-header .login { font-size: 14px; font-weight: 500; padding: 6px 2px; }
+.site-header .signup { background: var(--color-ink); color: var(--color-paper-pure); border: none; padding: 10px 20px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; }
+
+.container { max-width: var(--container); margin: 0 auto; padding: 0 var(--s-12); }
+.section { padding: var(--s-16) 0; }
+
+.lead { background: var(--color-paper); padding: var(--s-12) 0 var(--s-16); }
+.lead-grid { display: grid; grid-template-columns: 1.4fr 1fr; align-items: end; gap: var(--s-16); }
+.lead .eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.12em; color: var(--color-accent-deep); text-transform: uppercase; margin-bottom: var(--s-5); display: inline-flex; align-items: center; gap: var(--s-2); }
+.lead .eyebrow::before { content: ""; width: 32px; height: 1px; background: currentColor; }
+.lead h1 { margin: 0; font-size: 72px; font-weight: 900; line-height: 0.98; letter-spacing: -0.025em; }
+.lead h1 .accent { color: var(--color-accent); }
+.lead .sub { margin: var(--s-8) 0 0; max-width: 620px; font-size: 19px; line-height: 1.55; color: var(--color-gray-700); }
+.lead-ctas { margin-top: var(--s-10); display: flex; gap: var(--s-3); }
+.btn { display: inline-flex; align-items: center; gap: var(--s-2); padding: 18px 28px; border-radius: var(--r-md); font-size: 16px; font-weight: 700; font-family: inherit; border: none; transition: background 160ms, color 160ms, transform 120ms; }
+.btn-primary { background: var(--color-accent); color: #fff; }
+.btn-primary:hover { background: var(--color-accent-deep); }
+.btn-primary:hover .arrow { transform: translateX(4px); }
+.btn-ghost { background: transparent; color: var(--color-ink); border: 1.5px solid var(--color-ink); }
+.btn-ghost:hover { background: var(--color-ink); color: #fff; }
+.arrow { transition: transform 200ms var(--ease-out-soft); }
+
+.quick-card { background: var(--color-paper-pure); border-radius: var(--r-xl); padding: var(--s-8); border: 1px solid var(--color-gray-100); display: flex; flex-direction: column; gap: var(--s-6); }
+.quick-card .top { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--color-gray-500); text-transform: uppercase; }
+.quick-card h3 { margin: 0; font-size: 26px; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; }
+.quick-card .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-5); padding-top: var(--s-3); border-top: 1px solid var(--color-gray-100); }
+.quick-card .stat .num { font-size: 30px; font-weight: 800; letter-spacing: -0.015em; display: block; line-height: 1; }
+.quick-card .stat .lab { font-size: 13px; color: var(--color-gray-500); margin-top: 6px; display: block; }
+.quick-card .note { font-size: 14px; color: var(--color-gray-500); padding-top: var(--s-3); border-top: 1px solid var(--color-gray-100); line-height: 1.5; }
+
+.why { background: var(--color-paper-pure); padding: var(--s-16) 0; }
+.section-head { display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: var(--s-10); }
+.section-head .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-2); }
+.section-head h2 { margin: 0; font-size: 44px; font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; max-width: 800px; }
+.benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); }
+.benefit { background: var(--color-paper); border-radius: var(--r-lg); padding: var(--s-8); display: flex; flex-direction: column; gap: var(--s-4); border: 1px solid var(--color-gray-100); }
+.benefit .no { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.1em; color: var(--color-accent-deep); text-transform: uppercase; }
+.benefit h3 { margin: 0; font-size: 22px; font-weight: 800; line-height: 1.25; letter-spacing: -0.015em; }
+.benefit p { margin: 0; font-size: 16px; line-height: 1.55; color: var(--color-gray-700); }
+.benefit .ico { width: 56px; height: 56px; background: var(--color-accent); color: #fff; border-radius: var(--r-md); display: inline-flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; }
+
+.steps { background: var(--color-ink); color: #fff; padding: var(--s-16) 0; }
+.steps .section-head h2 { color: #fff; max-width: none; }
+.steps .section-head .eyebrow { color: var(--color-gray-300); }
+.step { display: grid; grid-template-columns: 80px 1fr 1fr 200px; gap: var(--s-8); padding: var(--s-8) 0; border-top: 1px solid #2a2620; align-items: start; }
+.step:last-child { border-bottom: 1px solid #2a2620; }
+.step .no { font-family: var(--font-mono); font-size: 28px; font-weight: 500; color: var(--color-accent); line-height: 1; padding-top: 4px; }
+.step h3 { margin: 0; font-size: 24px; font-weight: 800; line-height: 1.15; letter-spacing: -0.015em; color: #fff; }
+.step p { margin: var(--s-2) 0 0; font-size: 16px; line-height: 1.55; color: rgba(255,255,255,0.65); }
+.step .detail { font-size: 15px; line-height: 1.55; color: rgba(255,255,255,0.55); padding-top: 4px; }
+.step .detail ul { margin: 0; padding-left: 18px; }
+.step .detail li { margin-bottom: 4px; }
+.step .badge { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); padding: 6px 12px; background: rgba(255,90,31,0.12); border-radius: var(--r-pill); display: inline-flex; align-items: center; gap: var(--s-2); width: fit-content; }
+
+.fees { background: var(--color-paper); padding: var(--s-16) 0; }
+.fee-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--s-12); align-items: start; }
+.fee-grid .head h2 { margin: 0; font-size: 52px; font-weight: 900; line-height: 0.98; letter-spacing: -0.025em; }
+.fee-grid .head .eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.1em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-5); display: inline-flex; align-items: center; gap: var(--s-2); }
+.fee-grid .head .eyebrow::before { content: ""; width: 32px; height: 1px; background: currentColor; }
+.fee-grid .head p { margin: var(--s-6) 0 0; font-size: 18px; line-height: 1.6; color: var(--color-gray-700); max-width: 540px; }
+.fee-card { background: var(--color-paper-pure); border-radius: var(--r-xl); border: 1px solid var(--color-gray-100); padding: var(--s-8); }
+.fee-card .row { display: flex; justify-content: space-between; align-items: baseline; padding: var(--s-5) 0; border-bottom: 1px solid var(--color-gray-100); }
+.fee-card .row:last-child { border-bottom: none; }
+.fee-card .row .name { font-size: 17px; font-weight: 700; }
+.fee-card .row .name small { display: block; font-size: 13px; font-weight: 400; color: var(--color-gray-500); margin-top: 2px; }
+.fee-card .row .val { font-family: var(--font-mono); font-size: 16px; font-weight: 500; letter-spacing: 0.04em; }
+.fee-card .row .val.zero { color: var(--color-success); }
+.fee-card .row .val.warn { color: var(--color-gray-500); }
+.fee-card .note { margin-top: var(--s-5); padding-top: var(--s-5); border-top: 1px solid var(--color-gray-100); font-size: 14px; line-height: 1.55; color: var(--color-gray-500); }
+
+.cases { background: var(--color-paper-pure); padding: var(--s-16) 0; }
+.case-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6); }
+.case { background: var(--color-paper); border-radius: var(--r-lg); padding: var(--s-8); border: 1px solid var(--color-gray-100); display: flex; flex-direction: column; gap: var(--s-5); }
+.case .top { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--color-gray-500); text-transform: uppercase; display: flex; justify-content: space-between; }
+.case blockquote { margin: 0; font-size: 20px; font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; }
+.case .who { display: flex; align-items: center; gap: var(--s-3); margin-top: auto; padding-top: var(--s-3); border-top: 1px solid var(--color-gray-100); }
+.case .who .av { width: 36px; height: 36px; border-radius: 50%; background: var(--color-accent); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+.case .who .name { font-size: 15px; font-weight: 700; }
+.case .who .meta { font-size: 13px; color: var(--color-gray-500); margin-top: 2px; }
+
+.faq { background: var(--color-paper); padding: var(--s-16) 0; }
+.faq-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: var(--s-12); align-items: start; }
+.faq-grid .head h2 { margin: 0; font-size: 44px; font-weight: 900; line-height: 0.98; letter-spacing: -0.025em; }
+.faq-grid .head .eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.1em; color: var(--color-gray-500); text-transform: uppercase; margin-bottom: var(--s-5); display: inline-flex; align-items: center; gap: var(--s-2); }
+.faq-grid .head .eyebrow::before { content: ""; width: 32px; height: 1px; background: currentColor; }
+.faq-grid .head p { margin: var(--s-5) 0 0; font-size: 16px; line-height: 1.6; color: var(--color-gray-500); }
+.faq-list { display: flex; flex-direction: column; gap: var(--s-3); }
+.faq-item { background: var(--color-paper-pure); border: 1px solid var(--color-gray-100); border-radius: var(--r-lg); padding: var(--s-6) var(--s-8); }
+.faq-item summary { font-size: 18px; font-weight: 700; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: "+"; font-family: var(--font-mono); font-size: 22px; color: var(--color-accent); font-weight: 400; }
+.faq-item[open] summary::after { content: "−"; }
+.faq-item p { margin: var(--s-4) 0 0; font-size: 16px; line-height: 1.6; color: var(--color-gray-700); }
+
+.final-cta { background: var(--color-accent); color: #fff; }
+.final-cta .container { padding-top: var(--s-16); padding-bottom: var(--s-16); display: flex; justify-content: space-between; align-items: flex-end; gap: var(--s-12); }
+.final-cta h2 { margin: 0; font-size: 60px; font-weight: 900; line-height: 0.96; letter-spacing: -0.025em; max-width: 720px; }
+.final-cta p { margin: var(--s-5) 0 0; font-size: 18px; line-height: 1.55; opacity: 0.9; max-width: 560px; }
+.final-cta .btn-dark { background: var(--color-ink); color: #fff; padding: 20px 32px; font-size: 17px; }
+.final-cta .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; opacity: 0.85; margin-bottom: var(--s-5); text-transform: uppercase; }
+
+footer.foot { background: var(--color-paper); padding: var(--s-12) 0; border-top: 1px solid var(--color-gray-100); }
+.foot-top { display: flex; align-items: baseline; gap: var(--s-4); margin-bottom: var(--s-6); }
+.foot-wordmark { font-weight: 800; font-size: 24px; letter-spacing: -0.035em; }
+.foot-wordmark .dot { color: var(--color-accent); }
+.foot-links { display: flex; flex-wrap: wrap; gap: var(--s-8); }
+.foot-links a { font-size: 15px; color: var(--color-gray-500); }
+.foot-links a:hover { color: var(--color-ink); }
+.foot-legal { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-gray-300); margin-top: var(--s-6); text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<div class="site-header-wrap">
+  <header class="site-header">
+    <a href="hero.html" class="wordmark">Spot<span class="dot">.</span></a>
+    <nav>
+      <a href="find-en.html">Find space</a>
+      <a href="towns-en.html">Popup towns</a>
+      <a href="list-space-en.html" class="active">List your space</a>
+      <a href="story-en.html">Story</a>
+      <a href="guide-en.html">Guide</a>
+    </nav>
+    <div class="right">
+      <div class="lang-toggle">
+        <a href="list-space.html"><span class="lang">KO</span></a>
+        <span class="sep">/</span>
+        <span class="lang on">EN</span>
+      </div>
+      <a href="#login" class="login">Log in</a>
+      <button class="signup" type="button">Sign up</button>
+    </div>
+  </header>
+</div>
+
+<section class="lead">
+  <div class="container">
+    <div class="lead-grid">
+      <div>
+        <div class="eyebrow">FOR HOSTS · LANDLORDS</div>
+        <h1>Empty 1F?<br/>Try a <span class="accent">short</span> stay.</h1>
+        <p class="sub">When three months feels too long and three days won't hurt — try short-term popups. Cover the gap, bring new faces into the neighborhood.</p>
+        <div class="lead-ctas">
+          <button class="btn btn-primary" type="button">Start listing <span class="arrow">→</span></button>
+          <button class="btn btn-ghost" type="button">See how it works</button>
+        </div>
+      </div>
+
+      <aside class="quick-card">
+        <div class="top">REGISTRATION · 3 MIN</div>
+        <h3>Listed in 3 minutes.<br/>Matched in 4 days.</h3>
+        <div class="stat-row">
+          <div class="stat"><span class="num">₩0</span><span class="lab">to list · stay listed</span></div>
+          <div class="stat"><span class="num">7%</span><span class="lab">only when matched</span></div>
+          <div class="stat"><span class="num">4.2d</span><span class="lab">to first request</span></div>
+          <div class="stat"><span class="num">82%</span><span class="lab">matched within 3 wks</span></div>
+        </div>
+        <p class="note">Payments and contracts happen between you and the tenant directly. Spot only matches.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">WHY SPOT · NO.01—03</div>
+        <h2>3 days of popup beats 3 months of vacant.</h2>
+      </div>
+    </div>
+    <div class="benefits">
+      <article class="benefit">
+        <span class="ico">¥</span>
+        <span class="no">NO. 01 · FILL VACANCY</span>
+        <h3>Cover the in-between weeks.</h3>
+        <p>If a full monthly lease is too much, break it into 1-week or 3-day slots. You set the duration and the rate; we handle the listing.</p>
+      </article>
+
+      <article class="benefit">
+        <span class="ico">①</span>
+        <span class="no">NO. 02 · SAFE FLOW</span>
+        <h3>Meet only the right tenant.</h3>
+        <p>Set use-type, floor area, and facility filters. Requests that don't match never reach you. Contact info opens only after you tap Accept.</p>
+      </article>
+
+      <article class="benefit">
+        <span class="ico">↗</span>
+        <span class="no">NO. 03 · NEW VISITORS</span>
+        <h3>New customers into the alley.</h3>
+        <p>When the popup ends, the visitors stay. Your store, the café next door, the alley itself — all gain visibility. Short rentals advertise the whole block.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="steps">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">HOW IT WORKS · NO.01—05</div>
+        <h2>From listing to match — five steps.</h2>
+      </div>
+      <span class="mono-sm" style="color: var(--color-gray-300);">AVG · 3 MIN</span>
+    </div>
+
+    <div>
+
+      <div class="step">
+        <div class="no">01/</div>
+        <div>
+          <h3>Address & floor area</h3>
+          <p>Enter the road-name address — map and coordinates fill in automatically. Pyeong is fine as an estimate.</p>
+        </div>
+        <div class="detail">
+          <ul><li>Daum postal code lookup</li><li>Naver Map coordinates auto-set</li><li>Exact pyeong can be edited later</li></ul>
+        </div>
+        <span class="badge">⏱ ~30 sec</span>
+      </div>
+
+      <div class="step">
+        <div class="no">02/</div>
+        <div>
+          <h3>5 photos</h3>
+          <p>Exterior · interior wide · another angle · restroom or kitchen · one free shot. Phone photos are fine.</p>
+        </div>
+        <div class="detail">
+          <ul><li>Min 5, max 12</li><li>Portrait or landscape OK</li><li>Faces auto-blurred</li></ul>
+        </div>
+        <span class="badge">⏱ ~1 min</span>
+      </div>
+
+      <div class="step">
+        <div class="no">03/</div>
+        <div>
+          <h3>Availability & price</h3>
+          <p>Open dates and rate. Pick one unit — per day, per week, or per month — whichever is easiest.</p>
+        </div>
+        <div class="detail">
+          <ul><li>One unit required: day · week · month</li><li>"Negotiable" flag for flexibility</li><li>Tap calendar dates to block</li></ul>
+        </div>
+        <span class="badge">⏱ ~40 sec</span>
+      </div>
+
+      <div class="step">
+        <div class="no">04/</div>
+        <div>
+          <h3>Use-type rules</h3>
+          <p>Choose what's welcome and what's not. Cooking on premises, alcohol — set these upfront.</p>
+        </div>
+        <div class="detail">
+          <ul><li>Allow / disallow lists</li><li>Custom categories supported</li><li>Mismatched requests filtered out</li></ul>
+        </div>
+        <span class="badge">⏱ ~30 sec</span>
+      </div>
+
+      <div class="step">
+        <div class="no">05/</div>
+        <div>
+          <h3>One-line intro + preview</h3>
+          <p>"Corner spot at the end of the café alley, glass walls." One line is enough. Preview, then publish.</p>
+        </div>
+        <div class="detail">
+          <ul><li>60 characters recommended</li><li>Preview shows tenant's view</li><li>Goes live on save (verification separate)</li></ul>
+        </div>
+        <span class="badge">⏱ ~20 sec</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="fees">
+  <div class="container">
+    <div class="fee-grid">
+      <div class="head">
+        <div class="eyebrow">FEES · SIMPLE PRICING</div>
+        <h2>Free to list.<br/>7% only on match.</h2>
+        <p>No sign-up fees, no premium placement, no monthly subscription. We charge a defined fee only after a tenant request is accepted and the deal closes.</p>
+      </div>
+
+      <div class="fee-card">
+        <div class="row"><span class="name">Listing · visibility<small>Unlimited listings, photos, preview</small></span><span class="val zero">₩0</span></div>
+        <div class="row"><span class="name">Monthly subscription<small>None</small></span><span class="val zero">₩0</span></div>
+        <div class="row"><span class="name">Verification (photo · visit)<small>We cover it</small></span><span class="val zero">₩0</span></div>
+        <div class="row"><span class="name">Match fee<small>On accept + deal closed</small></span><span class="val">7% of total</span></div>
+        <div class="row"><span class="name">Cancellations · refunds<small>Per your stated policy</small></span><span class="val warn">Between parties</span></div>
+        <p class="note">Payments, settlement, and contracts all happen between you and the tenant. Match fee is billed when you confirm the match. ⓘ See the full operating policy →</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cases">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">HOST STORIES · NO.01—03</div>
+        <h2>Hosts already on Spot.</h2>
+      </div>
+      <a class="mono-sm" href="story-en.html" style="color: var(--color-gray-500);">All stories →</a>
+    </div>
+    <div class="case-grid">
+      <article class="case">
+        <div class="top"><span>SEONGSU · HOST</span><span>NO. 01</span></div>
+        <blockquote>"3 months vacant. Two 2-week popups filled the month — without dropping the rent."</blockquote>
+        <div class="who"><span class="av">P</span><div><div class="name">Mr. Park</div><div class="meta">Seongsu 1F · 12 pyeong · café-style</div></div></div>
+      </article>
+      <article class="case">
+        <div class="top"><span>MANGWON · HOST</span><span>NO. 02</span></div>
+        <blockquote>"A 1-month gap between tenants — three popups filled it. New customers found the alley."</blockquote>
+        <div class="who"><span class="av">J</span><div><div class="name">Ms. Jo</div><div class="meta">Mangwon 1F · 8 pyeong · alley shop</div></div></div>
+      </article>
+      <article class="case">
+        <div class="top"><span>BUAM · HOST</span><span>NO. 03</span></div>
+        <blockquote>"I'm not tech-savvy, but everything — from first request to accept — happened on my phone, in KakaoTalk."</blockquote>
+        <div class="who"><span class="av">J</span><div><div class="name">Mr. Jeong</div><div class="meta">Buam · hanok renovation · 10 pyeong</div></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="container">
+    <div class="faq-grid">
+      <div class="head">
+        <div class="eyebrow">FAQ · BEFORE YOU LIST</div>
+        <h2>Before you<br/>get started.</h2>
+        <p>If you need more answers, send us a message on KakaoTalk @spot.kr — we reply within a business day.</p>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>Can anyone see my exact address?</summary>
+          <p>Only logged-in tenants see the exact street address. Visitors see the dong (neighborhood) only, with the pin offset by up to 100m near the nearest subway station.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I decline tenants I don't like?</summary>
+          <p>Yes. Every request requires your Accept before contact info opens. You don't need to give a reason. If you ignore it, it auto-expires after 7 days.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I take my listing down?</summary>
+          <p>Anytime. "Pause listing" removes you from search instantly. Active requests can be wrapped up or carried forward — your call.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How does photo verification work?</summary>
+          <p>Within 2–3 business days of listing, our ops team reviews your photos. A clear exterior and interior earn ✓ Photo verified. If we visit in person and confirm, you get ✓✓ Site visited. Verification is free.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Where do I get a contract?</summary>
+          <p>Download Spot's standard short-term lease as a PDF. Print, sign, exchange copies. Spot is not a party to the contract.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="container">
+    <div>
+      <div class="eyebrow">START · NO.01</div>
+      <h2>3 minutes to list.<br/>Decline anytime.</h2>
+      <p>Listing today costs ₩0. If the first request doesn't fit, decline — no penalty.</p>
+    </div>
+    <button class="btn btn-dark" type="button">Start listing <span class="arrow">→</span></button>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="container">
+    <div class="foot-top">
+      <span class="foot-wordmark">Spot<span class="dot">.</span></span>
+      <span class="mono-xs" style="color: var(--color-gray-500);">POPUP SPACE · SHORT TERM</span>
+    </div>
+    <div class="foot-links">
+      <a href="story-en.html">Story</a>
+      <a href="guide-en.html">Guide</a>
+      <a href="guide-en.html#tos">Terms</a>
+      <a href="guide-en.html#privacy">Privacy</a>
+      <a href="guide-en.html#biz">Business info</a>
+      <a href="guide-en.html#std">Standard contract</a>
+    </div>
+    <div class="foot-legal">© 2026 SPOT · MATCHING ONLY · PAYMENT & CONTRACT HAPPEN OFF-PLATFORM</div>
+  </div>
+</footer>
+</body>
+</html>
